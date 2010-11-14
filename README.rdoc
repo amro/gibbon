@@ -1,19 +1,56 @@
 = gibbon
 
-Description goes here.
+Gibbon is a simple API wrapper for interacting with {MailChimp API}[http://www.mailchimp.com/api] 1.3.
 
-== Contributing to gibbon
- 
-* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
-* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
-* Fork the project
-* Start a feature/bugfix branch
-* Commit and push until you are happy with your contribution
-* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+== Installation
+
+    gem install gibbon
+    
+== Requirements
+
+A MailChimp account and API key. You can see your API keys {here}[http://admin.mailchimp.com/account/api].
+
+== Usage
+
+Create an instance of the API wrapper:
+
+    gb = Gibbon::API.new(api_key)
+
+Fetching data is as simple as calling API methods directly on the wrapper object. 
+Check the API {documentation}[http://www.mailchimp.com/api/1.3] for details.
+
+=== Fetching Campaigns
+
+For example, to fetch your first 100 campaigns (page 0):
+
+    campaigns =  gb.campaigns({:start => 0, :limit => 100})
+    
+=== Fetching Lists
+
+Similarly, to fetch your first 100 lists:
+
+    lists = gb.lists({:start => 0, :limit=> 100})
+    
+=== More Advanced Examples
+
+Getting batch member information for subscribers looks like this:
+
+    info = gb.list_member_info({:id => list_id, :email_address => email_array})
+
+or
+
+    info = gb.listMemberInfo({:id => list_id, :email_address => email_array})
+    
+Fetch open and click detail for recipients of a particular campaign:
+
+    email_stats = gb.campaign_email_stats_aim({:cid => campaign_id, :email_address => email_array})
+
+or
+
+    email_stats = gb.campaignEmailStatsAIM({:cid => campaign_id, :email_address => email_array})
 
 == Copyright
 
-Copyright (c) 2010 Amro Mousa. See LICENSE.txt for
-further details.
+Copyright (c) 2010 Amro Mousa. See LICENSE.txt for further details
 
+MailChimp (c) 2001-2010 The Rocket Science Group
