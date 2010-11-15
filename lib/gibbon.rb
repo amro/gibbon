@@ -25,7 +25,7 @@ module Gibbon
     def call(method, params = {})
       url = base_api_url + method
       params = params.merge(@default_params)
-      response = API.post(url, :query => params)
+      response = API.post(url, :body => params.to_json)
 
       begin
         response = JSON.parse(response.body)
