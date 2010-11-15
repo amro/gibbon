@@ -49,8 +49,12 @@ or
 
     email_stats = gb.campaignEmailStatsAIM({:cid => campaign_id, :email_address => email_array})
 
+== Thanks
+
+- Rails for camelize gsub
+
 == Copyright
 
-Copyright (c) 2010 Amro Mousa. See LICENSE.txt for further details
+Copyright (c) 2010 Amro Mousa. See LICENSE.txt for details.
 
 MailChimp (c) 2001-2010 The Rocket Science Group
