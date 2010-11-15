@@ -1,37 +1,37 @@
-= gibbon
+# gibbon
 
-Gibbon is a simple API wrapper for interacting with {MailChimp API}[http://www.mailchimp.com/api] 1.3.
+Gibbon is a simple API wrapper for interacting with [MailChimp API](http://www.mailchimp.com/api) 1.3.
 
-== Installation
+##Installation
 
-    gem install gibbon
+    $ gem install gibbon
     
-== Requirements
+##Requirements
 
-A MailChimp account and API key. You can see your API keys {here}[http://admin.mailchimp.com/account/api].
+A MailChimp account and API key. You can see your API keys [here](http://admin.mailchimp.com/account/api).
 
-== Usage
+##Usage
 
 Create an instance of the API wrapper:
 
     gb = Gibbon::API.new(api_key)
 
 Fetching data is as simple as calling API methods directly on the wrapper object. 
-Check the API {documentation}[http://www.mailchimp.com/api/1.3] for details.
+Check the API [documentation](http://www.mailchimp.com/api/1.3) for details.
 
-=== Fetching Campaigns
+### Fetching Campaigns
 
 For example, to fetch your first 100 campaigns (page 0):
 
-    campaigns =  gb.campaigns({:start => 0, :limit => 100})
+    campaigns = gb.campaigns({:start => 0, :limit => 100})
     
-=== Fetching Lists
+### Fetching Lists
 
 Similarly, to fetch your first 100 lists:
 
     lists = gb.lists({:start => 0, :limit=> 100})
     
-=== More Advanced Examples
+### More Advanced Examples
 
 Getting batch member information for subscribers looks like this:
 
@@ -49,11 +49,11 @@ or
 
     email_stats = gb.campaignEmailStatsAIM({:cid => campaign_id, :email_address => email_array})
 
-== Thanks
+##Thanks
 
 * Rails for camelize gsub
 
-== Copyrights
+##Copyrights
 
 * Copyright (c) 2010 Amro Mousa. See LICENSE.txt for details.
-* MailChimp (c) 2001-2010 The Rocket Science Group
+* MailChimp (c) 2001-2010 The Rocket Science Group.
