@@ -5,13 +5,21 @@ module Gibbon
   class API
     include HTTParty
 
-    def initialize(apikey, extra_params = {})
+    attr_accessor :apikey
+
+    def initialize(apikey = nil, extra_params = {})
       @apikey = apikey
       @default_params = {:apikey => apikey}.merge(extra_params)
     end
 
+    def apikey=(value)
+      @apikey = value
+      @default_params = @default_params.merge({:apikey => @apikey})
+    end
+
     def base_api_url
-      "https://#{@apikey.split("-").last}.api.mailchimp.com/1.3/?method="
+      dc = @apikey.blank? ? '' : "#{@apikey.split("-").last}."
+      "https://#{dc}api.mailchimp.com/1.3/?method="
     end
 
     def call(method, params = {})
