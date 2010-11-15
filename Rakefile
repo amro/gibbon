@@ -16,7 +16,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/amro/gibbon"
   gem.license = "MIT"
   gem.summary = %Q{Gibbon is a simple API wrapper for interacting with MailChimp API 1.3}
-  gem.description = %Q{Gibbon is a simple API wrapper for interacting with MailChimp API version 1.3. It supports }
+  gem.description = %Q{Gibbon is a simple API wrapper for interacting with MailChimp API version 1.3.}
   gem.email = "amromousa@gmail.com"
   gem.authors = ["Amro Mousa"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
