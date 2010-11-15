@@ -49,12 +49,19 @@ or
 
     email_stats = gb.campaignEmailStatsAIM({:cid => campaign_id, :email_address => email_array})
 
+== Stuff You Probably Shouldn't Use
+
+You should really use API keys but if you must use login (deprecated in MailChimp API):
+
+    gb = Gibbon::API.new
+    response = gb.login({:username => username, :password => password})
+    gb.apikey = response.gsub('"', '')
+
 == Thanks
 
-- Rails for camelize gsub
+* Rails for camelize gsub
 
-== Copyright
+== Copyrights
 
-Copyright (c) 2010 Amro Mousa. See LICENSE.txt for details.
-
-MailChimp (c) 2001-2010 The Rocket Science Group
+* Copyright (c) 2010 Amro Mousa. See LICENSE.txt for details.
+* MailChimp (c) 2001-2010 The Rocket Science Group
