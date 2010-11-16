@@ -49,6 +49,12 @@ or
 
     email_stats = gb.campaignEmailStatsAIM({:cid => campaign_id, :email_address => email_array})
 
+### Other Stuff
+
+Gibbon defaults to a 30 second timeout. You can optionally set your own timeout (in seconds) like so:
+
+    gb.timeout = 5
+
 ##Thanks
 
 * Rails for camelize gsub

@@ -4,8 +4,9 @@ require 'json'
 module Gibbon
   class API
     include HTTParty
+    default_timeout 30
 
-    attr_accessor :apikey
+    attr_accessor :apikey, :timeout
 
     def initialize(apikey = nil, extra_params = {})
       @apikey = apikey
@@ -25,7 +26,7 @@ module Gibbon
     def call(method, params = {})
       url = base_api_url + method
       params = params.merge(@default_params)
-      response = API.post(url, :body => params.to_json)
+      response = API.post(url, :body => params.to_json, :timeout => @timeout)
 
       begin
         response = JSON.parse(response.body)
