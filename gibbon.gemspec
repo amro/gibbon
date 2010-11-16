@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{gibbon}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Amro Mousa"]
-  s.date = %q{2010-11-15}
+  s.date = %q{2010-11-16}
   s.description = %q{Gibbon is a simple API wrapper for interacting with MailChimp API version 1.3.}
   s.email = %q{amromousa@gmail.com}
   s.extra_rdoc_files = [
