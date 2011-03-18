@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{gibbon}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Amro Mousa"]
-  s.date = %q{2010-11-16}
+  s.date = %q{2011-03-18}
   s.description = %q{Gibbon is a simple API wrapper for interacting with MailChimp API version 1.3.}
   s.email = %q{amromousa@gmail.com}
   s.extra_rdoc_files = [
@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/amro/gibbon}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.5.2}
   s.summary = %q{Gibbon is a simple API wrapper for interacting with MailChimp API 1.3}
   s.test_files = [
     "test/helper.rb",
@@ -40,7 +40,6 @@ Gem::Specification.new do |s|
   ]
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
