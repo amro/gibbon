@@ -1,5 +1,6 @@
 require 'httparty'
 require 'json'
+require 'cgi'
 
 module Gibbon
   class API
@@ -25,7 +26,8 @@ module Gibbon
 
     def call(method, params = {})
       url = base_api_url + method
-      params = params.merge(@default_params)
+      params = @default_params.merge(params)
+      params.each_pair {|k,v| params[k] = CGI::escape(v)}
       response = API.post(url, :body => params.to_json, :timeout => @timeout)
 
       begin
