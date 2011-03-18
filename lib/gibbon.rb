@@ -27,7 +27,7 @@ module Gibbon
     def call(method, params = {})
       url = base_api_url + method
       params = @default_params.merge(params)
-      params.each_pair {|k,v| params[k] = CGI::escape(v)}
+      params.each_pair {|k,v| params[k] = CGI::escape(v) if v.class == String}
       response = API.post(url, :body => params.to_json, :timeout => @timeout)
 
       begin
