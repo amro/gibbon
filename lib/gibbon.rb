@@ -26,8 +26,7 @@ module Gibbon
 
     def call(method, params = {})
       url = base_api_url + method
-      params = @default_params.merge(params)
-      params.each_pair {|k,v| params[k] = CGI::escape(v) if v.class == String}
+      params = escape_params(@default_params.merge(params))
       response = API.post(url, :body => params.to_json, :timeout => @timeout)
 
       begin
@@ -44,6 +43,21 @@ module Gibbon
       args = {} unless args.length > 0
       args = args[0] if (args.class.to_s == "Array")
       call(method, args)
+    end
+    
+    private
+    
+    def escape_params(param)
+      case param
+      when String
+        CGI::escape(param)
+      when Array
+        param.collect{|v| escape_params(v)}
+      when Hash
+        param.keys.inject({}) {|r,k| r[escape_params(k)] = escape_params(param[k]) ;r} 
+      else
+        param
+      end
     end
   end
 end
