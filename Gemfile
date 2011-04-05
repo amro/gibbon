@@ -10,4 +10,7 @@ group :development do
   gem "bundler", "~> 1.0.0"
   gem "jeweler", "~> 1.5.1"
   gem "rcov", ">= 0"
+  gem "json", "> 1.4.0"
+  gem "httparty", "> 0.6.0"
+  gem "mocha", "> 0.9.11"
 end
