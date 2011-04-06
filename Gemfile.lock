@@ -5,7 +5,7 @@ GEM
     git (1.2.5)
     httparty (0.7.4)
       crack (= 0.1.8)
-    jeweler (1.5.1)
+    jeweler (1.5.2)
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
