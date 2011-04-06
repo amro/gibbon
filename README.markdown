@@ -57,6 +57,7 @@ Gibbon defaults to a 30 second timeout. You can optionally set your own timeout 
 
 ##Thanks
 
+* @elshimone for nested param encoding fixes
 * Rails for camelize gsub
 
 ##Copyrights
