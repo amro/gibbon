@@ -1,3 +1,4 @@
+require 'active_support'
 require 'httparty'
 require 'json'
 require 'cgi'
@@ -24,40 +25,26 @@ module Gibbon
       "https://#{dc}api.mailchimp.com/1.3/?method="
     end
 
-    def call(method, params = {})
-      url = base_api_url + method
-      params = escape_params(@default_params.merge(params))
-      response = API.post(url, :body => params.to_json, :timeout => @timeout)
+  def call(method, params = {})
+    url = base_api_url + method
+    params = @default_params.merge(params)
+    response = Gibbon::API.post(url, :body => CGI::escape(params.to_json), :timeout => @timeout)
 
-      begin
-        response = JSON.parse(response.body)
-      rescue
-        response = response.body
-      end
-      response
+    begin
+      response = ActiveSupport::JSON.decode(response.body)
+    rescue
+      response = response.body
     end
+    response
+  end
 
-    def method_missing(method, *args)
-      method = method.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } #Thanks for the gsub, Rails
-      method = method[0].chr.downcase + method[1..-1].gsub(/aim$/i, 'AIM')
-      args = {} unless args.length > 0
-      args = args[0] if (args.class.to_s == "Array")
-      call(method, args)
-    end
-    
-    private
-    
-    def escape_params(param)
-      case param
-      when String
-        CGI::escape(param)
-      when Array
-        param.collect{|v| escape_params(v)}
-      when Hash
-        param.keys.inject({}) {|r,k| r[escape_params(k)] = escape_params(param[k]) ;r} 
-      else
-        param
-      end
-    end
+  def method_missing(method, *args)
+    method = method.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } #Thanks for the gsub, Rails
+    method = method[0].chr.downcase + method[1..-1].gsub(/aim$/i, 'AIM')
+    args = {} unless args.length > 0
+    args = args[0] if (args.class.to_s == "Array")
+    call(method, args)
+  end
+
   end
 end

@@ -55,10 +55,17 @@ Gibbon defaults to a 30 second timeout. You can optionally set your own timeout 
 
     gb.timeout = 5
 
+### Notes
+
+As of 0.1.6, gibbon uses ActiveSupport::JSON.decode(). This means code that checked for weird API responses (like "true" 
+on a successful call to "listSubscribe" or similar) will need to be tweaked to handle the boolean JSON.decode() returns 
+as opposed to the string the MailChimp API returns. I understand the extra dependency might be a pain for some.
+
 ##Thanks
 
 * [Justin Ip](https://github.com/ippy04)
 * [elshimone](https://github.com/elshimone)
+* [jlxw](https://github.com/jlxw)
 
 * Rails for camelize gsub
 
