@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{gibbon}
-  s.version = "0.1.6"
+  s.version = "0.1.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Amro Mousa"]
-  s.date = %q{2011-06-02}
+  s.date = %q{2011-06-25}
   s.description = %q{Gibbon is a simple API wrapper for interacting with MailChimp API version 1.3.}
   s.email = %q{amromousa@gmail.com}
   s.extra_rdoc_files = [
@@ -50,6 +50,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<json>, ["> 1.4.0"])
       s.add_development_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_development_dependency(%q<mocha>, ["> 0.9.11"])
+      s.add_development_dependency(%q<activesupport>, [">= 3.0.0"])
       s.add_runtime_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_runtime_dependency(%q<activesupport>, ["> 3.0.0"])
       s.add_runtime_dependency(%q<json>, ["> 1.4.0"])
@@ -64,6 +65,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<json>, ["> 1.4.0"])
       s.add_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_dependency(%q<mocha>, ["> 0.9.11"])
+      s.add_dependency(%q<activesupport>, [">= 3.0.0"])
       s.add_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_dependency(%q<activesupport>, ["> 3.0.0"])
       s.add_dependency(%q<json>, ["> 1.4.0"])
@@ -79,6 +81,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<json>, ["> 1.4.0"])
     s.add_dependency(%q<httparty>, ["> 0.6.0"])
     s.add_dependency(%q<mocha>, ["> 0.9.11"])
+    s.add_dependency(%q<activesupport>, [">= 3.0.0"])
     s.add_dependency(%q<httparty>, ["> 0.6.0"])
     s.add_dependency(%q<activesupport>, ["> 3.0.0"])
     s.add_dependency(%q<json>, ["> 1.4.0"])
