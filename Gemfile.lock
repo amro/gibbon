@@ -3,15 +3,15 @@ GEM
   specs:
     crack (0.1.8)
     git (1.2.5)
-    httparty (0.7.4)
+    httparty (0.7.8)
       crack (= 0.1.8)
     jeweler (1.5.2)
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
-    json (1.5.1)
+    json (1.5.3)
     mocha (0.9.12)
-    rake (0.9.1)
+    rake (0.9.2)
     rcov (0.9.9)
     shoulda (2.11.3)
 
