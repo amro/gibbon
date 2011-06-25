@@ -5,7 +5,7 @@ Gibbon is a simple API wrapper for interacting with [MailChimp API](http://www.m
 ##Installation
 
     $ gem install gibbon
-    
+
 ##Requirements
 
 A MailChimp account and API key. You can see your API keys [here](http://admin.mailchimp.com/account/api).
@@ -16,7 +16,7 @@ Create an instance of the API wrapper:
 
     gb = Gibbon::API.new(api_key)
 
-Fetching data is as simple as calling API methods directly on the wrapper object. 
+Fetching data is as simple as calling API methods directly on the wrapper object.
 Check the API [documentation](http://www.mailchimp.com/api/1.3) for details.
 
 ### Fetching Campaigns
@@ -24,13 +24,13 @@ Check the API [documentation](http://www.mailchimp.com/api/1.3) for details.
 For example, to fetch your first 100 campaigns (page 0):
 
     campaigns = gb.campaigns({:start => 0, :limit => 100})
-    
+
 ### Fetching Lists
 
 Similarly, to fetch your first 100 lists:
 
     lists = gb.lists({:start => 0, :limit=> 100})
-    
+
 ### More Advanced Examples
 
 Getting batch member information for subscribers looks like this:
@@ -40,7 +40,7 @@ Getting batch member information for subscribers looks like this:
 or
 
     info = gb.listMemberInfo({:id => list_id, :email_address => email_array})
-    
+
 Fetch open and click detail for recipients of a particular campaign:
 
     email_stats = gb.campaign_email_stats_aim({:cid => campaign_id, :email_address => email_array})
@@ -57,8 +57,8 @@ Gibbon defaults to a 30 second timeout. You can optionally set your own timeout 
 
 ### Notes
 
-As of 0.1.6, gibbon uses ActiveSupport::JSON.decode(). This means code that checked for weird API responses (like "true" 
-on a successful call to "listSubscribe" or similar) will need to be tweaked to handle the boolean JSON.decode() returns 
+As of 0.1.6, gibbon uses ActiveSupport::JSON.decode(). This means code that checked for weird API responses (like "true"
+on a successful call to "listSubscribe" or similar) will need to be tweaked to handle the boolean JSON.decode() returns
 as opposed to the string the MailChimp API returns. I understand the extra dependency might be a pain for some.
 
 ##Thanks

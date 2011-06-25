@@ -6,6 +6,7 @@ require 'cgi'
 module Gibbon
   class API
     include HTTParty
+    format :plain
     default_timeout 30
 
     attr_accessor :apikey, :timeout
