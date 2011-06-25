@@ -13,5 +13,5 @@ group :development do
   gem "json", "> 1.4.0"
   gem "httparty", "> 0.6.0"
   gem "mocha", "> 0.9.11"
-  gem "active_support", ">= 3.0.0"
+  gem "activesupport", ">= 3.0.0"
 end
