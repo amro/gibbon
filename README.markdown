@@ -17,7 +17,7 @@ Create an instance of the API wrapper:
     gb = Gibbon::API.new(api_key)
 
 Fetching data is as simple as calling API methods directly on the wrapper object.
-Check the API [documentation](http://www.mailchimp.com/api/1.3) for details.
+Check the API [documentation](http://apidocs.mailchimp.com/api/1.3/) for details.
 
 ### Fetching Campaigns
 
