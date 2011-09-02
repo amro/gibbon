@@ -12,9 +12,20 @@ A MailChimp account and API key. You can see your API keys [here](http://admin.m
 
 ##Usage
 
-Create an instance of the API wrapper:
+There are a few ways to use Gibbon:
 
-    gb = Gibbon::API.new(api_key)
+You can create an instance of the API wrapper:
+
+    gb = Gibbon.new("your_api_key")
+    
+You can set your api_key globally and call class methods:
+
+    Gibbon.api_key = "your_api_key"
+    Gibbon.lists
+
+You can also set the environment variable 'MC_API_KEY' and Gibbon will use it when you create an instance:
+
+    u = Gibbon.new
 
 Fetching data is as simple as calling API methods directly on the wrapper object.
 Check the API [documentation](http://www.mailchimp.com/api/1.3) for details.
@@ -67,6 +78,7 @@ as opposed to the string the MailChimp API returns. I understand the extra depen
 * [elshimone](https://github.com/elshimone)
 * [jlxw](https://github.com/jlxw)
 * [Jon McCartie](https://github.com/jmccartie)
+* [Calvin Yu](https://github.com/cyu)
 * Rails for camelize gsub
 
 ##Copyrights

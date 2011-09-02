@@ -3,33 +3,32 @@ require 'httparty'
 require 'json'
 require 'cgi'
 
-module Gibbon
-  class API
-    include HTTParty
-    format :plain
-    default_timeout 30
+class Gibbon
+  include HTTParty
+  format :plain
+  default_timeout 30
 
-    attr_accessor :apikey, :timeout
+  attr_accessor :api_key, :timeout
 
-    def initialize(apikey = nil, extra_params = {})
-      @apikey = apikey
-      @default_params = {:apikey => apikey}.merge(extra_params)
-    end
+  def initialize(api_key = nil, extra_params = {})
+    @api_key = api_key || ENV['MC_API_KEY'] || self.class.api_key
+    @default_params = {:apikey => @api_key}.merge(extra_params)
+  end
 
-    def apikey=(value)
-      @apikey = value
-      @default_params = @default_params.merge({:apikey => @apikey})
-    end
+  def api_key=(value)
+    @api_key = value
+    @default_params = @default_params.merge({:apikey => @api_key})
+  end
 
-    def base_api_url
-      dc = @apikey.blank? ? '' : "#{@apikey.split("-").last}."
-      "https://#{dc}api.mailchimp.com/1.3/?method="
-    end
+  def base_api_url
+    dc = @api_key.blank? ? '' : "#{@api_key.split("-").last}."
+    "https://#{dc}api.mailchimp.com/1.3/?method="
+  end
 
   def call(method, params = {})
     url = base_api_url + method
     params = @default_params.merge(params)
-    response = Gibbon::API.post(url, :body => CGI::escape(params.to_json), :timeout => @timeout)
+    response = self.class.post(url, :body => CGI::escape(params.to_json), :timeout => @timeout)
 
     begin
       response = ActiveSupport::JSON.decode(response.body)
@@ -47,5 +46,11 @@ module Gibbon
     call(method, args)
   end
 
+  class << self
+    attr_accessor :api_key
+
+    def method_missing(sym, *args, &block)
+      new(self.api_key).send(sym, *args, &block)
+    end
   end
 end
