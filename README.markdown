@@ -28,7 +28,7 @@ You can also set the environment variable 'MC_API_KEY' and Gibbon will use it wh
     u = Gibbon.new
 
 Fetching data is as simple as calling API methods directly on the wrapper object.
-Check the API [documentation](http://www.mailchimp.com/api/1.3) for details.
+Check the API [documentation](http://apidocs.mailchimp.com/api/1.3/) for details.
 
 ### Fetching Campaigns
 
