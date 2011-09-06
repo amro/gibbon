@@ -23,7 +23,7 @@ You can set your api_key globally and call class methods:
     Gibbon.api_key = "your_api_key"
     Gibbon.lists
 
-You can also set the environment variable 'MC_API_KEY' and Gibbon will use it when you create an instance:
+You can also set the environment variable 'MAILCHIMP_API_KEY' and Gibbon will use it when you create an instance:
 
     u = Gibbon.new
 
