@@ -79,6 +79,7 @@ as opposed to the string the MailChimp API returns. I understand the extra depen
 * [jlxw](https://github.com/jlxw)
 * [Jon McCartie](https://github.com/jmccartie)
 * [Calvin Yu](https://github.com/cyu)
+* [Dave Worth](https://github.com/daveworth)
 * Rails for camelize gsub
 
 ##Copyrights
