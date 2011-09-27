@@ -17,7 +17,7 @@ There are a few ways to use Gibbon:
 You can create an instance of the API wrapper:
 
     gb = Gibbon.new("your_api_key")
-    
+
 You can set your api_key globally and call class methods:
 
     Gibbon.api_key = "your_api_key"

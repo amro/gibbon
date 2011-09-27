@@ -5,12 +5,11 @@ class TestGibbon < Test::Unit::TestCase
   context "build api url" do
 
     setup do
-      @gibbon = Gibbon::API.new
+      @gibbon = Gibbon.new
     end
 
     should "handle empty api key" do
       expect_post("https://api.mailchimp.com/1.3/?method=sayHello", {"apikey" => nil})
-
       @gibbon.say_hello
     end
 
@@ -21,9 +20,8 @@ class TestGibbon < Test::Unit::TestCase
     end
 
     should "handle api key with dc" do
-      @gibbon.apikey="TESTKEY-us1"
+      @gibbon.api_key="TESTKEY-us1"
       expect_post("https://us1.api.mailchimp.com/1.3/?method=sayHello", {"apikey" => "TESTKEY-us1"})
-
       @gibbon.say_hello
     end
   end
@@ -31,7 +29,7 @@ class TestGibbon < Test::Unit::TestCase
   context "build api body" do
     setup do
       @key = "TESTKEY-us1"
-      @gibbon = Gibbon::API.new(@key)
+      @gibbon = Gibbon.new(@key)
       @url = "https://us1.api.mailchimp.com/1.3/?method=sayHello"
     end
 
@@ -65,7 +63,7 @@ class TestGibbon < Test::Unit::TestCase
   private
 
   def expect_post(expected_url, expected_body, expected_timeout=nil)
-    Gibbon::API.expects(:post).with do |url, opts|
+    Gibbon.expects(:post).with do |url, opts|
       url == expected_url &&
       JSON.parse(URI::decode(opts[:body])) == expected_body &&
       opts[:timeout] == expected_timeout
