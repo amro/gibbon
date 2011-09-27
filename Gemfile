@@ -14,4 +14,5 @@ group :development do
   gem "httparty", "> 0.6.0"
   gem "mocha", "> 0.9.11"
   gem "activesupport", ">= 3.0.0"
+  gem "ruby-debug19", :require => "ruby-debug"
 end
