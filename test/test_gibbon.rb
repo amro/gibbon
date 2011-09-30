@@ -101,13 +101,16 @@ class TestGibbon < Test::Unit::TestCase
     should "handle api key with dc" do
       @api_key = "TESTKEY-us2"
       @gibbon = @@Klass.new(@api_key)
-      expect_post(@url.sub(/us1/,'us2'), {"apikey" => @api_key})
+
+      url = @url.sub('us1', 'us2') + 'sayHello/'
+      expect_post(url, {'apikey' => @api_key})
+
       @gibbon.say_hello
     end
 
     should "not escape string parameters" do
-      @param = "list id"
-      expect_post(@url, @body.merge("id" => @param))
+      @param = "list+id"
+      expect_post(@url + "sayHello/", @body.merge("id" => @param))
       @gibbon.say_hello(:id => @param)
     end
   end
