@@ -76,7 +76,7 @@ class GibbonExport < Gibbon
   def call(method, params = {})
     url = export_api_url + method + "/"
     params = @default_params.merge(params)
-    response = self.class.post(url, :body => CGI::escape(params.to_json), :timeout => @timeout)
+    response = self.class.post(url, :body => params, :timeout => @timeout)
 
     response.body.lines
   end
