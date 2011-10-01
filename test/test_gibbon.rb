@@ -91,23 +91,29 @@ class TestGibbon < Test::Unit::TestCase
 
   context "export API" do
     setup do
-      @@Klass = GibbonExport
       @key = "TESTKEY-us1"
-      @gibbon = @@Klass.new(@key)
+      @gibbon = GibbonExport.new(@key)
       @url = "http://us1.api.mailchimp.com/export/1.0/"
-      @body = {"apikey" => @key}
+      @body = {:apikey => @key}
+      @returns = Struct.new(:body).new("")
     end
 
     should "handle api key with dc" do
       @api_key = "TESTKEY-us2"
-      @gibbon = @@Klass.new(@api_key)
-      expect_post(@url.sub(/us1/,'us2'), {"apikey" => @api_key})
+      @gibbon = GibbonExport.new(@api_key)
+
+      params = {:body => {:apikey => @api_key}, :timeout => nil}
+      url = @url.gsub('us1', 'us2') + "sayHello/"
+      GibbonExport.expects(:post).with(url, params).returns(@returns)
+
       @gibbon.say_hello
     end
 
     should "not escape string parameters" do
       @param = "list id"
-      expect_post(@url, @body.merge("id" => @param))
+
+      params = {:body => @body.merge(:id => 'list id'), :timeout => nil}
+      GibbonExport.expects(:post).with(@url + 'sayHello/', params).returns(@returns)
       @gibbon.say_hello(:id => @param)
     end
   end
