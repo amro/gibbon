@@ -21,9 +21,9 @@ class Gibbon
   end
 
   def base_api_url
-    dc = @api_key.blank? ? '' : "#{@api_key.split("-").last}."
-    "https://#{dc}api.mailchimp.com/1.3/?method="
+    "https://#{dc_from_api_key}api.mailchimp.com/1.3/?method="
   end
+
 
   def call(method, params = {})
     url = base_api_url + method
@@ -46,11 +46,38 @@ class Gibbon
     call(method, args)
   end
 
+  def get_exporter
+    GibbonExport.new(@api_key, @default_params)
+  end
+
   class << self
     attr_accessor :api_key
 
     def method_missing(sym, *args, &block)
       new(self.api_key).send(sym, *args, &block)
     end
+  end
+
+  protected
+  def dc_from_api_key
+    (@api_key.blank? or @api_key !~ /-/) ? '' : "#{@api_key.split("-").last}."
+  end
+end
+
+class GibbonExport < Gibbon
+  def initialize(api_key = nil, extra_params = {})
+    super(api_key, extra_params)
+  end
+
+  def export_api_url
+    "http://#{dc_from_api_key}api.mailchimp.com/export/1.0/"
+  end
+
+  def call(method, params = {})
+    url = export_api_url + method + "/"
+    params = @default_params.merge(params)
+    response = self.class.post(url, :body => params, :timeout => @timeout)
+
+    response.body.lines
   end
 end

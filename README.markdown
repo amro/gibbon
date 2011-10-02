@@ -27,7 +27,10 @@ You can also set the environment variable 'MC_API_KEY' and Gibbon will use it wh
 
     u = Gibbon.new
 
-Fetching data is as simple as calling API methods directly on the wrapper object.
+Fetching data is as simple as calling API methods directly on the wrapper
+object.  The API calls may be made with either camelcase or  underscore
+separated formatting as you see in the "More Advanced Examples" section below.
+
 Check the API [documentation](http://apidocs.mailchimp.com/api/1.3/) for details.
 
 ### Fetching Campaigns
@@ -65,6 +68,24 @@ or
 Gibbon defaults to a 30 second timeout. You can optionally set your own timeout (in seconds) like so:
 
     gb.timeout = 5
+
+### Export API usage
+
+In addition to the standard API you can make calls to the
+[MailChimp Export API](http://apidocs.mailchimp.com/export/1.0/) using a GibbonExport object.  Given an existing
+Gibbon object you can request a new GibbonExporter object:
+
+    g = Gibbon.new(@api_key)
+    gibbon_export = g.get_exporter
+
+or you can construct a new object directly:
+
+    gibbon_export = GibbonExport.new(@api_key)
+
+Calling Export API functions is identical to making standard API calls but the
+return value is an Enumerator which loops over the lines returned from the
+Export API.  This is because the data returned from the Export API is a stream
+of JSON objects rather than a single JSON array.
 
 ### Notes
 
