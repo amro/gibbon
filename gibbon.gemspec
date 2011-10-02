@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{gibbon}
-  s.version = "0.2.1"
+  s.name = "gibbon"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Amro Mousa}]
-  s.date = %q{2011-09-06}
-  s.description = %q{Gibbon is a simple API wrapper for interacting with MailChimp API version 1.3.}
-  s.email = %q{amromousa@gmail.com}
+  s.authors = ["Amro Mousa"]
+  s.date = "2011-10-02"
+  s.description = "Gibbon is a simple API wrapper for interacting with MailChimp API version 1.3."
+  s.email = "amromousa@gmail.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.markdown"
@@ -29,11 +29,11 @@ Gem::Specification.new do |s|
     "test/helper.rb",
     "test/test_gibbon.rb"
   ]
-  s.homepage = %q{http://github.com/amro/gibbon}
-  s.licenses = [%q{MIT}]
-  s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.9}
-  s.summary = %q{Gibbon is a simple API wrapper for interacting with MailChimp API 1.3}
+  s.homepage = "http://github.com/amro/gibbon"
+  s.licenses = ["MIT"]
+  s.require_paths = ["lib"]
+  s.rubygems_version = "1.8.10"
+  s.summary = "Gibbon is a simple API wrapper for interacting with MailChimp API 1.3"
   s.test_files = [
     "test/helper.rb",
     "test/test_gibbon.rb"
@@ -51,6 +51,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_development_dependency(%q<mocha>, ["> 0.9.11"])
       s.add_development_dependency(%q<activesupport>, [">= 3.0.0"])
+      s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
       s.add_runtime_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_runtime_dependency(%q<activesupport>, ["> 3.0.0"])
       s.add_runtime_dependency(%q<json>, ["> 1.4.0"])
@@ -66,6 +67,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_dependency(%q<mocha>, ["> 0.9.11"])
       s.add_dependency(%q<activesupport>, [">= 3.0.0"])
+      s.add_dependency(%q<ruby-debug19>, [">= 0"])
       s.add_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_dependency(%q<activesupport>, ["> 3.0.0"])
       s.add_dependency(%q<json>, ["> 1.4.0"])
@@ -82,6 +84,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<httparty>, ["> 0.6.0"])
     s.add_dependency(%q<mocha>, ["> 0.9.11"])
     s.add_dependency(%q<activesupport>, [">= 3.0.0"])
+    s.add_dependency(%q<ruby-debug19>, [">= 0"])
     s.add_dependency(%q<httparty>, ["> 0.6.0"])
     s.add_dependency(%q<activesupport>, ["> 3.0.0"])
     s.add_dependency(%q<json>, ["> 1.4.0"])
