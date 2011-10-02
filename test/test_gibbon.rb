@@ -4,12 +4,9 @@ require 'ruby-debug'
 
 class TestGibbon < Test::Unit::TestCase
 
-  @@Klass = Gibbon
-
   context "build api url" do
     setup do
-      @@Klass = Gibbon
-      @gibbon = @@Klass.new
+      @gibbon = Gibbon.new
       @url = "https://api.mailchimp.com/1.3/?method=sayHello"
     end
 
@@ -82,7 +79,6 @@ class TestGibbon < Test::Unit::TestCase
       @body = {"apikey" => @key}
     end
 
-
     should "produce a good exporter" do
       @exporter = @gibbon.get_exporter
       assert_equal(@exporter.api_key, @gibbon.api_key)
@@ -105,7 +101,6 @@ class TestGibbon < Test::Unit::TestCase
       params = {:body => {:apikey => @api_key}, :timeout => nil}
       url = @url.gsub('us1', 'us2') + "sayHello/"
       GibbonExport.expects(:post).with(url, params).returns(@returns)
-
       @gibbon.say_hello
     end
 
@@ -121,7 +116,7 @@ class TestGibbon < Test::Unit::TestCase
   private
 
   def expect_post(expected_url, expected_body, expected_timeout=nil)
-    @@Klass.expects(:post).with do |url, opts|
+    Gibbon.expects(:post).with do |url, opts|
       url == expected_url &&
       JSON.parse(URI::decode(opts[:body])) == expected_body &&
       opts[:timeout] == expected_timeout
