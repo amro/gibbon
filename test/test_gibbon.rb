@@ -4,6 +4,50 @@ require 'ruby-debug'
 
 class TestGibbon < Test::Unit::TestCase
 
+  context "attributes" do
+
+    setup do
+      @api_key = "123-us1"
+    end
+
+    should "have no API by default" do
+      @gibbon = Gibbon.new
+      assert_equal(nil, @gibbon.api_key)
+    end
+
+    should "set an API key in constructor" do
+      @gibbon = Gibbon.new(@api_key)
+      assert_equal(@api_key, @gibbon.api_key)
+    end
+
+    should "set an API key from the 'MC_API_KEY' ENV variable" do
+      ENV['MC_API_KEY'] = @api_key
+      @gibbon = Gibbon.new
+      assert_equal(@api_key, @gibbon.api_key)
+      ENV.delete('MC_API_KEY')
+    end
+
+    should "set an API key from the 'MAILCHIMP_API_KEY' ENV variable" do
+      ENV['MAILCHIMP_API_KEY'] = @api_key
+      @gibbon = Gibbon.new
+      assert_equal(@api_key, @gibbon.api_key)
+      ENV.delete('MAILCHIMP_API_KEY')
+    end
+
+    should "set an API key via setter" do
+      @gibbon = Gibbon.new
+      @gibbon.api_key = @api_key
+      assert_equal(@api_key, @gibbon.api_key)
+    end
+
+    should "set timeout and get" do
+      @gibbon = Gibbon.new
+      timeout = 30
+      @gibbon.timeout = timeout
+      assert_equal(timeout, @gibbon.timeout)
+    end
+  end
+
   context "build api url" do
     setup do
       @gibbon = Gibbon.new

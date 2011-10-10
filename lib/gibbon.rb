@@ -20,10 +20,15 @@ class Gibbon
     @default_params = @default_params.merge({:apikey => @api_key})
   end
 
+  def get_exporter
+    GibbonExport.new(@api_key, @default_params)
+  end
+
   def base_api_url
     "https://#{dc_from_api_key}api.mailchimp.com/1.3/?method="
   end
 
+protected
 
   def call(method, params = {})
     url = base_api_url + method
@@ -46,10 +51,6 @@ class Gibbon
     call(method, args)
   end
 
-  def get_exporter
-    GibbonExport.new(@api_key, @default_params)
-  end
-
   class << self
     attr_accessor :api_key
 
@@ -58,7 +59,6 @@ class Gibbon
     end
   end
 
-  protected
   def dc_from_api_key
     (@api_key.blank? or @api_key !~ /-/) ? '' : "#{@api_key.split("-").last}."
   end
@@ -68,6 +68,8 @@ class GibbonExport < Gibbon
   def initialize(api_key = nil, extra_params = {})
     super(api_key, extra_params)
   end
+
+protected
 
   def export_api_url
     "http://#{dc_from_api_key}api.mailchimp.com/export/1.0/"
