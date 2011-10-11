@@ -2,6 +2,8 @@
 
 Gibbon is a simple API wrapper for interacting with [MailChimp API](http://www.mailchimp.com/api) 1.3.
 
+[![Build Status](https://secure.travis-ci.org/daveworth/gibbon.png)](http://travis-ci.org/daveworth/gibbon)
+
 ##Installation
 
     $ gem install gibbon
