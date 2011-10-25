@@ -52,7 +52,7 @@ protected
     method = method.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } #Thanks for the gsub, Rails
     method = method[0].chr.downcase + method[1..-1].gsub(/aim$/i, 'AIM')
     args = {} unless args.length > 0
-    args = args[0] if (args.class.to_s == "Array")
+    args = args[0] if args.is_a?(Array)
     call(method, args)
   end
 
