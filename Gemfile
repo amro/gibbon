@@ -3,6 +3,7 @@ source "http://rubygems.org"
 gem "json", "> 1.4.0"
 gem "httparty", "> 0.6.0"
 gem "activesupport", ">= 2.3.14"
+gem "rdoc"
 
 group :development, :test do
   gem "shoulda", ">= 0"
