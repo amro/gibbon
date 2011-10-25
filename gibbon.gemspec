@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
     ".document",
     ".travis.yml",
     "Gemfile",
-    "Gemfile.lock",
     "LICENSE.txt",
     "README.markdown",
     "Rakefile",
