@@ -104,6 +104,7 @@ as opposed to the string the MailChimp API returns. I understand the extra depen
 * [Calvin Yu](https://github.com/cyu)
 * [Dave Worth](https://github.com/daveworth)
 * [Mike Skalnik](https://github.com/skalnik)
+* [Kristopher Murata](https://github.com/krsmurata)
 * Rails for camelize gsub
 
 ##Copyrights
