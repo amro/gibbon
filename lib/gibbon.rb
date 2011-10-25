@@ -40,6 +40,11 @@ protected
     rescue
       response = response.body
     end
+
+    if response.is_a?(Hash) && response["error"]
+      raise "Error from MailChimp API: #{response["error"]}"
+    end
+
     response
   end
 
@@ -47,7 +52,7 @@ protected
     method = method.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } #Thanks for the gsub, Rails
     method = method[0].chr.downcase + method[1..-1].gsub(/aim$/i, 'AIM')
     args = {} unless args.length > 0
-    args = args[0] if (args.class.to_s == "Array")
+    args = args[0] if args.is_a?(Array)
     call(method, args)
   end
 
@@ -80,6 +85,10 @@ protected
     params = @default_params.merge(params)
     response = self.class.post(url, :body => params, :timeout => @timeout)
 
-    response.body.lines
+    lines = response.body.lines
+    first_line_object = ActiveSupport::JSON.decode(lines.peek) if lines.peek
+    raise "Error from MailChimp Export API: #{first_line_object["error"]}" if first_line_object.is_a?(Hash) && first_line_object["error"]
+
+    lines
   end
 end

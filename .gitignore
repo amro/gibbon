@@ -45,3 +45,5 @@ bin
 cache
 gems
 specifications
+
+.rvmrc
