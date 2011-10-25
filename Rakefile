@@ -22,7 +22,7 @@ Jeweler::Tasks.new do |gem|
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
   gem.add_runtime_dependency 'httparty', '> 0.6.0'
-  gem.add_runtime_dependency 'activesupport', '> 3.0.0'
+  gem.add_runtime_dependency 'activesupport', '>= 2.3.14'
   gem.add_runtime_dependency 'json', '> 1.4.0'
   gem.add_development_dependency 'httparty', '> 0.6.0'
   gem.add_development_dependency 'json', '> 1.4.0'
