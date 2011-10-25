@@ -8,11 +8,12 @@ class Gibbon
   format :plain
   default_timeout 30
 
-  attr_accessor :api_key, :timeout
+  attr_accessor :api_key, :timeout, :throws_exceptions
 
   def initialize(api_key = nil, extra_params = {})
     @api_key = api_key || ENV['MC_API_KEY'] || ENV['MAILCHIMP_API_KEY'] || self.class.api_key
     @default_params = {:apikey => @api_key}.merge(extra_params)
+    @throws_exceptions = false
   end
 
   def api_key=(value)
@@ -41,8 +42,8 @@ protected
       response = response.body
     end
 
-    if response.is_a?(Hash) && response["error"]
-      raise "Error from MailChimp API: #{response["error"]}"
+    if @throws_exceptions && response.is_a?(Hash) && response["error"]
+      raise "Error from MailChimp API: #{response["error"]} (code #{response["code"]})"
     end
 
     response
@@ -86,8 +87,10 @@ protected
     response = self.class.post(url, :body => params, :timeout => @timeout)
 
     lines = response.body.lines
-    first_line_object = ActiveSupport::JSON.decode(lines.peek) if lines.peek
-    raise "Error from MailChimp Export API: #{first_line_object["error"]}" if first_line_object.is_a?(Hash) && first_line_object["error"]
+    if @throws_exceptions
+      first_line_object = ActiveSupport::JSON.decode(lines.peek) if lines.peek
+      raise "Error from MailChimp Export API: #{first_line_object["error"]} (code #{first_line_object["code"]})" if first_line_object.is_a?(Hash) && first_line_object["error"]
+    end
 
     lines
   end
