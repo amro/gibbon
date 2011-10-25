@@ -40,6 +40,11 @@ protected
     rescue
       response = response.body
     end
+
+    if response.is_a?(Hash) && response["error"]
+      raise "Error from MailChimp API: #{response["error"]}"
+    end
+
     response
   end
 
@@ -80,6 +85,10 @@ protected
     params = @default_params.merge(params)
     response = self.class.post(url, :body => params, :timeout => @timeout)
 
-    response.body.lines
+    lines = response.body.lines
+    first_line_object = ActiveSupport::JSON.decode(lines.peek) if lines.peek
+    raise "Error from MailChimp Export API: #{first_line_object["error"]}" if first_line_object.is_a?(Hash) && first_line_object["error"]
+
+    lines
   end
 end
