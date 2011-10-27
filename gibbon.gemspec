@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "gibbon"
-  s.version = "0.3.0"
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Amro Mousa"]
-  s.date = "2011-10-02"
+  s.date = "2011-10-27"
   s.description = "Gibbon is a simple API wrapper for interacting with MailChimp API version 1.3."
   s.email = "amromousa@gmail.com"
   s.extra_rdoc_files = [
@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".document",
+    ".travis.yml",
     "Gemfile",
-    "Gemfile.lock",
     "LICENSE.txt",
     "README.markdown",
     "Rakefile",
@@ -43,50 +43,56 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<json>, ["> 1.4.0"])
+      s.add_runtime_dependency(%q<httparty>, ["> 0.6.0"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 2.3.14"])
+      s.add_runtime_dependency(%q<rdoc>, [">= 0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.1"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
-      s.add_development_dependency(%q<json>, ["> 1.4.0"])
-      s.add_development_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_development_dependency(%q<mocha>, ["> 0.9.11"])
-      s.add_development_dependency(%q<activesupport>, [">= 3.0.0"])
       s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
+      s.add_development_dependency(%q<ruby-debug>, [">= 0"])
       s.add_runtime_dependency(%q<httparty>, ["> 0.6.0"])
-      s.add_runtime_dependency(%q<activesupport>, ["> 3.0.0"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 2.3.14"])
       s.add_runtime_dependency(%q<json>, ["> 1.4.0"])
       s.add_development_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_development_dependency(%q<json>, ["> 1.4.0"])
       s.add_development_dependency(%q<mocha>, ["> 0.9.11"])
     else
+      s.add_dependency(%q<json>, ["> 1.4.0"])
+      s.add_dependency(%q<httparty>, ["> 0.6.0"])
+      s.add_dependency(%q<activesupport>, [">= 2.3.14"])
+      s.add_dependency(%q<rdoc>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
       s.add_dependency(%q<rcov>, [">= 0"])
-      s.add_dependency(%q<json>, ["> 1.4.0"])
-      s.add_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_dependency(%q<mocha>, ["> 0.9.11"])
-      s.add_dependency(%q<activesupport>, [">= 3.0.0"])
       s.add_dependency(%q<ruby-debug19>, [">= 0"])
+      s.add_dependency(%q<ruby-debug>, [">= 0"])
       s.add_dependency(%q<httparty>, ["> 0.6.0"])
-      s.add_dependency(%q<activesupport>, ["> 3.0.0"])
+      s.add_dependency(%q<activesupport>, [">= 2.3.14"])
       s.add_dependency(%q<json>, ["> 1.4.0"])
       s.add_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_dependency(%q<json>, ["> 1.4.0"])
       s.add_dependency(%q<mocha>, ["> 0.9.11"])
     end
   else
+    s.add_dependency(%q<json>, ["> 1.4.0"])
+    s.add_dependency(%q<httparty>, ["> 0.6.0"])
+    s.add_dependency(%q<activesupport>, [">= 2.3.14"])
+    s.add_dependency(%q<rdoc>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
     s.add_dependency(%q<rcov>, [">= 0"])
-    s.add_dependency(%q<json>, ["> 1.4.0"])
-    s.add_dependency(%q<httparty>, ["> 0.6.0"])
     s.add_dependency(%q<mocha>, ["> 0.9.11"])
-    s.add_dependency(%q<activesupport>, [">= 3.0.0"])
     s.add_dependency(%q<ruby-debug19>, [">= 0"])
+    s.add_dependency(%q<ruby-debug>, [">= 0"])
     s.add_dependency(%q<httparty>, ["> 0.6.0"])
-    s.add_dependency(%q<activesupport>, ["> 3.0.0"])
+    s.add_dependency(%q<activesupport>, [">= 2.3.14"])
     s.add_dependency(%q<json>, ["> 1.4.0"])
     s.add_dependency(%q<httparty>, ["> 0.6.0"])
     s.add_dependency(%q<json>, ["> 1.4.0"])
