@@ -89,7 +89,7 @@ protected
 
     lines = response.body.lines
     if @throws_exceptions
-      first_line_object = ActiveSupport::JSON.decode(lines.peek) if lines.peek
+      first_line_object = ActiveSupport::JSON.decode(lines.first) if lines.first
       raise "Error from MailChimp Export API: #{first_line_object["error"]} (code #{first_line_object["code"]})" if first_line_object.is_a?(Hash) && first_line_object["error"]
     end
 
