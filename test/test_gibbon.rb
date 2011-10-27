@@ -121,11 +121,29 @@ class TestGibbon < Test::Unit::TestCase
       @gibbon = Gibbon.new(@key)
       @url = "https://us1.api.mailchimp.com/1.3/?method=sayHello"
       @body = {"apikey" => @key}
+      @returns = Struct.new(:body).new(ActiveSupport::JSON.encode(["array", "entries"]))
     end
 
     should "produce a good exporter" do
       @exporter = @gibbon.get_exporter
       assert_equal(@exporter.api_key, @gibbon.api_key)
+    end
+
+    should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
+      Gibbon.stubs(:post).returns(Struct.new(:body).new(ActiveSupport::JSON.encode({'error' => 'bad things'})))
+      assert_nothing_raised do
+        result = @gibbon.say_hello
+      end
+
+      ap result
+    end
+
+    should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
+      @gibbon.throws_exceptions = true
+      Gibbon.stubs(:post).returns(Struct.new(:body).new(ActiveSupport::JSON.encode({'error' => 'bad things'})))
+      assert_raise RuntimeError do
+        @gibbon.say_hello
+      end
     end
   end
 
@@ -134,27 +152,38 @@ class TestGibbon < Test::Unit::TestCase
       @key = "TESTKEY-us1"
       @gibbon = GibbonExport.new(@key)
       @url = "http://us1.api.mailchimp.com/export/1.0/"
-      @body = {:apikey => @key}
-      @returns = Struct.new(:body).new("")
+      @body = {:apikey => @key, :id => "listid"}
+      @returns = Struct.new(:body).new(ActiveSupport::JSON.encode(["array", "entries"]))
     end
 
     should "handle api key with dc" do
       @api_key = "TESTKEY-us2"
       @gibbon = GibbonExport.new(@api_key)
 
-      params = {:body => {:apikey => @api_key}, :timeout => nil}
-      url = @url.gsub('us1', 'us2') + "sayHello/"
+      params = {:body => CGI::escape(@body.to_json), :timeout => nil}
+      url = @url.gsub('us1', 'us2') + "sayHello?apikey=TESTKEY-us2&id=listid"
       GibbonExport.expects(:post).with(url, params).returns(@returns)
-      @gibbon.say_hello
+      @gibbon.say_hello(@body)
     end
 
-    should "not escape string parameters" do
-      @param = "list id"
+    should "not throw exception if the Export API replies with a JSON hash containing a key called 'error'" do
+      GibbonExport.stubs(:post).returns(Struct.new(:body).new(ActiveSupport::JSON.encode({'error' => 'bad things'})))
 
-      params = {:body => @body.merge(:id => 'list id'), :timeout => nil}
-      GibbonExport.expects(:post).with(@url + 'sayHello/', params).returns(@returns)
-      @gibbon.say_hello(:id => @param)
+      assert_nothing_raised do
+        @gibbon.say_hello(@body)
+      end
     end
+
+    should "throw exception if configured to and the Export API replies with a JSON hash containing a key called 'error'" do
+      @gibbon.throws_exceptions = true
+      params = {:body => @body, :timeout => nil}
+      GibbonExport.stubs(:post).returns(Struct.new(:body).new(ActiveSupport::JSON.encode({'error' => 'bad things', 'code' => '123'})))
+
+      assert_raise RuntimeError do
+        @gibbon.say_hello(@body)
+      end
+    end
+
   end
 
   private

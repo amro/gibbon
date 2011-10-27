@@ -89,6 +89,15 @@ return value is an Enumerator which loops over the lines returned from the
 Export API.  This is because the data returned from the Export API is a stream
 of JSON objects rather than a single JSON array.
 
+### Error handling
+
+By default you are expected to handle errors returned by the APIs manually.  The
+APIs will return a Hash with two keys "errors", a string containing some textual
+information about the error, and "code", the numeric code of the error.
+
+If you set the `throws_exceptions` boolean attribute for a given instance then
+Gibbon will attempt to intercept the errors and raise an exception.
+
 ### Notes
 
 As of 0.1.6, gibbon uses ActiveSupport::JSON.decode(). This means code that checked for weird API responses (like "true"
