@@ -82,10 +82,16 @@ protected
   end
 
   def call(method, params = {})
-    method_params = {:apikey => @api_key, :id => params[:id]}.to_a.map {|a| "#{a[0]}=#{CGI::escape(a[1])}"}.join("&")
-    url = export_api_url + method + "?" + method_params
-    params = @default_params.merge(params)
-    response = self.class.post(url, :body => CGI::escape(params.to_json), :timeout => @timeout)
+    url_params = {:apikey => @api_key}
+    [:id, :since, :status].each do |param|
+      url_params[param] = params[param] if params[param]
+    end
+    url_params = url_params.to_a.map {|a| "#{a[0]}=#{CGI::escape(a[1])}"}.join("&")
+
+    body_params = @default_params.merge(params)
+
+    url = export_api_url + method + "/?" + url_params
+    response = self.class.post(url, :body => CGI::escape(body_params.to_json), :timeout => @timeout)
 
     lines = response.body.lines
     if @throws_exceptions
