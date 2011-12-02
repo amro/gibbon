@@ -160,8 +160,8 @@ class TestGibbon < Test::Unit::TestCase
       @api_key = "TESTKEY-us2"
       @gibbon = GibbonExport.new(@api_key)
 
-      params = {:body => CGI::escape(@body.to_json), :timeout => nil}
-      url = @url.gsub('us1', 'us2') + "sayHello?apikey=TESTKEY-us2&id=listid"
+      params = {:body => @body, :timeout => nil}
+      url = @url.gsub('us1', 'us2') + "sayHello/"
       GibbonExport.expects(:post).with(url, params).returns(@returns)
       @gibbon.say_hello(@body)
     end
