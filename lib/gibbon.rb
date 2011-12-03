@@ -79,20 +79,15 @@ class GibbonExport < Gibbon
 protected
 
   def export_api_url
-    "http://#{dc_from_api_key}api.mailchimp.com/export/1.0/"
+    "https://#{dc_from_api_key}api.mailchimp.com/export/1.0/"
   end
 
   def call(method, params = {})
-    url_params = {:apikey => @api_key}
-    [:id, :since, :status].each do |param|
-      url_params[param] = params[param] if params[param]
-    end
-    url_params = url_params.to_a.map {|a| "#{a[0]}=#{CGI::escape(a[1])}"}.join("&")
+    uri = Addressable::URI.new
+    uri.query_values = @default_params.merge(params)
 
-    body_params = @default_params.merge(params)
-
-    url = export_api_url + method + "/?" + url_params
-    response = self.class.post(url, :body => CGI::escape(body_params.to_json), :timeout => @timeout)
+    url = export_api_url + method + "/?" + uri.query
+    response = self.class.post(url)
 
     lines = response.body.lines
     if @throws_exceptions

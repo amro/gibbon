@@ -151,7 +151,7 @@ class TestGibbon < Test::Unit::TestCase
     setup do
       @key = "TESTKEY-us1"
       @gibbon = GibbonExport.new(@key)
-      @url = "http://us1.api.mailchimp.com/export/1.0/"
+      @url = "https://us1.api.mailchimp.com/export/1.0/"
       @params = {:apikey => @key, :id => "listid"}
       @returns = Struct.new(:body).new(ActiveSupport::JSON.encode(["array", "entries"]))
     end
