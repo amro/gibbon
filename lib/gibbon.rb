@@ -2,6 +2,7 @@ require 'active_support'
 require 'httparty'
 require 'json'
 require 'cgi'
+require 'addressable/uri'
 
 class Gibbon
   include HTTParty

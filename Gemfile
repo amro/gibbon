@@ -4,6 +4,7 @@ gem "json", "> 1.4.0"
 gem "httparty", "> 0.6.0"
 gem "activesupport", ">= 2.3.14"
 gem "rdoc"
+gem "addressable", :git => "https://github.com/sporkmonger/addressable.git"
 
 group :development, :test do
   gem "shoulda", ">= 0"
@@ -13,4 +14,5 @@ group :development, :test do
   gem "mocha", "> 0.9.11"
   gem "ruby-debug19", :require => "ruby-debug", :platforms => [:ruby_19]
   gem "ruby-debug", :platforms => [:ruby_18]
+  gem "awesome_print"
 end
