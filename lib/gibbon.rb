@@ -83,6 +83,7 @@ protected
 
   def call(method, params = {})
     api_url = export_api_url + method + "/"
+    params = @default_params.merge(params)
     response = self.class.post(api_url, :body => params, :timeout => @timeout)
 
     lines = response.body.lines
