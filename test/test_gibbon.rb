@@ -1,6 +1,7 @@
 require 'helper'
 require 'cgi'
 require 'ruby-debug'
+require 'addressable/uri'
 
 class TestGibbon < Test::Unit::TestCase
 
@@ -160,7 +161,10 @@ class TestGibbon < Test::Unit::TestCase
       @api_key = "TESTKEY-us2"
       @gibbon = GibbonExport.new(@api_key)
 
-      params = {:body => @body, :timeout => nil}
+      uri = Addressable::URI.new
+      uri.query_values = @body
+      params = {:body => uri.query, :timeout => nil}
+    
       url = @url.gsub('us1', 'us2') + "sayHello/"
       GibbonExport.expects(:post).with(url, params).returns(@returns)
       @gibbon.say_hello(@body)

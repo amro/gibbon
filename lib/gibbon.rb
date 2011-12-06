@@ -2,6 +2,7 @@ require 'active_support'
 require 'httparty'
 require 'json'
 require 'cgi'
+require 'addressable/uri'
 
 class Gibbon
   include HTTParty
@@ -32,9 +33,9 @@ class Gibbon
 protected
 
   def call(method, params = {})
-    url = base_api_url + method
+    api_url = base_api_url + method
     params = @default_params.merge(params)
-    response = self.class.post(url, :body => CGI::escape(params.to_json), :timeout => @timeout)
+    response = self.class.post(api_url, :body => CGI::escape(params.to_json), :timeout => @timeout)
 
     begin
       response = ActiveSupport::JSON.decode(response.body)
@@ -82,9 +83,10 @@ protected
   end
 
   def call(method, params = {})
-    url = export_api_url + method + "/"
-    params = @default_params.merge(params)
-    response = self.class.post(url, :body => params, :timeout => @timeout)
+    api_url = export_api_url + method + "/"
+    uri = Addressable::URI.new
+    uri.query_values = @default_params.merge(params)
+    response = self.class.post(api_url, :body => uri.query, :timeout => @timeout)
 
     lines = response.body.lines
     if @throws_exceptions
