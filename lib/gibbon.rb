@@ -39,7 +39,7 @@ protected
     begin
       response = ActiveSupport::JSON.decode(response.body)
     rescue
-      response = response.body
+      response = ActiveSupport::JSON.decode('['+response.body+']').first
     end
 
     if @throws_exceptions && response.is_a?(Hash) && response["error"]
