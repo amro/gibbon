@@ -1,4 +1,3 @@
-require 'active_support'
 require 'httparty'
 require 'json'
 require 'cgi'
@@ -37,9 +36,9 @@ protected
     response = self.class.post(api_url, :body => CGI::escape(params.to_json), :timeout => @timeout)
 
     begin
-      response = ActiveSupport::JSON.decode(response.body)
+      response = JSON.parse(response.body)
     rescue
-      response = ActiveSupport::JSON.decode('['+response.body+']').first
+      response = JSON.parse('['+response.body+']').first
     end
 
     if @throws_exceptions && response.is_a?(Hash) && response["error"]
@@ -88,7 +87,7 @@ protected
 
     lines = response.body.lines
     if @throws_exceptions
-      first_line_object = ActiveSupport::JSON.decode(lines.first) if lines.first
+      first_line_object = JSON.parse(lines.first) if lines.first
       raise "Error from MailChimp Export API: #{first_line_object["error"]} (code #{first_line_object["code"]})" if first_line_object.is_a?(Hash) && first_line_object["error"]
     end
 

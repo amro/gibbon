@@ -121,7 +121,7 @@ class TestGibbon < Test::Unit::TestCase
       @gibbon = Gibbon.new(@key)
       @url = "https://us1.api.mailchimp.com/1.3/?method=sayHello"
       @body = {"apikey" => @key}
-      @returns = Struct.new(:body).new(ActiveSupport::JSON.encode(["array", "entries"]))
+      @returns = Struct.new(:body).new(["array", "entries"].to_json)
     end
 
     should "produce a good exporter" do
@@ -130,7 +130,7 @@ class TestGibbon < Test::Unit::TestCase
     end
 
     should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
-      Gibbon.stubs(:post).returns(Struct.new(:body).new(ActiveSupport::JSON.encode({'error' => 'bad things'})))
+      Gibbon.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things'}.to_json))
       assert_nothing_raised do
         result = @gibbon.say_hello
       end
@@ -140,7 +140,7 @@ class TestGibbon < Test::Unit::TestCase
 
     should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
-      Gibbon.stubs(:post).returns(Struct.new(:body).new(ActiveSupport::JSON.encode({'error' => 'bad things'})))
+      Gibbon.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things'}.to_json))
       assert_raise RuntimeError do
         @gibbon.say_hello
       end
@@ -153,7 +153,7 @@ class TestGibbon < Test::Unit::TestCase
       @gibbon = GibbonExport.new(@key)
       @url = "http://us1.api.mailchimp.com/export/1.0/"
       @body = {:apikey => @key, :id => "listid"}
-      @returns = Struct.new(:body).new(ActiveSupport::JSON.encode(["array", "entries"]))
+      @returns = Struct.new(:body).new(["array", "entries"].to_json)
     end
 
     should "handle api key with dc" do
@@ -168,7 +168,7 @@ class TestGibbon < Test::Unit::TestCase
     end
 
     should "not throw exception if the Export API replies with a JSON hash containing a key called 'error'" do
-      GibbonExport.stubs(:post).returns(Struct.new(:body).new(ActiveSupport::JSON.encode({'error' => 'bad things'})))
+      GibbonExport.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things'}.to_json))
 
       assert_nothing_raised do
         @gibbon.say_hello(@body)
@@ -178,7 +178,7 @@ class TestGibbon < Test::Unit::TestCase
     should "throw exception if configured to and the Export API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
       params = {:body => @body, :timeout => nil}
-      GibbonExport.stubs(:post).returns(Struct.new(:body).new(ActiveSupport::JSON.encode({'error' => 'bad things', 'code' => '123'})))
+      GibbonExport.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things', 'code' => '123'}.to_json))
 
       assert_raise RuntimeError do
         @gibbon.say_hello(@body)
