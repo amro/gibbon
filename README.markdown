@@ -98,12 +98,6 @@ information about the error, and "code", the numeric code of the error.
 If you set the `throws_exceptions` boolean attribute for a given instance then
 Gibbon will attempt to intercept the errors and raise an exception.
 
-### Notes
-
-As of 0.1.6, gibbon uses ActiveSupport::JSON.decode(). This means code that checked for weird API responses (like "true"
-on a successful call to "listSubscribe" or similar) will need to be tweaked to handle the boolean JSON.decode() returns
-as opposed to the string the MailChimp API returns. I understand the extra dependency might be a pain for some.
-
 ##Thanks
 
 * [Justin Ip](https://github.com/ippy04)
