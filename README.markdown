@@ -108,6 +108,7 @@ Gibbon will attempt to intercept the errors and raise an exception.
 * [Dave Worth](https://github.com/daveworth)
 * [Mike Skalnik](https://github.com/skalnik)
 * [Kristopher Murata](https://github.com/krsmurata)
+* [Michael Klishin](https://github.com/michaelklishin)
 * Rails for camelize gsub
 
 ##Copyrights
