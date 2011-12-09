@@ -10,6 +10,9 @@ group :development, :test do
   gem "jeweler", "~> 1.5.1"
   gem "rcov", ">= 0"
   gem "mocha", "> 0.9.11"
-  gem "ruby-debug19", :require => "ruby-debug", :platforms => [:ruby_19]
-  gem "ruby-debug", :platforms => [:ruby_18]
+
+  unless ENV["CI"]
+    gem "ruby-debug19", :require => "ruby-debug", :platforms => [:ruby_19]
+    gem "ruby-debug", :platforms => [:ruby_18]
+  end
 end
