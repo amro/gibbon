@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "gibbon"
-  s.version = "0.3.4"
+  s.version = "0.3.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Amro Mousa"]
@@ -54,10 +54,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
       s.add_development_dependency(%q<ruby-debug>, [">= 0"])
       s.add_runtime_dependency(%q<httparty>, ["> 0.6.0"])
-      s.add_runtime_dependency(%q<activesupport>, [">= 2.3.14"])
       s.add_runtime_dependency(%q<json>, ["> 1.4.0"])
-      s.add_development_dependency(%q<httparty>, ["> 0.6.0"])
-      s.add_development_dependency(%q<json>, ["> 1.4.0"])
       s.add_development_dependency(%q<mocha>, ["> 0.9.11"])
     else
       s.add_dependency(%q<json>, ["> 1.4.0"])
@@ -70,9 +67,6 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<mocha>, ["> 0.9.11"])
       s.add_dependency(%q<ruby-debug19>, [">= 0"])
       s.add_dependency(%q<ruby-debug>, [">= 0"])
-      s.add_dependency(%q<httparty>, ["> 0.6.0"])
-      s.add_dependency(%q<activesupport>, [">= 2.3.14"])
-      s.add_dependency(%q<json>, ["> 1.4.0"])
       s.add_dependency(%q<httparty>, ["> 0.6.0"])
       s.add_dependency(%q<json>, ["> 1.4.0"])
       s.add_dependency(%q<mocha>, ["> 0.9.11"])
@@ -88,9 +82,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<mocha>, ["> 0.9.11"])
     s.add_dependency(%q<ruby-debug19>, [">= 0"])
     s.add_dependency(%q<ruby-debug>, [">= 0"])
-    s.add_dependency(%q<httparty>, ["> 0.6.0"])
-    s.add_dependency(%q<activesupport>, [">= 2.3.14"])
-    s.add_dependency(%q<json>, ["> 1.4.0"])
     s.add_dependency(%q<httparty>, ["> 0.6.0"])
     s.add_dependency(%q<json>, ["> 1.4.0"])
     s.add_dependency(%q<mocha>, ["> 0.9.11"])
