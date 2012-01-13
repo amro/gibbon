@@ -46,6 +46,13 @@ class TestGibbon < Test::Unit::TestCase
       @gibbon.timeout = timeout
       assert_equal(timeout, @gibbon.timeout)
     end
+    
+    should "set datacenter and get" do
+      @gibbon = Gibbon.new
+      datacenter = "us4"
+      @gibbon.datacenter = datacenter
+      assert_equal(datacenter, @gibbon.datacenter)
+    end
   end
 
   context "build api url" do
@@ -76,6 +83,22 @@ class TestGibbon < Test::Unit::TestCase
       @api_key = "TESTKEY-us1"
       @gibbon.api_key = @api_key
       expect_post("https://us1.api.mailchimp.com/1.3/?method=sayHello", {"apikey" => @api_key})
+      @gibbon.say_hello
+    end
+
+    should "handle datacenter" do
+      @api_key = "123"
+      @gibbon.api_key = @api_key
+      @gibbon.datacenter = "us4"
+      expect_post("https://us4.api.mailchimp.com/1.3/?method=sayHello", {"apikey" => "#{@api_key}-us4"})
+      @gibbon.say_hello
+    end
+
+    should "handle datacenter and api key with dc" do
+      @api_key = "123-us1"
+      @gibbon.api_key = @api_key
+      @gibbon.datacenter = "us4"
+      expect_post("https://us4.api.mailchimp.com/1.3/?method=sayHello", {"apikey" => @api_key})
       @gibbon.say_hello
     end
   end

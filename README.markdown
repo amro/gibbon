@@ -35,6 +35,17 @@ separated formatting as you see in the "More Advanced Examples" section below.
 
 Check the API [documentation](http://apidocs.mailchimp.com/api/1.3/) for details.
 
+## Datacenter Aware
+
+OAuth 2 Strategy provides you with tokens along with datacenter information e.g. us1, us2
+
+    gb = Gibbon.new("your_api_key")
+    gb.datacenter = "us1"
+
+This will automatically append "us1" to your key when using internally. Alternatively you can also do:
+
+    gb = Gibbon.new("your_api_key-datacenter")
+
 ### Fetching Campaigns
 
 For example, to fetch your first 100 campaigns (page 0):
