@@ -7,7 +7,7 @@ class Gibbon
   format :plain
   default_timeout 30
 
-  attr_accessor :api_key, :timeout, :throws_exceptions
+  attr_accessor :api_key, :timeout, :throws_exceptions, :datacenter
 
   def initialize(api_key = nil, extra_params = {})
     @api_key = api_key || ENV['MC_API_KEY'] || ENV['MAILCHIMP_API_KEY'] || self.class.api_key
@@ -33,6 +33,7 @@ protected
   def call(method, params = {})
     api_url = base_api_url + method
     params = @default_params.merge(params)
+    params[:apikey] = "#{params[:apikey]}-#{datacenter}" if (datacenter && params[:apikey] !~ /-/)
     response = self.class.post(api_url, :body => CGI::escape(params.to_json), :timeout => @timeout)
 
     begin
@@ -57,7 +58,7 @@ protected
   end
 
   class << self
-    attr_accessor :api_key
+    attr_accessor :api_key, :datacenter
 
     def method_missing(sym, *args, &block)
       new(self.api_key).send(sym, *args, &block)
@@ -65,7 +66,7 @@ protected
   end
 
   def dc_from_api_key
-    (@api_key.nil? || @api_key.empty? || @api_key !~ /-/) ? '' : "#{@api_key.split("-").last}."
+    datacenter ? "#{datacenter}." : ((@api_key.nil? || @api_key.empty? || @api_key !~ /-/) ? '' : "#{@api_key.split("-").last}.")
   end
 end
 
