@@ -34,12 +34,10 @@ protected
     api_url = base_api_url + method
     params = @default_params.merge(params)
     response = self.class.post(api_url, :body => CGI::escape(params.to_json), :timeout => @timeout)
-
-    begin
-      response = JSON.parse(response.body)
-    rescue
-      response = JSON.parse('['+response.body+']').first
-    end
+    
+    # Some calls (e.g. listSubscribe) return json fragments
+    # (e.g. true) so wrap in an array prior to parsing
+    response = JSON.parse('['+response.body+']').first
 
     if @throws_exceptions && response.is_a?(Hash) && response["error"]
       raise "Error from MailChimp API: #{response["error"]} (code #{response["code"]})"
@@ -51,9 +49,7 @@ protected
   def method_missing(method, *args)
     method = method.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } #Thanks for the gsub, Rails
     method = method[0].chr.downcase + method[1..-1].gsub(/aim$/i, 'AIM')
-    args = {} unless args.length > 0
-    args = args[0] if args.is_a?(Array)
-    call(method, args)
+    call(method, *args)
   end
 
   class << self
