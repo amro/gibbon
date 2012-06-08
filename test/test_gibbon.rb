@@ -132,10 +132,8 @@ class TestGibbon < Test::Unit::TestCase
     should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error' 1" do
       Gibbon.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things'}.to_json))
       assert_nothing_raised do
-        result = @gibbon.say_hello
+        @gibbon.say_hello
       end
-
-      ap result
     end
 
     should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error' 2" do
