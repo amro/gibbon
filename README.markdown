@@ -1,6 +1,6 @@
 # gibbon
 
-Gibbon is a simple API wrapper for interacting with [MailChimp API](http://www.mailchimp.com/api) 1.3.
+Gibbon is a simple wrapper for MailChimp's [Primary and Export APIs](http://www.mailchimp.com/api).
 
 [![Build Status](https://secure.travis-ci.org/amro/gibbon.png)](http://travis-ci.org/amro/gibbon)
 
@@ -25,7 +25,7 @@ You can set your api_key globally and call class methods:
     Gibbon.api_key = "your_api_key"
     Gibbon.lists
 
-You can also set the environment variable 'MC_API_KEY' and Gibbon will use it when you create an instance:
+You can also set the environment variable `MC_API_KEY` and Gibbon will use it when you create an instance:
 
     u = Gibbon.new
 
@@ -73,16 +73,14 @@ Gibbon defaults to a 30 second timeout. You can optionally set your own timeout 
 
 ### Export API usage
 
-In addition to the standard API you can make calls to the
-[MailChimp Export API](http://apidocs.mailchimp.com/export/1.0/) using a GibbonExport object.  Given an existing
-Gibbon object you can request a new GibbonExporter object:
+In addition to the primary API, you can make calls to the [Export API](http://apidocs.mailchimp.com/export/1.0/) using an instance of GibbonExport.  Given an existing instance of Gibbon, you can request a new GibbonExporter object:
 
-    g = Gibbon.new(@api_key)
+    g = Gibbon.new("your_api_key")
     gibbon_export = g.get_exporter
 
 or you can construct a new object directly:
 
-    gibbon_export = GibbonExport.new(@api_key)
+    gibbon_export = GibbonExport.new("your_api_key")
 
 Calling Export API functions is identical to making standard API calls but the
 return value is an Enumerator which loops over the lines returned from the
@@ -111,7 +109,7 @@ Gibbon will attempt to intercept the errors and raise an exception.
 * [Michael Klishin](https://github.com/michaelklishin)
 * Rails for camelize gsub
 
-##Copyrights
+##Copyright
 
-* Copyright (c) 2010 Amro Mousa. See LICENSE.txt for details.
-* MailChimp (c) 2001-2010 The Rocket Science Group.
+* Copyright (c) 2010-2012 Amro Mousa. See LICENSE.txt for details.
+* MailChimp (c) 2001-2012 The Rocket Science Group.
