@@ -46,6 +46,10 @@ For example, to fetch your first 100 campaigns (page 0):
 Similarly, to fetch your first 100 lists:
 
     lists = gb.lists({:start => 0, :limit=> 100})
+    
+Or, to fetch a list by name:
+
+    list = gb.lists({:filters => {:list_name => list_name}})
 
 ### More Advanced Examples
 
