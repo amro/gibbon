@@ -46,7 +46,7 @@ For example, to fetch your first 100 campaigns (page 0):
 Similarly, to fetch your first 100 lists:
 
     lists = gb.lists({:start => 0, :limit=> 100})
-    
+
 Or, to fetch a list by name:
 
     list = gb.lists({:filters => {:list_name => list_name}})
@@ -60,6 +60,28 @@ Getting batch member information for subscribers looks like this:
 or
 
     info = gb.listMemberInfo({:id => list_id, :email_address => email_array})
+
+List subscribers for a list:
+
+    gb.list_members({:id => list_id})
+
+or
+
+List unsubscribed members for a list
+
+    gb.list_members({:id => list_id, :status => "unsubscribed"})
+
+Subscribe a member to a list:
+
+    gb.list_subscribe({:id => list_id, :email_address => "email_address", :merge_vars => {:FNAME => "First Name", :LNAME => "Last Name"}})
+Note: This will send a welcome email to the new subscriber
+
+or
+
+Batch subscribe members to a list:
+
+    gb.list_batch_subscribe(:id => list_id, :batch => [{:EMAIL => "email1", :FNAME => "FirstName1", :LNAME => "LastName1"},{:EMAIL => "email2", :FNAME => "FirstName2", :LNAME => "LastName2"}])
+Note: This will send welcome emails to the new subscribers
 
 Fetch open and click detail for recipients of a particular campaign:
 
