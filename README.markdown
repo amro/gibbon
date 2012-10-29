@@ -4,6 +4,14 @@ Gibbon is a simple wrapper for MailChimp's [Primary and Export APIs](http://www.
 
 [![Build Status](https://secure.travis-ci.org/amro/gibbon.png)](http://travis-ci.org/amro/gibbon)
 
+##Important Notes About Version 0.4.0+
+
+* Errors are now raised by default
+* Timeouts can be specified per request
+* The environment variable 'MC_API_KEY' no longer works. Please use 'MAILCHIMP_API_KEY' instead.
+* The code has been cleaned up a bit and a few more comments have been added
+* HTTParty monkeypatch has been removed
+
 ##Installation
 
     $ gem install gibbon
@@ -29,13 +37,13 @@ You can also set the environment variable 'MAILCHIMP_API_KEY' and Gibbon will us
 
     u = Gibbon.new
 
+> Note: In an effort to simplify Gibbon, the environment variable 'MC_API_KEY' is no longer available as of version 0.4.0. Please use 'MAILCHIMP_API_KEY' instead.
+
 Fetching data is as simple as calling API methods directly on the wrapper
 object.  The API calls may be made with either camelcase or  underscore
 separated formatting as you see in the "More Advanced Examples" section below.
 
 Check the API [documentation](http://apidocs.mailchimp.com/api/1.3/) for details.
-
-> Note:  In an effort to simplify Gibbon, the environment variable 'MC_API_KEY' is no longer available as of version 0.4.0. Please use 'MAILCHIMP_API_KEY' instead.
 
 ### Fetching Campaigns
 
@@ -129,7 +137,7 @@ then Gibbon will not raise exceptions. This allows you to handle errors manually
 APIs will return a Hash with two keys "errors", a string containing some textual
 information about the error, and "code", the numeric code of the error.
 
-> Note:  In an effort to make Gibbon easier to use, errors are raised automatically as of version 0.4.0.
+> Note: In an effort to make Gibbon easier to use, errors are raised automatically as of version 0.4.0.
 
 ##Thanks
 
