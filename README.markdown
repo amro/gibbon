@@ -25,7 +25,7 @@ You can set your api_key globally and call class methods:
     Gibbon.api_key = "your_api_key"
     Gibbon.lists
 
-You can also set the environment variable `MC_API_KEY` and Gibbon will use it when you create an instance:
+You can also set the environment variable 'MAILCHIMP_API_KEY' and Gibbon will use it when you create an instance:
 
     u = Gibbon.new
 
@@ -34,6 +34,8 @@ object.  The API calls may be made with either camelcase or  underscore
 separated formatting as you see in the "More Advanced Examples" section below.
 
 Check the API [documentation](http://apidocs.mailchimp.com/api/1.3/) for details.
+
+> Note:  In an effort to simplify Gibbon, the environment variable 'MC_API_KEY' is no longer available as of version 0.4.0. Please use 'MAILCHIMP_API_KEY' instead.
 
 ### Fetching Campaigns
 
@@ -95,7 +97,11 @@ or
 
 Gibbon defaults to a 30 second timeout. You can optionally set your own timeout (in seconds) like so:
 
-    gb.timeout = 5
+    gb = Gibbon.new("your_api_key", {:timeout => 30})
+
+or
+
+		gb.timeout = 5
 
 ### Export API usage
 
@@ -115,14 +121,18 @@ of JSON objects rather than a single JSON array.
 
 ### Error handling
 
-By default you are expected to handle errors returned by the APIs manually.  The
+By default Gibbon will attempt to raise errors returned by the API automatically.
+
+If you set the `throws_exceptions` boolean attribute to false, for a given instance,
+then Gibbon will not raise exceptions. This allows you to handle errors manually. The
 APIs will return a Hash with two keys "errors", a string containing some textual
 information about the error, and "code", the numeric code of the error.
 
-If you set the `throws_exceptions` boolean attribute for a given instance then
-Gibbon will attempt to intercept the errors and raise an exception.
+> Note:  In an effort to make Gibbon easier to use, errors are raised automatically as of version 0.4.0.
 
 ##Thanks
+
+The following people have contributed to Gibbon's development in some way:
 
 * [Justin Ip](https://github.com/ippy04)
 * [elshimone](https://github.com/elshimone)

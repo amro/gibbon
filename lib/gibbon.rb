@@ -6,13 +6,20 @@ class Gibbon
   include HTTParty
   format :plain
   default_timeout 30
+  disable_rails_query_string_format
 
   attr_accessor :api_key, :timeout, :throws_exceptions
 
-  def initialize(api_key = nil, extra_params = {})
-    @api_key = api_key || ENV['MC_API_KEY'] || ENV['MAILCHIMP_API_KEY'] || self.class.api_key
-    @default_params = {:apikey => @api_key}.merge(extra_params)
-    @throws_exceptions = false
+  def initialize(api_key = nil, default_parameters = {})
+    @api_key = api_key || ENV['MAILCHIMP_API_KEY'] || self.class.api_key
+
+    # Remove and set the timeout b/c we don't want it passed to MailChimp
+    @timeout = default_parameters.delete(:timeout)
+
+    @default_params = {:apikey => @api_key}.merge(default_parameters)
+    
+    # Default to throwing exceptions
+    @throws_exceptions = true
   end
 
   def api_key=(value)
@@ -24,31 +31,53 @@ class Gibbon
     GibbonExport.new(@api_key, @default_params)
   end
 
+  protected
+
   def base_api_url
     "https://#{dc_from_api_key}api.mailchimp.com/1.3/?method="
   end
 
-protected
   def call(method, params = {})
     api_url = base_api_url + method
     params = @default_params.merge(params)
     response = self.class.post(api_url, :body => CGI::escape(params.to_json), :timeout => @timeout)
     
+    # MailChimp API sometimes returns JSON fragments (e.g. true from listSubscribe)
+    # so we parse after adding brackets to create a JSON array so 
+    # JSON.parse succeeds in those cases.
+    parsed_response = JSON.parse('[' + response.body + ']').first
+
+    if should_raise_for_response(parsed_response)
+      raise "Error from MailChimp API: #{parsed_response["error"]} (code #{parsed_response["code"]})"
+    end
+
     # Some calls (e.g. listSubscribe) return json fragments
     # (e.g. true) so wrap in an array prior to parsing
     response = JSON.parse('['+response.body+']').first
 
-    if @throws_exceptions && response.is_a?(Hash) && response["error"]
-      raise "Error from MailChimp API: #{response["error"]} (code #{response["code"]})"
-    end
+    parsed_response
+  end
+  
+  def method_missing(method, *args)
+    # To support underscores, we camelize the method name
 
-    response
+    # Thanks for the camelize gsub, Rails
+    method = method.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase }
+
+    # We need to downcase the first letter of every API method
+    # and MailChimp has a few of API methods that end in "AIM," which
+    # must be upcased (See "Campaign Report Data Methods" in their API docs).
+    method = method[0].chr.downcase + method[1..-1].gsub(/aim$/i, 'AIM')
+
+    call(method, *args)
   end
 
-  def method_missing(method, *args)
-    method = method.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } #Thanks for the gsub, Rails
-    method = method[0].chr.downcase + method[1..-1].gsub(/aim$/i, 'AIM')
-    call(method, *args)
+  def should_raise_for_response(response)
+    @throws_exceptions && response.is_a?(Hash) && response["error"]
+  end
+
+  def base_api_url
+    "https://#{get_data_center_from_api_key}api.mailchimp.com/1.3/?method="
   end
 
   class << self
@@ -59,20 +88,28 @@ protected
     end
   end
 
-  def dc_from_api_key
-    (@api_key.nil? || @api_key.empty? || @api_key !~ /-/) ? '' : "#{@api_key.split("-").last}."
+  def get_data_center_from_api_key
+    # Return an empty string for invalid API keys so Gibbon hits the main endpoint
+    data_center = ""
+
+    if (@api_key && @api_key["-"])
+      # Add a period since the data_center is a subdomain and it keeps things dry
+      data_center = "#{@api_key.split('-').last}."
+    end
+
+    data_center
   end
 end
   
 class GibbonExport < Gibbon
-  def initialize(api_key = nil, extra_params = {})
-    super(api_key, extra_params)
+  def initialize(api_key = nil, default_parameters = {})
+    super(api_key, default_parameters)
   end
 
-protected
+  protected
 
   def export_api_url
-    "http://#{dc_from_api_key}api.mailchimp.com/export/1.0/"
+    "http://#{get_data_center_from_api_key}api.mailchimp.com/export/1.0/"
   end
 
   def call(method, params = {})
@@ -83,44 +120,9 @@ protected
     lines = response.body.lines
     if @throws_exceptions
       first_line_object = JSON.parse(lines.first) if lines.first
-      raise "Error from MailChimp Export API: #{first_line_object["error"]} (code #{first_line_object["code"]})" if first_line_object.is_a?(Hash) && first_line_object["error"]
+      raise "Error from MailChimp Export API: #{first_line_object["error"]} (code #{first_line_object["code"]})" if should_raise_for_response(first_line_object)
     end
 
     lines
-  end
-end
-
-module HTTParty
-  module HashConversions
-    # @param key<Object> The key for the param.
-    # @param value<Object> The value for the param.
-    #
-    # @return <String> This key value pair as a param
-    #
-    # @example normalize_param(:name, "Bob Jones") #=> "name=Bob%20Jones&"
-    def self.normalize_param(key, value)
-      param = ''
-      stack = []
-
-      if value.is_a?(Array)
-        param << Hash[*(0...value.length).to_a.zip(value).flatten].map {|i,element| normalize_param("#{key}[#{i}]", element)}.join
-      elsif value.is_a?(Hash)
-        stack << [key,value]
-      else
-        param << "#{key}=#{URI.encode(value.to_s, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}&"
-      end
-
-      stack.each do |parent, hash|
-        hash.each do |key, value|
-          if value.is_a?(Hash)
-            stack << ["#{parent}[#{key}]", value]
-          else
-            param << normalize_param("#{parent}[#{key}]", value)
-          end
-        end
-      end
-
-      param
-    end
   end
 end

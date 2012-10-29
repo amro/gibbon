@@ -20,13 +20,6 @@ class TestGibbon < Test::Unit::TestCase
       assert_equal(@api_key, @gibbon.api_key)
     end
 
-    should "set an API key from the 'MC_API_KEY' ENV variable" do
-      ENV['MC_API_KEY'] = @api_key
-      @gibbon = Gibbon.new
-      assert_equal(@api_key, @gibbon.api_key)
-      ENV.delete('MC_API_KEY')
-    end
-
     should "set an API key from the 'MAILCHIMP_API_KEY' ENV variable" do
       ENV['MAILCHIMP_API_KEY'] = @api_key
       @gibbon = Gibbon.new
@@ -129,14 +122,15 @@ class TestGibbon < Test::Unit::TestCase
       assert_equal(@exporter.api_key, @gibbon.api_key)
     end
 
-    should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error' 1" do
+    should "not throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
+      @gibbon.throws_exceptions = false
       Gibbon.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things'}.to_json))
       assert_nothing_raised do
         @gibbon.say_hello
       end
     end
 
-    should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error' 2" do
+    should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
       Gibbon.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things'}.to_json))
       assert_raise RuntimeError do
@@ -166,6 +160,7 @@ class TestGibbon < Test::Unit::TestCase
     end
 
     should "not throw exception if the Export API replies with a JSON hash containing a key called 'error'" do
+      @gibbon.throws_exceptions = false
       GibbonExport.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things'}.to_json))
 
       assert_nothing_raised do
@@ -173,7 +168,7 @@ class TestGibbon < Test::Unit::TestCase
       end
     end
 
-    should "throw exception if configured to and the Export API replies with a JSON hash containing a key called 'error' 3" do
+    should "throw exception if configured to and the Export API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
       params = {:body => @body, :timeout => nil}
       GibbonExport.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things', 'code' => '123'}.to_json))
@@ -194,5 +189,4 @@ class TestGibbon < Test::Unit::TestCase
       opts[:timeout] == expected_timeout
     end.returns(Struct.new(:body).new("") )
   end
-
 end

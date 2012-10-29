@@ -7,10 +7,11 @@ Gem::Specification.new do |s|
   s.authors     = ["Amro Mousa"]
   s.email       = ["amromousa@gmail.com"]
   s.homepage    = "http://github.com/amro/gibbon"
+
   s.summary     = %q{A simple wrapper for MailChimp's primary and export APIs}
   s.description = %q{A simple wrapper for MailChimp's primary and export APIs}
   s.license     = "MIT"
-
+  
   s.rubyforge_project = "gibbon"
 
   s.files         = `git ls-files`.split("\n")
@@ -20,11 +21,9 @@ Gem::Specification.new do |s|
 
   s.add_dependency('httparty')
   s.add_dependency('json')
-  
-  s.add_development_dependency('shoulda')
-  s.add_development_dependency('simplecov')
-  s.add_development_dependency('mocha')
-  s.add_development_dependency('debugger')
-  s.add_development_dependency('rake')
-end
 
+  s.add_development_dependency('rake')
+  s.add_development_dependency('debugger')
+  s.add_development_dependency('shoulda')
+  s.add_development_dependency('mocha')
+end
