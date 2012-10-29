@@ -76,14 +76,15 @@ List unsubscribed members for a list
 Subscribe a member to a list:
 
     gb.list_subscribe({:id => list_id, :email_address => "email_address", :merge_vars => {:FNAME => "First Name", :LNAME => "Last Name"}})
-Note: This will send a welcome email to the new subscriber
+> Note: This will send a welcome email to the new subscriber
 
 or
 
 Batch subscribe members to a list:
 
     gb.list_batch_subscribe(:id => list_id, :batch => [{:EMAIL => "email1", :FNAME => "FirstName1", :LNAME => "LastName1"},{:EMAIL => "email2", :FNAME => "FirstName2", :LNAME => "LastName2"}])
-Note: This will send welcome emails to the new subscribers
+
+> Note: This will send welcome emails to the new subscribers
 
 Fetch open and click detail for recipients of a particular campaign:
 
