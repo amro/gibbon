@@ -133,7 +133,7 @@ class TestGibbon < Test::Unit::TestCase
     should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
       Gibbon.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things'}.to_json))
-      assert_raise RuntimeError do
+      assert_raise Gibbon::MailChimpError do
         @gibbon.say_hello
       end
     end
@@ -173,7 +173,7 @@ class TestGibbon < Test::Unit::TestCase
       params = {:body => @body, :timeout => nil}
       GibbonExport.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things', 'code' => '123'}.to_json))
 
-      assert_raise RuntimeError do
+      assert_raise Gibbon::MailChimpError do
         @gibbon.say_hello(@body)
       end
     end
