@@ -8,7 +8,7 @@ Gibbon is a simple wrapper for MailChimp's [Primary and Export APIs](http://www.
 
 * Ruby 1.9.x+
 * Errors are now raised by default
-* Timeouts can be specified per request
+* Timeouts can be specified per request during initialization
 * The environment variable 'MC_API_KEY' no longer works. Please use 'MAILCHIMP_API_KEY' instead.
 * The code has been cleaned up a bit and a few more comments have been added
 * HTTParty monkeypatch has been removed
@@ -107,7 +107,7 @@ or
 
 Gibbon defaults to a 30 second timeout. You can optionally set your own timeout (in seconds) like so:
 
-    gb = Gibbon.new("your_api_key", {:timeout => 30})
+    gb = Gibbon.new("your_api_key", {:timeout => 5})
 
 or
 
