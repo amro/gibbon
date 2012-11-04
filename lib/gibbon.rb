@@ -13,20 +13,19 @@ class Gibbon
   MailChimpError = Class.new(StandardError)
 
   def initialize(api_key = nil, default_parameters = {})
-    @api_key = api_key || ENV['MAILCHIMP_API_KEY'] || self.class.api_key
+    @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
 
-    # Remove and set the timeout b/c we don't want it passed to MailChimp
     @timeout = default_parameters.delete(:timeout)
-
-    @default_params = {:apikey => @api_key}.merge(default_parameters)
+    @throws_exceptions = default_parameters.delete(:throws_exceptions)
+  
+    @default_params = {apikey: @api_key}.merge(default_parameters)
     
-    # Default to throwing exceptions
-    @throws_exceptions = true
+    set_instance_defaults
   end
-
+  
   def api_key=(value)
     @api_key = value
-    @default_params = @default_params.merge({:apikey => @api_key})
+    @default_params = @default_params.merge({apikey: @api_key})
   end
 
   def get_exporter
@@ -38,18 +37,18 @@ class Gibbon
   def base_api_url
     "https://#{dc_from_api_key}api.mailchimp.com/1.3/?method="
   end
-
+  
   def call(method, params = {})
     api_url = base_api_url + method
     params = @default_params.merge(params)
-    response = self.class.post(api_url, :body => CGI::escape(params.to_json), :timeout => @timeout)
+    response = self.class.post(api_url, body: CGI::escape(params.to_json), timeout: @timeout)
     
     # MailChimp API sometimes returns JSON fragments (e.g. true from listSubscribe)
     # so we parse after adding brackets to create a JSON array so 
     # JSON.parse succeeds in those cases.
     parsed_response = JSON.parse('[' + response.body + ']').first
 
-    if should_raise_for_response(parsed_response)
+    if should_raise_for_response?(parsed_response)
       raise MailChimpError.new("MailChimp API Error: #{parsed_response["error"]} (code #{parsed_response["code"]})")
     end
 
@@ -73,8 +72,16 @@ class Gibbon
 
     call(method, *args)
   end
+  
+  def set_instance_defaults
+    @timeout = (self.class.timeout || 30) if @timeout.nil?
 
-  def should_raise_for_response(response)
+    # Two lines because the class variable could be false and (false || true) is always true
+    @throws_exceptions = self.class.throws_exceptions if @throws_exceptions.nil?
+    @throws_exceptions = true if @throws_exceptions.nil?
+  end
+
+  def should_raise_for_response?(response)
     @throws_exceptions && response.is_a?(Hash) && response["error"]
   end
 
@@ -83,10 +90,10 @@ class Gibbon
   end
 
   class << self
-    attr_accessor :api_key
+    attr_accessor :api_key, :timeout, :throws_exceptions
 
     def method_missing(sym, *args, &block)
-      new(self.api_key).send(sym, *args, &block)
+      new(self.api_key, {timeout: self.timeout, throws_exceptions: self.throws_exceptions}).send(sym, *args, &block)
     end
   end
 
@@ -117,12 +124,15 @@ class GibbonExport < Gibbon
   def call(method, params = {})
     api_url = export_api_url + method + "/"
     params = @default_params.merge(params)
-    response = self.class.post(api_url, :body => params, :timeout => @timeout)
+    response = self.class.post(api_url, body: params, timeout: @timeout)
 
     lines = response.body.lines
     if @throws_exceptions
-      first_line_object = JSON.parse(lines.first) if lines.first
-      raise MailChimpError.new("MailChimp Export API Error: #{first_line_object["error"]} (code #{first_line_object["code"]})") if should_raise_for_response(first_line_object)
+      first_line = JSON.parse(lines.first) if lines.first
+      
+      if should_raise_for_response?(first_line)
+        raise MailChimpError.new("MailChimp Export API Error: #{first_line["error"]} (code #{first_line["code"]})")
+      end
     end
 
     lines

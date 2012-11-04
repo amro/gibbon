@@ -72,6 +72,32 @@ class TestGibbon < Test::Unit::TestCase
       @gibbon.say_hello
     end
   end
+  
+  context "Gibbon class variables" do
+    setup do
+      Gibbon.api_key = "123-us1"
+      Gibbon.timeout = 15
+      Gibbon.throws_exceptions = false
+    end
+    
+    teardown do
+      Gibbon.api_key = nil
+      Gibbon.timeout = nil
+      Gibbon.throws_exceptions = nil
+    end
+    
+    should "set api key on new instances" do
+      assert_equal(Gibbon.new.api_key, Gibbon.api_key)
+    end
+
+    should "set timeout on new instances" do
+      assert_equal(Gibbon.new.timeout, Gibbon.timeout)
+    end
+    
+    should "set throws_exceptions on new instances" do
+      assert_equal(Gibbon.new.throws_exceptions, Gibbon.throws_exceptions)
+    end
+  end
 
   context "build api body" do
     setup do
@@ -152,7 +178,7 @@ class TestGibbon < Test::Unit::TestCase
       @api_key = "TESTKEY-us2"
       @gibbon = GibbonExport.new(@api_key)
 
-      params = {:body => @body, :timeout => nil}
+      params = {:body => @body, :timeout => 30}
     
       url = @url.gsub('us1', 'us2') + "sayHello/"
       GibbonExport.expects(:post).with(url, params).returns(@returns)
@@ -170,7 +196,7 @@ class TestGibbon < Test::Unit::TestCase
 
     should "throw exception if configured to and the Export API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
-      params = {:body => @body, :timeout => nil}
+      params = {:body => @body, :timeout => 30}
       GibbonExport.stubs(:post).returns(Struct.new(:body).new({'error' => 'bad things', 'code' => '123'}.to_json))
 
       assert_raise Gibbon::MailChimpError do
@@ -182,7 +208,7 @@ class TestGibbon < Test::Unit::TestCase
 
   private
 
-  def expect_post(expected_url, expected_body, expected_timeout=nil)
+  def expect_post(expected_url, expected_body, expected_timeout=30)
     Gibbon.expects(:post).with do |url, opts|
       url == expected_url &&
       JSON.parse(URI::decode(opts[:body])) == expected_body &&
