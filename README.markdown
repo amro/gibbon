@@ -29,10 +29,17 @@ You can create an instance of the API wrapper:
 
     gb = Gibbon.new("your_api_key")
 
-You can set your api_key globally and call class methods:
+You can set api_key, timeout and throws_exceptions globally:
 
     Gibbon.api_key = "your_api_key"
-    Gibbon.lists
+		Gibbon.timeout = 15
+		Gibbon.throws_exceptions = false
+		
+For example, you could set the values above in an initializer file in your Rails app (e.g. your\_app/config/initializers/gibbon.rb).
+
+Assuming you've set an api\_key on Gibbon, you can conveniently make API calls on the class itself:
+
+		Gibbon.lists
 
 You can also set the environment variable 'MAILCHIMP_API_KEY' and Gibbon will use it when you create an instance:
 
@@ -103,7 +110,7 @@ or
 
     email_stats = gb.campaignEmailStatsAIM({:cid => campaign_id, :email_address => email_array})
 
-### Other Stuff
+### Setting timeouts
 
 Gibbon defaults to a 30 second timeout. You can optionally set your own timeout (in seconds) like so:
 
@@ -112,6 +119,17 @@ Gibbon defaults to a 30 second timeout. You can optionally set your own timeout 
 or
 
 		gb.timeout = 5
+
+### Error handling
+
+By default Gibbon will attempt to raise errors returned by the API automatically.
+
+If you set the `throws_exceptions` boolean attribute to false, for a given instance,
+then Gibbon will not raise exceptions. This allows you to handle errors manually. The
+APIs will return a Hash with two keys "errors", a string containing some textual
+information about the error, and "code", the numeric code of the error.
+
+> Note: In an effort to make Gibbon easier to use, errors are raised automatically as of version 0.4.0.
 
 ### Export API usage
 
@@ -128,17 +146,6 @@ Calling Export API functions is identical to making standard API calls but the
 return value is an Enumerator which loops over the lines returned from the
 Export API.  This is because the data returned from the Export API is a stream
 of JSON objects rather than a single JSON array.
-
-### Error handling
-
-By default Gibbon will attempt to raise errors returned by the API automatically.
-
-If you set the `throws_exceptions` boolean attribute to false, for a given instance,
-then Gibbon will not raise exceptions. This allows you to handle errors manually. The
-APIs will return a Hash with two keys "errors", a string containing some textual
-information about the error, and "code", the numeric code of the error.
-
-> Note: In an effort to make Gibbon easier to use, errors are raised automatically as of version 0.4.0.
 
 ##Thanks
 

@@ -11,6 +11,9 @@ Gem::Specification.new do |s|
   s.summary     = %q{A simple wrapper for MailChimp's primary and export APIs}
   s.description = %q{A simple wrapper for MailChimp's primary and export APIs}
   s.license     = "MIT"
+
+  s.post_install_message = "Warning: Gibbon versions 0.4.0 and newer include breaking changes like throwing exceptions by default!\n" +
+                           "Please read more at http://github.com/amro/gibbon before upgrading from 0.3.x!"
   
   s.rubyforge_project = "gibbon"
 
