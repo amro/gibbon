@@ -29,19 +29,19 @@ You can create an instance of the API wrapper:
 
     gb = Gibbon.new("your_api_key")
 
-You can set api_key, timeout and throws_exceptions globally:
+You can set `api_key`, `timeout` and `throws_exceptions` globally:
 
     Gibbon.api_key = "your_api_key"
     Gibbon.timeout = 15
     Gibbon.throws_exceptions = false
 		
-For example, you could set the values above in an initializer file in your Rails app (e.g. your\_app/config/initializers/gibbon.rb).
+For example, you could set the values above in an `initializer` file in your `Rails` app (e.g. your\_app/config/initializers/gibbon.rb).
 
-Assuming you've set an api\_key on Gibbon, you can conveniently make API calls on the class itself:
+Assuming you've set an `api_key` on Gibbon, you can conveniently make API calls on the class itself:
 
     Gibbon.lists
 
-You can also set the environment variable 'MAILCHIMP_API_KEY' and Gibbon will use it when you create an instance:
+You can also set the environment variable `MAILCHIMP_API_KEY` and Gibbon will use it when you create an instance:
 
     u = Gibbon.new
 
