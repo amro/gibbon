@@ -11,7 +11,6 @@ Gibbon is a simple wrapper for MailChimp's [Primary and Export APIs](http://www.
 * Timeouts can be specified per request during initialization
 * The environment variable 'MC_API_KEY' no longer works. Please use 'MAILCHIMP_API_KEY' instead.
 * The code has been cleaned up a bit and a few more comments have been added
-* HTTParty monkeypatch has been removed
 
 ##Installation
 
