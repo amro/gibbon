@@ -52,10 +52,6 @@ class Gibbon
       raise MailChimpError.new("MailChimp API Error: #{parsed_response["error"]} (code #{parsed_response["code"]})")
     end
 
-    # Some calls (e.g. listSubscribe) return json fragments
-    # (e.g. true) so wrap in an array prior to parsing
-    response = JSON.parse('['+response.body+']').first
-
     parsed_response
   end
   
