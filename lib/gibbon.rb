@@ -14,6 +14,7 @@ class Gibbon
 
   def initialize(api_key = nil, default_parameters = {})
     @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
+    @api_key = @api_key.strip if @api_key
 
     @timeout = default_parameters.delete(:timeout)
     @throws_exceptions = default_parameters.delete(:throws_exceptions)
@@ -24,7 +25,7 @@ class Gibbon
   end
   
   def api_key=(value)
-    @api_key = value
+    @api_key = value.strip if value
     @default_params = @default_params.merge({apikey: @api_key})
   end
 
