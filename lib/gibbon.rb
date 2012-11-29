@@ -6,7 +6,6 @@ class Gibbon
   include HTTParty
   format :plain
   default_timeout 30
-  disable_rails_query_string_format
 
   attr_accessor :api_key, :timeout, :throws_exceptions
 
@@ -121,7 +120,7 @@ class GibbonExport < Gibbon
   def call(method, params = {})
     api_url = export_api_url + method + "/"
     params = @default_params.merge(params)
-    response = self.class.post(api_url, body: params, timeout: @timeout)
+    response = self.class.post(api_url, body: CGI::escape(params.to_json), timeout: @timeout)
 
     lines = response.body.lines
     if @throws_exceptions
