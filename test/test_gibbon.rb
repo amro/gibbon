@@ -39,6 +39,12 @@ class TestGibbon < Test::Unit::TestCase
       @gibbon.timeout = timeout
       assert_equal(timeout, @gibbon.timeout)
     end
+
+    should "detect api endpoint from initializer parameters" do
+      api_endpoint = 'https://us6.api.mailchimp.com'
+      @gibbon = Gibbon.new(@api_key, :api_endpoint => api_endpoint)
+      assert_equal api_endpoint, @gibbon.api_endpoint
+    end
   end
 
   context "build api url" do
@@ -71,6 +77,15 @@ class TestGibbon < Test::Unit::TestCase
       expect_post("https://us1.api.mailchimp.com/1.3/?method=sayHello", {"apikey" => @api_key})
       @gibbon.say_hello
     end
+
+    # when the end user has signed in via oauth, api_key and endpoint should be supplied separately
+    should "not require datacenter in api key" do
+      @api_key = "TESTKEY"
+      @gibbon.api_key = @api_key
+      @gibbon.api_endpoint = "https://us6.api.mailchimp.com"
+      expect_post("https://us6.api.mailchimp.com/1.3/?method=sayHello", {"apikey" => @api_key})
+      @gibbon.say_hello      
+    end
   end
   
   context "Gibbon class variables" do
@@ -78,12 +93,14 @@ class TestGibbon < Test::Unit::TestCase
       Gibbon.api_key = "123-us1"
       Gibbon.timeout = 15
       Gibbon.throws_exceptions = false
+      Gibbon.api_endpoint = 'https://us6.api.mailchimp.com'
     end
     
     teardown do
       Gibbon.api_key = nil
       Gibbon.timeout = nil
       Gibbon.throws_exceptions = nil
+      Gibbon.api_endpoint = nil
     end
     
     should "set api key on new instances" do
@@ -96,6 +113,11 @@ class TestGibbon < Test::Unit::TestCase
     
     should "set throws_exceptions on new instances" do
       assert_equal(Gibbon.new.throws_exceptions, Gibbon.throws_exceptions)
+    end
+
+    should "set api_endpoint on new instances" do
+      assert Gibbon.api_endpoint
+      assert_equal(Gibbon.new.api_endpoint, Gibbon.api_endpoint)
     end
   end
 

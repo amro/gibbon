@@ -7,7 +7,7 @@ class Gibbon
   format :plain
   default_timeout 30
 
-  attr_accessor :api_key, :timeout, :throws_exceptions
+  attr_accessor :api_key, :api_endpoint, :timeout, :throws_exceptions
 
   MailChimpError = Class.new(StandardError)
 
@@ -15,6 +15,7 @@ class Gibbon
     @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
     @api_key = @api_key.strip if @api_key
 
+    @api_endpoint = default_parameters.delete(:api_endpoint)
     @timeout = default_parameters.delete(:timeout)
     @throws_exceptions = default_parameters.delete(:throws_exceptions)
   
@@ -67,7 +68,7 @@ class Gibbon
   
   def set_instance_defaults
     @timeout = (self.class.timeout || 30) if @timeout.nil?
-
+    @api_endpoint = self.class.api_endpoint if @api_endpoint.nil?
     # Two lines because the class variable could be false and (false || true) is always true
     @throws_exceptions = self.class.throws_exceptions if @throws_exceptions.nil?
     @throws_exceptions = true if @throws_exceptions.nil?
@@ -78,14 +79,18 @@ class Gibbon
   end
 
   def base_api_url
-    "https://#{get_data_center_from_api_key}api.mailchimp.com/1.3/?method="
+    "#{@api_endpoint || get_api_endpoint}/1.3/?method="
+  end
+
+  def get_api_endpoint
+    "https://#{get_data_center_from_api_key}api.mailchimp.com"
   end
 
   class << self
-    attr_accessor :api_key, :timeout, :throws_exceptions
+    attr_accessor :api_key, :timeout, :throws_exceptions, :api_endpoint
 
     def method_missing(sym, *args, &block)
-      new(self.api_key, {timeout: self.timeout, throws_exceptions: self.throws_exceptions}).send(sym, *args, &block)
+      new(self.api_key, {api_endpoint: self.api_endpoint, timeout: self.timeout, throws_exceptions: self.throws_exceptions}).send(sym, *args, &block)
     end
   end
 
