@@ -163,6 +163,11 @@ class TestGibbon < Test::Unit::TestCase
         @gibbon.say_hello
       end
     end
+    
+    should "not raise exception if the api returns no response body" do
+      Gibbon.stubs(:post).returns(Struct.new(:body).new(nil))
+      assert_nil @gibbon.say_hello
+    end
   end
 
   context "export API" do

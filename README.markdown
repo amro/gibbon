@@ -159,6 +159,7 @@ The following people have contributed to Gibbon's development in some way:
 * [Mike Skalnik](https://github.com/skalnik)
 * [Kristopher Murata](https://github.com/krsmurata)
 * [Michael Klishin](https://github.com/michaelklishin)
+* [Kelly Dunn](https://github.com/kellydunn)
 * Rails for camelize gsub
 
 ##Copyright
