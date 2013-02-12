@@ -112,7 +112,7 @@ or
 Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](http://apidocs.mailchimp.com/oauth2/)):
 
     Gibbon.api_endpoint = "https://us1.api.mailchimp.com"
-    Gibbon.api_key = "1adsfl2l42l4j2394820948209480"
+    Gibbon.api_key = your_access_token_or_api_key
 
 ### Setting timeouts
 
