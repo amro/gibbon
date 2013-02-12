@@ -109,6 +109,11 @@ or
 
     email_stats = gb.campaignEmailStatsAIM({:cid => campaign_id, :email_address => email_array})
 
+Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](http://apidocs.mailchimp.com/oauth2/)):
+
+    Gibbon.api_endpoint = "https://us1.api.mailchimp.com"
+    Gibbon.api_key = "1adsfl2l42l4j2394820948209480"
+
 ### Setting timeouts
 
 Gibbon defaults to a 30 second timeout. You can optionally set your own timeout (in seconds) like so:
@@ -159,10 +164,11 @@ The following people have contributed to Gibbon's development in some way:
 * [Mike Skalnik](https://github.com/skalnik)
 * [Kristopher Murata](https://github.com/krsmurata)
 * [Michael Klishin](https://github.com/michaelklishin)
+* [Adam Loving](https://github.com/adamloving)
 * [Kelly Dunn](https://github.com/kellydunn)
 * Rails for camelize gsub
 
 ##Copyright
 
-* Copyright (c) 2010-2012 Amro Mousa. See LICENSE.txt for details.
-* MailChimp (c) 2001-2012 The Rocket Science Group.
+* Copyright (c) 2010-2013 Amro Mousa. See LICENSE.txt for details.
+* MailChimp (c) 2001-2013 The Rocket Science Group.
