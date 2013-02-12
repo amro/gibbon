@@ -42,7 +42,7 @@ class Gibbon
     # MailChimp API sometimes returns JSON fragments (e.g. true from listSubscribe)
     # so we parse after adding brackets to create a JSON array so 
     # JSON.parse succeeds in those cases.
-    parsed_response = JSON.parse('[' + response.body + ']').first
+    parsed_response = JSON.parse("[#{response.body}]").first
 
     if should_raise_for_response?(parsed_response)
       raise MailChimpError.new("MailChimp API Error: #{parsed_response["error"]} (code #{parsed_response["code"]})")
