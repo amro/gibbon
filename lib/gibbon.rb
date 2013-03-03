@@ -1,5 +1,5 @@
 require 'httparty'
-require 'json'
+require 'multi_json'
 require 'cgi'
 
 class Gibbon
@@ -38,12 +38,12 @@ class Gibbon
   def call(method, params = {})
     api_url = base_api_url + method
     params = @default_params.merge(params)
-    response = self.class.post(api_url, body: CGI::escape(params.to_json), timeout: @timeout)
-    
+    response = self.class.post(api_url, body: CGI::escape(MultiJson.dump(params)), timeout: @timeout)
+
     # MailChimp API sometimes returns JSON fragments (e.g. true from listSubscribe)
     # so we parse after adding brackets to create a JSON array so 
-    # JSON.parse succeeds in those cases.
-    parsed_response = JSON.parse("[#{response.body}]").first
+    # parsing succeeds. This also handles the case of an empty response
+    parsed_response = MultiJson.load("[#{response.body}]").first
 
     if should_raise_for_response?(parsed_response)
       raise MailChimpError.new("MailChimp API Error: #{parsed_response["error"]} (code #{parsed_response["code"]})")
@@ -121,11 +121,11 @@ class GibbonExport < Gibbon
   def call(method, params = {})
     api_url = export_api_url + method + "/"
     params = @default_params.merge(params)
-    response = self.class.post(api_url, body: CGI::escape(params.to_json), timeout: @timeout)
+    response = self.class.post(api_url, body: CGI::escape(MultiJson.dump(params)), timeout: @timeout)
 
     lines = response.body.lines
     if @throws_exceptions
-      first_line = JSON.parse(lines.first) if lines.first
+      first_line = MultiJson.load(lines.first) if lines.first
       
       if should_raise_for_response?(first_line)
         raise MailChimpError.new("MailChimp Export API Error: #{first_line["error"]} (code #{first_line["code"]})")
