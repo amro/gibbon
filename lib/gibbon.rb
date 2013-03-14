@@ -9,8 +9,6 @@ class Gibbon
 
   attr_accessor :api_key, :api_endpoint, :timeout, :throws_exceptions
 
-  MailChimpError = Class.new(StandardError)
-
   def initialize(api_key = nil, default_parameters = {})
     @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
     @api_key = @api_key.strip if @api_key
@@ -46,7 +44,9 @@ class Gibbon
     parsed_response = MultiJson.load("[#{response.body}]").first
 
     if should_raise_for_response?(parsed_response)
-      raise MailChimpError.new("MailChimp API Error: #{parsed_response["error"]} (code #{parsed_response["code"]})")
+      error = MailChimpError.new("MailChimp API Error: #{parsed_response["error"]} (code #{parsed_response["code"]})")
+      error.code = parsed_response["code"]
+      raise error
     end
 
     parsed_response
@@ -105,6 +105,10 @@ class Gibbon
 
     data_center
   end
+  
+  class MailChimpError < StandardError
+    attr_accessor :code
+  end
 end
   
 class GibbonExport < Gibbon
@@ -128,7 +132,9 @@ class GibbonExport < Gibbon
       first_line = MultiJson.load(lines.first) if lines.first
       
       if should_raise_for_response?(first_line)
-        raise MailChimpError.new("MailChimp Export API Error: #{first_line["error"]} (code #{first_line["code"]})")
+        error = MailChimpError.new("MailChimp Export API Error: #{first_line["error"]} (code #{first_line["code"]})")
+        error.code = first_line["code"]
+        raise error
       end
     end
 
