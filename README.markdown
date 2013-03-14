@@ -133,6 +133,9 @@ then Gibbon will not raise exceptions. This allows you to handle errors manually
 APIs will return a Hash with two keys "errors", a string containing some textual
 information about the error, and "code", the numeric code of the error.
 
+If you rescue Gibbon::MailChimpError, you are provided with the error message itself as well as
+a `code` attribute that you can map onto the API's [error code list](http://apidocs.mailchimp.com/api/rtfm/exceptions.field.php).
+
 > Note: In an effort to make Gibbon easier to use, errors are raised automatically as of version 0.4.0.
 
 ### Export API usage
