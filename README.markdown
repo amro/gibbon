@@ -153,21 +153,7 @@ of JSON objects rather than a single JSON array.
 
 ##Thanks
 
-The following people have contributed to Gibbon's development by providing bug reports or patches:
-
-* [Justin Ip](https://github.com/ippy04)
-* [elshimone](https://github.com/elshimone)
-* [jlxw](https://github.com/jlxw)
-* [Jon McCartie](https://github.com/jmccartie)
-* [Calvin Yu](https://github.com/cyu)
-* [Dave Worth](https://github.com/daveworth)
-* [Mike Skalnik](https://github.com/skalnik)
-* [Kristopher Murata](https://github.com/krsmurata)
-* [Michael Klishin](https://github.com/michaelklishin)
-* [Adam Loving](https://github.com/adamloving)
-* [Kelly Dunn](https://github.com/kellydunn)
-* [Eric Harper](https://github.com/enharper)
-* Rails for camelize gsub
+Thanks to everyone who's [contributed](https://github.com/amro/gibbon/contributors) to Gibbon's development.
 
 ##Copyright
 
