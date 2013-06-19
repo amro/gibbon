@@ -3,17 +3,16 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "gibbon"
-  s.version     = "0.4.6"
+  s.version     = "0.5.0"
   s.authors     = ["Amro Mousa"]
   s.email       = ["amromousa@gmail.com"]
   s.homepage    = "http://github.com/amro/gibbon"
 
-  s.summary     = %q{A simple wrapper for MailChimp's primary and export APIs}
-  s.description = %q{A simple wrapper for MailChimp's primary and export APIs}
+  s.summary     = %q{A wrapper for MailChimp API 2.0 and Export API 1.0}
+  s.description = %q{A wrapper for MailChimp API 2.0 and Export API 1.0}
   s.license     = "MIT"
 
-  s.post_install_message = "Warning: Gibbon versions 0.4.0 and newer include breaking changes like throwing exceptions by default!\n" +
-                           "Please read more at http://github.com/amro/gibbon before upgrading from 0.3.x!"
+  s.post_install_message = "Important: Gibbon versions 0.5.0 and newer include breaking changes for all API calls as it now supports MailChimp API 2.0"
   
   s.rubyforge_project = "gibbon"
 
