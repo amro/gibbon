@@ -1,7 +1,11 @@
 module Gibbon
   class Export < APICategory
-    def initialize(api_key = nil, default_parameters = {})
-      super(api_key, default_parameters)
+
+    def initialize(api_key = nil, default_params = {})
+      @api_key = api_key
+      @default_params = default_params
+
+      set_instance_defaults
     end
 
     protected
@@ -12,7 +16,7 @@ module Gibbon
 
     def call(method, params = {})
       api_url = export_api_url + method + "/"
-      params = @default_params.merge(params)
+      params = @default_params.merge(params).merge({apikey: @api_key})
       response = self.class.post(api_url, body: MultiJson.dump(params), timeout: @timeout)
 
       lines = response.body.lines
@@ -28,6 +32,15 @@ module Gibbon
 
       lines
     end
+    
+    def set_instance_defaults
+      super
+      @api_key = self.class.api_key if @api_key.nil?
+      @timeout = (self.class.timeout || 30) if @timeout.nil?
+      # Two lines because the class variable could be false and (false || true) is always true
+      @throws_exceptions = self.class.throws_exceptions if @throws_exceptions.nil?
+      @throws_exceptions = true if @throws_exceptions.nil?
+    end
 
     def method_missing(method, *args)
       # To support underscores, we camelize the method name
@@ -41,6 +54,14 @@ module Gibbon
       method = method[0].chr.downcase + method[1..-1].gsub(/aim$/i, 'AIM')
 
       call(method, *args)
+    end
+
+    class << self
+      attr_accessor :api_key, :timeout, :throws_exceptions
+
+      def method_missing(sym, *args, &block)
+        new(self.api_key, {timeout: self.timeout, throws_exceptions: self.throws_exceptions}).send(sym, *args, &block)
+      end
     end
   end
 end

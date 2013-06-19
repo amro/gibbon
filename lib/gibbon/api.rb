@@ -13,20 +13,14 @@ module Gibbon
       @default_params = {apikey: @api_key}.merge(default_parameters)
     end
     
-    def method_missing(method, *args)
-      api_category = APICategory.new(method.to_s)
-      api_category.api_key = @api_key
-      api_category.timeout = @timeout
-      api_category.throws_exceptions = @throws_exceptions
-      api_category.default_params = @default_params
-      api_category
-    end
-  
-    def api_key=(value)
-      @api_key = value.strip if value
-      @default_params = @default_params.merge({apikey: @api_key})
+    def get_exporter
+      Export.new(@api_key, @default_params)
     end
     
+    def method_missing(method, *args)
+      APICategory.new(method.to_s, @api_key, @timeout, @throws_exceptions, @default_params)
+    end
+
     class << self
       attr_accessor :api_key, :timeout, :throws_exceptions, :api_endpoint
 

@@ -8,16 +8,20 @@ module Gibbon
 
     attr_accessor :category_name, :api_key, :api_endpoint, :timeout, :throws_exceptions, :default_params
   
-    def initialize(category_name)
-      set_instance_defaults
+    def initialize(category_name, api_key, timeout, throws_exceptions, default_params)
       @category_name = category_name
+      @api_key = api_key
+      @default_params = default_params
+      @timeout = timeout
+
+      set_instance_defaults
     end
-  
+
     def call(method, params = {})
       api_url = base_api_url + method
-      params = @default_params.merge(params)
+      params = @default_params.merge(params).merge({apikey: @api_key})
       response = self.class.post(api_url, body: MultiJson.dump(params), timeout: @timeout)
-      parsed_response = MultiJson.load(response.body).first
+      parsed_response = MultiJson.load(response.body)
 
       if should_raise_for_response?(parsed_response)
         error = MailChimpError.new("MailChimp API Error: #{parsed_response["error"]} (code #{parsed_response["code"]})")
@@ -31,7 +35,7 @@ module Gibbon
     def method_missing(method, *args)
       # To support underscores, we replace them with hyphens when calling the API
       method = method.to_s.gsub("_", "-").downcase
-      call("#{@category_name}}/#{method}", *args)
+      call("#{@category_name}/#{method}", *args)
     end
   
     def set_instance_defaults
@@ -42,12 +46,16 @@ module Gibbon
       @throws_exceptions = true if @throws_exceptions.nil?
     end
 
+    def api_key=(value)
+      @api_key = value.strip if value
+    end
+    
     def should_raise_for_response?(response)
       @throws_exceptions && response.is_a?(Hash) && response["error"]
     end
 
     def base_api_url
-      "#{@api_endpoint || get_api_endpoint}/2.0/?method="
+      "#{@api_endpoint || get_api_endpoint}/2.0/"
     end
 
     def get_api_endpoint

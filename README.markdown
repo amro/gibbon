@@ -1,16 +1,15 @@
 # gibbon
 
-Gibbon is a simple wrapper for MailChimp's [Primary and Export APIs](http://www.mailchimp.com/api).
+Gibbon is an API wrapper for MailChimp's [Primary and Export APIs](http://www.mailchimp.com/api).
 
 [![Build Status](https://secure.travis-ci.org/amro/gibbon.png)](http://travis-ci.org/amro/gibbon)
 
-##Important Notes About Version 0.4.0+
+##Important Notes About Version 0.5.0+
 
+* Supports MailChimp API 2.0 and Export API 1.0
 * Ruby 1.9.x+
 * Errors are now raised by default
 * Timeouts can be specified per request during initialization
-* The environment variable 'MC_API_KEY' no longer works. Please use 'MAILCHIMP_API_KEY' instead.
-* The code has been cleaned up a bit and a few more comments have been added
 
 ##Installation
 
@@ -26,7 +25,7 @@ There are a few ways to use Gibbon:
 
 You can create an instance of the API wrapper:
 
-    gb = Gibbon.new("your_api_key")
+    gb = Gibbon::API.new("your_api_key")
 
 You can set `api_key`, `timeout` and `throws_exceptions` globally:
 
