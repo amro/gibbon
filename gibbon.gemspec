@@ -12,7 +12,8 @@ Gem::Specification.new do |s|
   s.description = %q{A wrapper for MailChimp API 2.0 and Export API 1.0}
   s.license     = "MIT"
 
-  s.post_install_message = "Important: Gibbon versions 0.5.0 and newer include breaking changes for all API calls as it now supports MailChimp API 2.0"
+  s.post_install_message = "IMPORTANT: Gibbon now targets MailChimp API 2.0, which is substantially different from API 1.3.\n \
+                            Please use Gibbon 0.4.6 if you need to use API 1.3.\nIf you're upgrading from <0.5.0 your code WILL break."
   
   s.rubyforge_project = "gibbon"
 
