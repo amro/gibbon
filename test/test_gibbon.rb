@@ -1,6 +1,5 @@
 require 'helper'
 require 'cgi'
-require 'ruby-debug' unless ENV["CI"]
 
 class TestGibbon < Test::Unit::TestCase
 
