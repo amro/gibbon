@@ -156,9 +156,7 @@ of JSON objects rather than a single JSON array.
 
 ##Thanks
 
-Thanks to everyone who's [contributed](https://github.com/amro/gibbon/contributors) to Gibbon's development.
-
-Thanks to Jesse at MailChimp for adding nice stuff in API 2.0 that makes it easier to develop against.
+Thanks to everyone who's [contributed](https://github.com/amro/gibbon/contributors) to Gibbon's development. Major props to Jesse at MailChimp for adding nice stuff in API 2.0 that makes it easier to develop against.
 
 ##Copyright
 
