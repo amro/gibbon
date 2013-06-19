@@ -1,12 +1,12 @@
-require 'gibbon/main'
+require 'gibbon/api'
 
 module Gibbon
-  class Category
+  class APICategory
     include HTTParty
     format :plain
     default_timeout 30
 
-    attr_accessor :category_name, :api_key, :api_endpoint, :timeout, :throws_exceptions
+    attr_accessor :category_name, :api_key, :api_endpoint, :timeout, :throws_exceptions, :default_params
   
     def initialize(category_name)
       set_instance_defaults

@@ -14,7 +14,7 @@ module Gibbon
     end
     
     def method_missing(method, *args)
-      api_category = Category.new(method.to_s)
+      api_category = APICategory.new(method.to_s)
       api_category.api_key = @api_key
       api_category.timeout = @timeout
       api_category.throws_exceptions = @throws_exceptions

@@ -1,5 +1,5 @@
 module Gibbon
-  class Export < Category
+  class Export < APICategory
     def initialize(api_key = nil, default_parameters = {})
       super(api_key, default_parameters)
     end
