@@ -22,6 +22,8 @@ module Gibbon
       api_url = base_api_url + method
       params = @default_params.merge(params).merge({apikey: @api_key})
       response = self.class.post(api_url, body: MultiJson.dump(params), timeout: @timeout)
+      return nil if response.body.nil?
+
       parsed_response = MultiJson.load(response.body)
 
       if should_raise_for_response?(parsed_response)
