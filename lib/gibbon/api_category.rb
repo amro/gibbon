@@ -7,12 +7,13 @@ module Gibbon
     default_timeout 30
 
     attr_accessor :category_name, :api_key, :api_endpoint, :timeout, :throws_exceptions, :default_params
-  
+
     def initialize(category_name, api_key, timeout, throws_exceptions, default_params)
       @category_name = category_name
       @api_key = api_key
       @default_params = default_params
       @timeout = timeout
+      @throws_exceptions = throws_exceptions
 
       set_instance_defaults
     end
@@ -21,6 +22,8 @@ module Gibbon
       api_url = base_api_url + method
       params = @default_params.merge(params).merge({apikey: @api_key})
       response = self.class.post(api_url, body: MultiJson.dump(params), timeout: @timeout)
+      return nil if response.body.nil?
+
       parsed_response = MultiJson.load(response.body)
 
       if should_raise_for_response?(parsed_response)
@@ -31,13 +34,13 @@ module Gibbon
 
       parsed_response
     end
-  
+
     def method_missing(method, *args)
       # To support underscores, we replace them with hyphens when calling the API
       method = method.to_s.gsub("_", "-").downcase
       call("#{@category_name}/#{method}", *args)
     end
-  
+
     def set_instance_defaults
       @timeout = (API.timeout || 30) if @timeout.nil?
       @api_endpoint = API.api_endpoint if @api_endpoint.nil?
@@ -49,7 +52,7 @@ module Gibbon
     def api_key=(value)
       @api_key = value.strip if value
     end
-    
+
     def should_raise_for_response?(response)
       @throws_exceptions && response.is_a?(Hash) && response["error"]
     end
