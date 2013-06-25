@@ -10,9 +10,11 @@ module Gibbon
       @timeout = default_parameters.delete(:timeout)
       @throws_exceptions = default_parameters.delete(:throws_exceptions)
   
-      @default_params = {apikey: @api_key}.merge(default_parameters)
+      @default_params = { apikey: @api_key }.merge(default_parameters)
+
+      set_instance_defaults
     end
-    
+
     def get_exporter
       Export.new(@api_key, @default_params)
     end
@@ -25,7 +27,11 @@ module Gibbon
       attr_accessor :api_key, :timeout, :throws_exceptions, :api_endpoint
 
       def method_missing(sym, *args, &block)
-        new(self.api_key, {api_endpoint: self.api_endpoint, timeout: self.timeout, throws_exceptions: self.throws_exceptions}).send(sym, *args, &block)
+        new(self.api_key, {
+          api_endpoint: self.api_endpoint,
+          timeout: self.timeout,
+          throws_exceptions: self.throws_exceptions
+        }).send(sym, *args, &block)
       end
     end
   end
