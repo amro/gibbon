@@ -54,27 +54,27 @@ class TestGibbon < Test::Unit::TestCase
 
     should "handle empty api key" do
       expect_post(@url, {"apikey" => nil})
-      @gibbon.say_hello
+      @gibbon.say.hello
     end
 
     should "handle malformed api key" do
       @api_key = "123"
       @gibbon.api_key = @api_key
       expect_post(@url, {"apikey" => @api_key})
-      @gibbon.say_hello
+      @gibbon.say.hello
     end
 
     should "handle timeout" do
       expect_post(@url, {"apikey" => nil}, 120)
       @gibbon.timeout=120
-      @gibbon.say_hello
+      @gibbon.say.hello
     end
 
     should "handle api key with dc" do
       @api_key = "TESTKEY-us1"
       @gibbon.api_key = @api_key
       expect_post("https://us1.api.mailchimp.com/1.3/?method=sayHello", {"apikey" => @api_key})
-      @gibbon.say_hello
+      @gibbon.say.hello
     end
 
     # when the end user has signed in via oauth, api_key and endpoint should be supplied separately
@@ -83,10 +83,10 @@ class TestGibbon < Test::Unit::TestCase
       @gibbon.api_key = @api_key
       @gibbon.api_endpoint = "https://us6.api.mailchimp.com"
       expect_post("https://us6.api.mailchimp.com/1.3/?method=sayHello", {"apikey" => @api_key})
-      @gibbon.say_hello      
+      @gibbon.say.hello
     end
   end
-  
+
   context "Gibbon class variables" do
     setup do
       Gibbon::API.api_key = "123-us1"
@@ -94,14 +94,14 @@ class TestGibbon < Test::Unit::TestCase
       Gibbon::API.throws_exceptions = false
       Gibbon::API.api_endpoint = 'https://us6.api.mailchimp.com'
     end
-    
+
     teardown do
       Gibbon::API.api_key = nil
       Gibbon::API.timeout = nil
       Gibbon::API.throws_exceptions = nil
       Gibbon::API.api_endpoint = nil
     end
-    
+
     should "set api key on new instances" do
       assert_equal(Gibbon::API.new.api_key, Gibbon::API.api_key)
     end
@@ -109,7 +109,7 @@ class TestGibbon < Test::Unit::TestCase
     should "set timeout on new instances" do
       assert_equal(Gibbon::API.new.timeout, Gibbon::API.timeout)
     end
-    
+
     should "set throws_exceptions on new instances" do
       assert_equal(Gibbon::API.new.throws_exceptions, Gibbon::API.throws_exceptions)
     end
@@ -131,27 +131,27 @@ class TestGibbon < Test::Unit::TestCase
     should "escape string parameters" do
       @message = "simon says"
       expect_post(@url, @body.merge("message" => CGI::escape(@message)))
-      @gibbon.say_hello(:message => @message)
+      @gibbon.say.hello(:message => @message)
     end
 
     should "escape string parameters in an array" do
       expect_post(@url, @body.merge("messages" => ["simon+says", "do+this"]))
-      @gibbon.say_hello(:messages => ["simon says", "do this"])
+      @gibbon.say.hello(:messages => ["simon says", "do this"])
     end
 
     should "escape string parameters in a hash" do
       expect_post(@url, @body.merge("messages" => {"simon+says" => "do+this"}))
-      @gibbon.say_hello(:messages => {"simon says" => "do this"})
+      @gibbon.say.hello(:messages => {"simon says" => "do this"})
     end
 
     should "escape nested string parameters" do
       expect_post(@url, @body.merge("messages" => {"simon+says" => ["do+this", "and+this"]}))
-      @gibbon.say_hello(:messages => {"simon says" => ["do this", "and this"]})
+      @gibbon.say.hello(:messages => {"simon says" => ["do this", "and this"]})
     end
 
     should "pass through non string parameters" do
       expect_post(@url, @body.merge("fee" => 99))
-      @gibbon.say_hello(:fee => 99)
+      @gibbon.say.hello(:fee => 99)
     end
   end
 
@@ -171,9 +171,9 @@ class TestGibbon < Test::Unit::TestCase
 
     should "not throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = false
-      Gibbon::API.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
+      Gibbon::APICategory.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
       assert_nothing_raised do
-        @gibbon.say_hello
+        @gibbon.say.hello
       end
     end
 
@@ -186,8 +186,8 @@ class TestGibbon < Test::Unit::TestCase
     end
 
     should "not raise exception if the api returns no response body" do
-      Gibbon::API.stubs(:post).returns(Struct.new(:body).new(nil))
-      assert_nil @gibbon.say_hello
+      Gibbon::APICategory.stubs(:post).returns(Struct.new(:body).new(nil))
+      assert_nil @gibbon.say.hello
     end
   end
 
@@ -205,10 +205,10 @@ class TestGibbon < Test::Unit::TestCase
       @gibbon = Gibbon::Export.new(@api_key)
 
       params = {:body => CGI::escape(MultiJson.dump(@body)), :timeout => 30}
-    
+
       url = @url.gsub('us1', 'us2') + "sayHello/"
       Gibbon::Export.expects(:post).with(url, params).returns(@returns)
-      @gibbon.say_hello(@body)
+      @gibbon.say.hello(@body)
     end
 
     should "not throw exception if the Export API replies with a JSON hash containing a key called 'error'" do
@@ -216,7 +216,7 @@ class TestGibbon < Test::Unit::TestCase
       Gibbon::Export.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
 
       assert_nothing_raised do
-        @gibbon.say_hello(@body)
+        @gibbon.say.hello(@body)
       end
     end
 
@@ -227,7 +227,7 @@ class TestGibbon < Test::Unit::TestCase
       Gibbon::Export.stubs(:post).returns reply
 
       assert_raise Gibbon::MailChimpError do
-        @gibbon.say_hello(@body)
+        @gibbon.say.hello(@body)
       end
     end
 
@@ -236,7 +236,7 @@ class TestGibbon < Test::Unit::TestCase
   private
 
   def expect_post(expected_url, expected_body, expected_timeout=30)
-    Gibbon::API.expects(:post).with do |url, opts|
+    Gibbon::APICategory.expects(:post).with do |url, opts|
       url == expected_url &&
       MultiJson.load(URI::decode(opts[:body])) == expected_body &&
       opts[:timeout] == expected_timeout
