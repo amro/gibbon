@@ -13,6 +13,7 @@ module Gibbon
       @api_key = api_key
       @default_params = default_params
       @timeout = timeout
+      @throws_exceptions = throws_exceptions
 
       set_instance_defaults
     end
