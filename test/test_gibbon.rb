@@ -10,30 +10,30 @@ class TestGibbon < Test::Unit::TestCase
     end
 
     should "have no API by default" do
-      @gibbon = Gibbon.new
+      @gibbon = Gibbon::API.new
       assert_equal(nil, @gibbon.api_key)
     end
 
     should "set an API key in constructor" do
-      @gibbon = Gibbon.new(@api_key)
+      @gibbon = Gibbon::API.new(@api_key)
       assert_equal(@api_key, @gibbon.api_key)
     end
 
     should "set an API key from the 'MAILCHIMP_API_KEY' ENV variable" do
       ENV['MAILCHIMP_API_KEY'] = @api_key
-      @gibbon = Gibbon.new
+      @gibbon = Gibbon::API.new
       assert_equal(@api_key, @gibbon.api_key)
       ENV.delete('MAILCHIMP_API_KEY')
     end
 
     should "set an API key via setter" do
-      @gibbon = Gibbon.new
+      @gibbon = Gibbon::API.new
       @gibbon.api_key = @api_key
       assert_equal(@api_key, @gibbon.api_key)
     end
 
     should "set timeout and get" do
-      @gibbon = Gibbon.new
+      @gibbon = Gibbon::API.new
       timeout = 30
       @gibbon.timeout = timeout
       assert_equal(timeout, @gibbon.timeout)
@@ -41,14 +41,14 @@ class TestGibbon < Test::Unit::TestCase
 
     should "detect api endpoint from initializer parameters" do
       api_endpoint = 'https://us6.api.mailchimp.com'
-      @gibbon = Gibbon.new(@api_key, :api_endpoint => api_endpoint)
+      @gibbon = Gibbon::API.new(@api_key, :api_endpoint => api_endpoint)
       assert_equal api_endpoint, @gibbon.api_endpoint
     end
   end
 
   context "build api url" do
     setup do
-      @gibbon = Gibbon.new
+      @gibbon = Gibbon::API.new
       @url = "https://api.mailchimp.com/1.3/?method=sayHello"
     end
 
@@ -89,41 +89,41 @@ class TestGibbon < Test::Unit::TestCase
   
   context "Gibbon class variables" do
     setup do
-      Gibbon.api_key = "123-us1"
-      Gibbon.timeout = 15
-      Gibbon.throws_exceptions = false
-      Gibbon.api_endpoint = 'https://us6.api.mailchimp.com'
+      Gibbon::API.api_key = "123-us1"
+      Gibbon::API.timeout = 15
+      Gibbon::API.throws_exceptions = false
+      Gibbon::API.api_endpoint = 'https://us6.api.mailchimp.com'
     end
     
     teardown do
-      Gibbon.api_key = nil
-      Gibbon.timeout = nil
-      Gibbon.throws_exceptions = nil
-      Gibbon.api_endpoint = nil
+      Gibbon::API.api_key = nil
+      Gibbon::API.timeout = nil
+      Gibbon::API.throws_exceptions = nil
+      Gibbon::API.api_endpoint = nil
     end
     
     should "set api key on new instances" do
-      assert_equal(Gibbon.new.api_key, Gibbon.api_key)
+      assert_equal(Gibbon::API.new.api_key, Gibbon::API.api_key)
     end
 
     should "set timeout on new instances" do
-      assert_equal(Gibbon.new.timeout, Gibbon.timeout)
+      assert_equal(Gibbon::API.new.timeout, Gibbon::API.timeout)
     end
     
     should "set throws_exceptions on new instances" do
-      assert_equal(Gibbon.new.throws_exceptions, Gibbon.throws_exceptions)
+      assert_equal(Gibbon::API.new.throws_exceptions, Gibbon::API.throws_exceptions)
     end
 
     should "set api_endpoint on new instances" do
-      assert Gibbon.api_endpoint
-      assert_equal(Gibbon.new.api_endpoint, Gibbon.api_endpoint)
+      assert Gibbon::API.api_endpoint
+      assert_equal(Gibbon::API.new.api_endpoint, Gibbon::API.api_endpoint)
     end
   end
 
   context "build api body" do
     setup do
       @key = "TESTKEY-us1"
-      @gibbon = Gibbon.new(@key)
+      @gibbon = Gibbon::API.new(@key)
       @url = "https://us1.api.mailchimp.com/1.3/?method=sayHello"
       @body = {"apikey" => @key}
     end
@@ -158,7 +158,7 @@ class TestGibbon < Test::Unit::TestCase
   context "Gibbon instances" do
     setup do
       @key = "TESTKEY-us1"
-      @gibbon = Gibbon.new(@key)
+      @gibbon = Gibbon::API.new(@key)
       @url = "https://us1.api.mailchimp.com/1.3/?method=sayHello"
       @body = {"apikey" => @key}
       @returns = Struct.new(:body).new(MultiJson.dump(["array", "entries"]))
@@ -171,7 +171,7 @@ class TestGibbon < Test::Unit::TestCase
 
     should "not throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = false
-      Gibbon.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
+      Gibbon::API.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
       assert_nothing_raised do
         @gibbon.say_hello
       end
@@ -179,14 +179,14 @@ class TestGibbon < Test::Unit::TestCase
 
     should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
-      Gibbon.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
+      Gibbon::API.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
       assert_raise Gibbon::MailChimpError do
         @gibbon.say_hello
       end
     end
     
     should "not raise exception if the api returns no response body" do
-      Gibbon.stubs(:post).returns(Struct.new(:body).new(nil))
+      Gibbon::API.stubs(:post).returns(Struct.new(:body).new(nil))
       assert_nil @gibbon.say_hello
     end
   end
@@ -194,7 +194,7 @@ class TestGibbon < Test::Unit::TestCase
   context "export API" do
     setup do
       @key = "TESTKEY-us1"
-      @gibbon = GibbonExport.new(@key)
+      @gibbon = Gibbon::Export.new(@key)
       @url = "http://us1.api.mailchimp.com/export/1.0/"
       @body = {:apikey => @key, :id => "listid"}
       @returns = Struct.new(:body).new(MultiJson.dump(["array", "entries"]))
@@ -202,18 +202,18 @@ class TestGibbon < Test::Unit::TestCase
 
     should "handle api key with dc" do
       @api_key = "TESTKEY-us2"
-      @gibbon = GibbonExport.new(@api_key)
+      @gibbon = Gibbon::Export.new(@api_key)
 
       params = {:body => CGI::escape(MultiJson.dump(@body)), :timeout => 30}
     
       url = @url.gsub('us1', 'us2') + "sayHello/"
-      GibbonExport.expects(:post).with(url, params).returns(@returns)
+      Gibbon::Export.expects(:post).with(url, params).returns(@returns)
       @gibbon.say_hello(@body)
     end
 
     should "not throw exception if the Export API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = false
-      GibbonExport.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
+      Gibbon::Export.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
 
       assert_nothing_raised do
         @gibbon.say_hello(@body)
@@ -223,7 +223,8 @@ class TestGibbon < Test::Unit::TestCase
     should "throw exception if configured to and the Export API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
       params = {:body => @body, :timeout => 30}
-      GibbonExport.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things', 'code' => '123'})))
+      reply = Struct.new(:body).new MultiJson.dump({'error' => 'bad things', 'code' => '123'})
+      Gibbon::Export.stubs(:post).returns reply
 
       assert_raise Gibbon::MailChimpError do
         @gibbon.say_hello(@body)
@@ -235,7 +236,7 @@ class TestGibbon < Test::Unit::TestCase
   private
 
   def expect_post(expected_url, expected_body, expected_timeout=30)
-    Gibbon.expects(:post).with do |url, opts|
+    Gibbon::API.expects(:post).with do |url, opts|
       url == expected_url &&
       MultiJson.load(URI::decode(opts[:body])) == expected_body &&
       opts[:timeout] == expected_timeout
