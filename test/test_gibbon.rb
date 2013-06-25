@@ -179,12 +179,12 @@ class TestGibbon < Test::Unit::TestCase
 
     should "throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
-      Gibbon::API.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
+      Gibbon::APICategory.stubs(:post).returns(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
       assert_raise Gibbon::MailChimpError do
-        @gibbon.say_hello
+        @gibbon.say.hello
       end
     end
-    
+
     should "not raise exception if the api returns no response body" do
       Gibbon::API.stubs(:post).returns(Struct.new(:body).new(nil))
       assert_nil @gibbon.say_hello
