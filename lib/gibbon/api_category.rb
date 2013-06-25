@@ -7,7 +7,7 @@ module Gibbon
     default_timeout 30
 
     attr_accessor :category_name, :api_key, :api_endpoint, :timeout, :throws_exceptions, :default_params
-  
+
     def initialize(category_name, api_key, timeout, throws_exceptions, default_params)
       @category_name = category_name
       @api_key = api_key
@@ -32,13 +32,13 @@ module Gibbon
 
       parsed_response
     end
-  
+
     def method_missing(method, *args)
       # To support underscores, we replace them with hyphens when calling the API
       method = method.to_s.gsub("_", "-").downcase
       call("#{@category_name}/#{method}", *args)
     end
-  
+
     def set_instance_defaults
       @timeout = (API.timeout || 30) if @timeout.nil?
       @api_endpoint = API.api_endpoint if @api_endpoint.nil?
@@ -50,7 +50,7 @@ module Gibbon
     def api_key=(value)
       @api_key = value.strip if value
     end
-    
+
     def should_raise_for_response?(response)
       @throws_exceptions && response.is_a?(Hash) && response["error"]
     end
