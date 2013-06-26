@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.post_install_message = "IMPORTANT: Gibbon now targets MailChimp API 2.0, which is substantially different from API 1.3.\n \
                             Please use Gibbon 0.4.6 if you need to use API 1.3.\nIf you're upgrading from <0.5.0 your code WILL break."
-  
+
   s.rubyforge_project = "gibbon"
 
   s.files         = `git ls-files`.split("\n")
@@ -25,9 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency('httparty')
   s.add_dependency('multi_json', '>= 1.3.4')
 
-  s.add_development_dependency('rake')
-  s.add_development_dependency('shoulda')
-  s.add_development_dependency('mocha')
-  s.add_development_dependency('minitest', '3.5.0')
-  
+  s.add_development_dependency 'rake'
+  s.add_development_dependency "rspec", "~> 2.13.0"
+
 end

@@ -1,10 +1,10 @@
-require 'rake/testtask'
-require 'bundler/gem_tasks'
+require 'rubygems'
+require 'rspec/core/rake_task'
+require 'rubygems/specification'
 
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/test_*.rb'
-  test.verbose = true
+task :default => :spec
+desc "Run specs"
+RSpec::Core::RakeTask.new do |t|
+  t.pattern = FileList['spec/**/*_spec.rb']
+  t.rspec_opts = %w(-fs --color)
 end
-
-task default: [:test]
