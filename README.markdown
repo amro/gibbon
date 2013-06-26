@@ -93,7 +93,7 @@ List unsubscribed members for a list
 
 Subscribe a member to a list:
 
-    gb.lists.subscribe({:id => list_id, :email_address => "email_address", :merge_vars => {:FNAME => "First Name", :LNAME => "Last Name"}})
+    gb.lists.subscribe({:id => list_id, :email => {:email => 'email_address'}, :merge_vars => {:FNAME => 'First Name', :LNAME => 'Last Name'}, :double_optin => false})
 
 > Note: This will send a welcome email to the new subscriber
 
