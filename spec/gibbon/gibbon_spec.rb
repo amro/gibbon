@@ -128,24 +128,24 @@ describe Gibbon do
       @body = {"apikey" => @key}
     end
 
-    it "escape string parameters" do
+    it "works for string parameters" do
       @message = "simon says"
-      expect_post(@url, @body.merge("message" => CGI::escape(@message)))
+      expect_post(@url, @body.merge("message" => @message))
       @gibbon.say.hello(:message => @message)
     end
 
-    it "escape string parameters in an array" do
-      expect_post(@url, @body.merge("messages" => ["simon+says", "do+this"]))
+    it "works for string parameters in an array" do
+      expect_post(@url, @body.merge("messages" => ["simon says", "do this"]))
       @gibbon.say.hello(:messages => ["simon says", "do this"])
     end
 
-    it "escape string parameters in a hash" do
-      expect_post(@url, @body.merge("messages" => {"simon+says" => "do+this"}))
+    it "works for string parameters in a hash" do
+      expect_post(@url, @body.merge("messages" => {"simon says" => "do this"}))
       @gibbon.say.hello(:messages => {"simon says" => "do this"})
     end
 
-    it "escape nested string parameters" do
-      expect_post(@url, @body.merge("messages" => {"simon+says" => ["do+this", "and+this"]}))
+    it "works for nested string parameters" do
+      expect_post(@url, @body.merge("messages" => {"simon says" => ["do this", "and this"]}))
       @gibbon.say.hello(:messages => {"simon says" => ["do this", "and this"]})
     end
 
@@ -203,7 +203,7 @@ describe Gibbon do
       @api_key = "TESTKEY-us2"
       @gibbon = Gibbon::Export.new(@api_key)
 
-      params = {:body => CGI::escape(MultiJson.dump(@body)), :timeout => 30}
+      params = {:body => MultiJson.dump(@body), :timeout => 30}
 
       url = @url.gsub('us1', 'us2') + "sayHello/"
       Gibbon::Export.should_receive(:post).with(url, params).and_return(@returns)

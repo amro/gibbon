@@ -8,9 +8,10 @@ module Gibbon
 
     attr_accessor :category_name, :api_key, :api_endpoint, :timeout, :throws_exceptions, :default_params
 
-    def initialize(category_name, api_key, timeout, throws_exceptions, default_params)
+    def initialize(category_name, api_key, api_endpoint, timeout, throws_exceptions, default_params)
       @category_name = category_name
       @api_key = api_key
+      @api_endpoint = api_endpoint
       @default_params = default_params
       @timeout = timeout
       @throws_exceptions = throws_exceptions
