@@ -1,3 +1,6 @@
+#Important: This doc is for an unreleased version (0.5.x!). Documentaitoncurrent release (0.4.x) can be seen [here](https://github.com/amro/gibbon/tree/832c4ea36a995330f601f7f3486a5bff2c713442).
+
+
 # gibbon
 
 Gibbon is an API wrapper for MailChimp's [Primary and Export APIs](http://www.mailchimp.com/api).
