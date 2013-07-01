@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'rspec/core/rake_task'
 require 'rubygems/specification'
+require 'bundler/gem_tasks'
 
 task :default => :spec
 desc "Run specs"
