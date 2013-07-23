@@ -1,6 +1,6 @@
 module Gibbon
   class Export < APICategory
-
+    
     def initialize(api_key = nil, default_params = {})
       @api_key = api_key
       @default_params = default_params
@@ -32,14 +32,11 @@ module Gibbon
 
       lines
     end
-    
+        
     def set_instance_defaults
       super
       @api_key = self.class.api_key if @api_key.nil?
-      @timeout = (self.class.timeout || 30) if @timeout.nil?
-      # Two lines because the class variable could be false and (false || true) is always true
-      @throws_exceptions = self.class.throws_exceptions if @throws_exceptions.nil?
-      @throws_exceptions = true if @throws_exceptions.nil?
+      @timeout = self.class.timeout if @timeout.nil?
     end
 
     def method_missing(method, *args)

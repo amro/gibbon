@@ -203,18 +203,19 @@ describe Gibbon do
       @api_key = "TESTKEY-us2"
       @gibbon = Gibbon::Export.new(@api_key)
 
+      @body[:apikey] = @api_key
       params = {:body => MultiJson.dump(@body), :timeout => 30}
 
       url = @url.gsub('us1', 'us2') + "sayHello/"
       Gibbon::Export.should_receive(:post).with(url, params).and_return(@returns)
-      @gibbon.say.hello(@body)
+      @gibbon.say_hello(@body)
     end
 
     it "not throw exception if the Export API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = false
       Gibbon::Export.stub(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
 
-      @gibbon.say.hello(@body)
+      @gibbon.say_hello(@body)
     end
 
     it "throw exception if configured to and the Export API replies with a JSON hash containing a key called 'error'" do
@@ -224,7 +225,7 @@ describe Gibbon do
       Gibbon::Export.stub(:post).and_return reply
 
       expect(->{
-        @gibbon.say.hello(@body)
+        @gibbon.say_hello(@body)
       }).to raise_error(Gibbon::MailChimpError)
     end
 

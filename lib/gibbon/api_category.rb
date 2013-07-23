@@ -7,14 +7,14 @@ module Gibbon
     default_timeout 30
 
     attr_accessor :category_name, :api_key, :api_endpoint, :timeout, :throws_exceptions, :default_params
-
-    def initialize(category_name, api_key, api_endpoint, timeout, throws_exceptions, default_params)
+  
+    def initialize(category_name, api_key, timeout, throws_exceptions, api_endpoint, default_params)
       @category_name = category_name
       @api_key = api_key
       @api_endpoint = api_endpoint
       @default_params = default_params
-      @timeout = timeout
       @throws_exceptions = throws_exceptions
+      @timeout = timeout
 
       set_instance_defaults
     end
@@ -23,27 +23,30 @@ module Gibbon
       api_url = base_api_url + method
       params = @default_params.merge(params).merge({apikey: @api_key})
       response = self.class.post(api_url, body: MultiJson.dump(params), timeout: @timeout)
-      return nil if response.body.nil?
-      parsed_response = MultiJson.load(response.body)
+      
+      parsed_response = nil
+      
+      if (response.body)
+        parsed_response = MultiJson.load(response.body)
 
-      if should_raise_for_response?(parsed_response)
-        error = MailChimpError.new("MailChimp API Error: #{parsed_response["error"]} (code #{parsed_response["code"]})")
-        error.code = parsed_response["code"]
-        raise error
+        if should_raise_for_response?(parsed_response)
+          error = MailChimpError.new("MailChimp API Error: #{parsed_response["error"]} (code #{parsed_response["code"]})")
+          error.code = parsed_response["code"]
+          raise error
+        end
       end
 
       parsed_response
     end
-
+  
     def method_missing(method, *args)
       # To support underscores, we replace them with hyphens when calling the API
       method = method.to_s.gsub("_", "-").downcase
       call("#{@category_name}/#{method}", *args)
     end
-
+  
     def set_instance_defaults
       @timeout = (API.timeout || 30) if @timeout.nil?
-      @api_endpoint = API.api_endpoint if @api_endpoint.nil?
       # Two lines because the class variable could be false and (false || true) is always true
       @throws_exceptions = API.throws_exceptions if @throws_exceptions.nil?
       @throws_exceptions = true if @throws_exceptions.nil?
@@ -52,7 +55,7 @@ module Gibbon
     def api_key=(value)
       @api_key = value.strip if value
     end
-
+    
     def should_raise_for_response?(response)
       @throws_exceptions && response.is_a?(Hash) && response["error"]
     end
