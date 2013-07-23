@@ -123,7 +123,7 @@ Gibbon defaults to a 30 second timeout. You can optionally set your own timeout 
 
 or
 
-		gb.timeout = 5
+    gb.timeout = 5
 
 ### Error handling
 
