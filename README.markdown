@@ -110,6 +110,12 @@ Fetch recipients who opened particular campaign:
 
     email_stats = gb.reports.opened({:cid => campaign_id})
 
+or
+
+Create a campaign:
+
+    gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: "Gibbon is cool", from_email: "you@example.com", from_name: "Darth Vader", generate_text: true}, content: {html: "<html><head></head><body><h1>Foo</h1><p>Bar</p></body></html>"}})
+
 Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](http://apidocs.mailchimp.com/oauth2/)):
 
     Gibbon::API.api_endpoint = "https://us1.api.mailchimp.com"
