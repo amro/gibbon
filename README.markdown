@@ -1,13 +1,10 @@
-#Important: This doc is for an unreleased version (0.5.x!). Documentaitoncurrent release (0.4.x) can be seen [here](https://github.com/amro/gibbon/tree/832c4ea36a995330f601f7f3486a5bff2c713442).
-
-
 # gibbon
 
 Gibbon is an API wrapper for MailChimp's [Primary and Export APIs](http://www.mailchimp.com/api).
 
 [![Build Status](https://secure.travis-ci.org/amro/gibbon.png)](http://travis-ci.org/amro/gibbon)
 
-##Important Notes About Version 0.5.0+
+##Important Notes About Version 0.5.0+ (it's different!)
 
 Gibbon now targets MailChimp API 2.0, which is substantially different from API 1.3. Please use Gibbon 0.4.6 if you need to use API 1.3.
 
@@ -121,7 +118,7 @@ Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and h
 
 Gibbon defaults to a 30 second timeout. You can optionally set your own timeout (in seconds) like so:
 
-    gb = Gibbon.new("your_api_key", {:timeout => 5})
+    gb = Gibbon::API.new("your_api_key", {:timeout => 5})
 
 or
 
@@ -152,10 +149,14 @@ or you can construct a new object directly:
 
     gibbon_export = Gibbon::Export.new("your_api_key")
 
-Calling Export API functions is identical to making standard API calls but the
+Making calls to Export API endpoints is similar to making standard API calls but the
 return value is an Enumerator which loops over the lines returned from the
-Export API.  This is because the data returned from the Export API is a stream
+Export API. This is because the data returned from the Export API is a stream
 of JSON objects rather than a single JSON array.
+
+For example, dumping list members via the "list" method works like this:
+
+    gibbon_export.list({id => list_id})
 
 ##Thanks
 
