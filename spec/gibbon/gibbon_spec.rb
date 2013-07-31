@@ -44,6 +44,11 @@ describe Gibbon do
       @gibbon = Gibbon::API.new(@api_key, :api_endpoint => api_endpoint)
       expect(api_endpoint).to eq(@gibbon.api_endpoint)
     end
+
+    it "sets the 'throws_exceptions' option from initializer parameters" do
+      @gibbon = Gibbon::API.new(@api_key, :throws_exceptions => false)
+      expect(false).to eq(@gibbon.throws_exceptions)
+    end
   end
 
   describe "build api url" do
