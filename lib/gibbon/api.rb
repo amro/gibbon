@@ -8,7 +8,7 @@ module Gibbon
 
       @api_endpoint = default_parameters.delete(:api_endpoint) || self.class.api_endpoint
       @timeout = default_parameters.delete(:timeout) || self.class.timeout
-      @throws_exceptions = default_parameters.delete(:throws_exceptions) || self.class.throws_exceptions
+      @throws_exceptions = default_parameters.has_key?(:throws_exceptions) ? default_parameters.delete(:throws_exceptions) : self.class.throws_exceptions
   
       @default_params = {apikey: @api_key}.merge(default_parameters)
     end
