@@ -80,7 +80,7 @@ Or, to fetch a list by name:
 
 Getting batch member information for subscribers looks like this:
 
-    info = gb.lists.member_info({:id => list_id, :email_address => email_array})
+    info = gb.lists.member_info({:id => list_id, :emails => email_array})
 
 List subscribers for a list:
 
