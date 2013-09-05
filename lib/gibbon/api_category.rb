@@ -36,6 +36,7 @@ module Gibbon
         end
       end
 
+      parsed_response["status_code"] = response.code
       parsed_response
     end
   
