@@ -57,28 +57,35 @@ describe Gibbon do
       @url = "https://api.mailchimp.com/2.0/say/hello"
     end
 
+    #HTTP/1.1 500 Internal Server Error
     it "handle empty api key" do
-      expect_post(@url, {"apikey" => nil})
+      expect_post_internal_error(@url, {"apikey" => nil})
       @gibbon.say.hello
     end
 
+    #HTTP/1.1 500 Internal Server Error
     it "handle malformed api key" do
       @api_key = "123"
       @gibbon.api_key = @api_key
-      expect_post(@url, {"apikey" => @api_key})
+      expect_post_internal_error(@url, {"apikey" => @api_key})
       @gibbon.say.hello
     end
 
+    #TODO - handle actual timeout and raise appropriate exceptions
     it "handle timeout" do
-      expect_post(@url, {"apikey" => nil}, 120)
-      @gibbon.timeout=120
-      @gibbon.say.hello
+      expect_post_internal_error(@url, {"apikey" => nil}, 0.5)
+      @gibbon.timeout=0.5
+      #expect(->{
+        @gibbon.say.hello
+      #}).to raise_error(Net::OpenTimeout)
     end
 
+
+    #HTTP/1.1 500 Internal Server Error
     it "handle api key with dc" do
       @api_key = "TESTKEY-us1"
       @gibbon.api_key = @api_key
-      expect_post("https://us1.api.mailchimp.com/2.0/say/hello", {"apikey" => @api_key})
+      expect_post_success("https://us1.api.mailchimp.com/2.0/say/hello", {"apikey" => @api_key})
       @gibbon.say.hello
     end
 
@@ -87,7 +94,7 @@ describe Gibbon do
       @api_key = "TESTKEY"
       @gibbon.api_key = @api_key
       @gibbon.api_endpoint = "https://us6.api.mailchimp.com"
-      expect_post("https://us6.api.mailchimp.com/2.0/say/hello", {"apikey" => @api_key})
+      expect_post_success("https://us6.api.mailchimp.com/2.0/say/hello", {"apikey" => @api_key})
       @gibbon.say.hello
     end
   end
@@ -135,27 +142,27 @@ describe Gibbon do
 
     it "works for string parameters" do
       @message = "simon says"
-      expect_post(@url, @body.merge("message" => @message))
+      expect_post_success(@url, @body.merge("message" => @message))
       @gibbon.say.hello(:message => @message)
     end
 
     it "works for string parameters in an array" do
-      expect_post(@url, @body.merge("messages" => ["simon says", "do this"]))
+      expect_post_success(@url, @body.merge("messages" => ["simon says", "do this"]))
       @gibbon.say.hello(:messages => ["simon says", "do this"])
     end
 
     it "works for string parameters in a hash" do
-      expect_post(@url, @body.merge("messages" => {"simon says" => "do this"}))
+      expect_post_success(@url, @body.merge("messages" => {"simon says" => "do this"}))
       @gibbon.say.hello(:messages => {"simon says" => "do this"})
     end
 
     it "works for nested string parameters" do
-      expect_post(@url, @body.merge("messages" => {"simon says" => ["do this", "and this"]}))
+      expect_post_success(@url, @body.merge("messages" => {"simon says" => ["do this", "and this"]}))
       @gibbon.say.hello(:messages => {"simon says" => ["do this", "and this"]})
     end
 
     it "pass through non string parameters" do
-      expect_post(@url, @body.merge("fee" => 99))
+      expect_post_success(@url, @body.merge("fee" => 99))
       @gibbon.say.hello(:fee => 99)
     end
   end
@@ -174,16 +181,18 @@ describe Gibbon do
       expect(@exporter.api_key).to eq(@gibbon.api_key)
     end
 
+    # returns a HTTP/1.1 500 Internal Server Error as the servers can't process the request along with a
+    # JSON hash giving detailed error information
     it "not throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = false
-      Gibbon::APICategory.stub(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
+      Gibbon::APICategory.stub(:post).and_return(Struct.new(:body, :code).new(MultiJson.dump({'error' => 'bad things'}), "500"))
 
       @gibbon.say.hello
     end
 
     it "throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
-      Gibbon::APICategory.stub(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
+      Gibbon::APICategory.stub(:post).and_return(Struct.new(:body, :code).new(MultiJson.dump({'error' => 'bad things'}), "500"))
       expect(->{
         @gibbon.say.hello
       }).to raise_error(Gibbon::MailChimpError)
@@ -238,12 +247,20 @@ describe Gibbon do
 
   private
 
-  def expect_post(expected_url, expected_body, expected_timeout=30)
+  def expect_post_success(expected_url, expected_body, expected_timeout=30)
     Gibbon::APICategory.should_receive(:post).with do |url, opts|
       expect(url).to            eq expected_url
       expect(expected_body).to  eq MultiJson.load(URI::decode(opts[:body]))
       expect(opts[:timeout]).to eq expected_timeout
-    end.and_return(Struct.new(:body).new("[]"))
+    end.and_return(Struct.new(:body, :code).new(MultiJson.dump({}), "200"))
+  end
+
+  def expect_post_internal_error(expected_url, expected_body, expected_timeout=30)
+    Gibbon::APICategory.should_receive(:post).with do |url, opts|
+      expect(url).to            eq expected_url
+      expect(expected_body).to  eq MultiJson.load(URI::decode(opts[:body]))
+      expect(opts[:timeout]).to eq expected_timeout
+    end.and_return(Struct.new(:body, :code).new(MultiJson.dump({}), "500"))
   end
 
   # def expect_post(expected_url, expected_body, expected_timeout=30)
