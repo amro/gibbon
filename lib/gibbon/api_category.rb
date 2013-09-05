@@ -34,9 +34,10 @@ module Gibbon
           error.code = parsed_response["code"]
           raise error
         end
+        parsed_response["status_code"] = response.code
+
       end
 
-      parsed_response["status_code"] = response.code
       parsed_response
     end
   
