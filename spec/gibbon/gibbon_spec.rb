@@ -193,6 +193,11 @@ describe Gibbon do
       Gibbon::APICategory.stub(:post).and_return(Struct.new(:body).new(nil))
       expect(@gibbon.say.hello).to be_nil
     end
+    
+    it "can send a campaign" do
+      Gibbon::APICategory.stub(:post).and_return(Struct.new(:body).new(MultiJson.dump({"cid" => "1234567"})))
+      expect(@gibbon.campaigns.send({"cid" => "1234567"})).to eq({"cid" => "1234567"})
+    end
   end
 
   describe "export API" do
