@@ -44,6 +44,14 @@ module Gibbon
       method = method.to_s.gsub("_", "-").downcase
       call("#{@category_name}/#{method}", *args)
     end
+    
+    def send(*args)
+      if ((args.length > 0) && args[0].is_a?(Hash))
+        method_missing(:send, args[0])
+      else
+        __send__(args)
+      end
+    end
   
     def set_instance_defaults
       @timeout = (API.timeout || 30) if @timeout.nil?
