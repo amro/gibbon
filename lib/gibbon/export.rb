@@ -1,6 +1,6 @@
 module Gibbon
   class Export < APICategory
-    
+
     def initialize(api_key = nil, default_params = {})
       @api_key = api_key
       @default_params = default_params
@@ -16,13 +16,13 @@ module Gibbon
 
     def call(method, params = {})
       api_url = export_api_url + method + "/"
-      params = @default_params.merge(params).merge({apikey: @api_key})
-      response = self.class.post(api_url, body: MultiJson.dump(params), timeout: @timeout)
+      params = @default_params.merge(params).merge({:apikey => @api_key})
+      response = self.class.post(api_url, :body => MultiJson.dump(params), :timeout => @timeout)
 
       lines = response.body.lines
       if @throws_exceptions
         first_line = MultiJson.load(lines.first) if lines.first
-    
+
         if should_raise_for_response?(first_line)
           error = MailChimpError.new("MailChimp Export API Error: #{first_line["error"]} (code #{first_line["code"]})")
           error.code = first_line["code"]
@@ -32,7 +32,7 @@ module Gibbon
 
       lines
     end
-        
+
     def set_instance_defaults
       super
       @api_key = self.class.api_key if @api_key.nil?
@@ -57,7 +57,7 @@ module Gibbon
       attr_accessor :api_key, :timeout, :throws_exceptions
 
       def method_missing(sym, *args, &block)
-        new(self.api_key, {timeout: self.timeout, throws_exceptions: self.throws_exceptions}).send(sym, *args, &block)
+        new(self.api_key, {:timeout => self.timeout, :throws_exceptions => self.throws_exceptions}).send(sym, *args, &block)
       end
     end
   end

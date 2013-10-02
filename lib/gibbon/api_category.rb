@@ -7,7 +7,7 @@ module Gibbon
     default_timeout 30
 
     attr_accessor :category_name, :api_key, :api_endpoint, :timeout, :throws_exceptions, :default_params
-  
+
     def initialize(category_name, api_key, timeout, throws_exceptions, api_endpoint, default_params)
       @category_name = category_name
       @api_key = api_key
@@ -21,11 +21,11 @@ module Gibbon
 
     def call(method, params = {})
       api_url = base_api_url + method
-      params = @default_params.merge(params).merge({apikey: @api_key})
-      response = self.class.post(api_url, body: MultiJson.dump(params), timeout: @timeout)
-      
+      params = @default_params.merge(params).merge({:apikey => @api_key})
+      response = self.class.post(api_url, :body => MultiJson.dump(params), :timeout => @timeout)
+
       parsed_response = nil
-      
+
       if (response.body)
         parsed_response = MultiJson.load(response.body)
 
@@ -38,13 +38,13 @@ module Gibbon
 
       parsed_response
     end
-  
+
     def method_missing(method, *args)
       # To support underscores, we replace them with hyphens when calling the API
       method = method.to_s.gsub("_", "-").downcase
       call("#{@category_name}/#{method}", *args)
     end
-    
+
     def send(*args)
       if ((args.length > 0) && args[0].is_a?(Hash))
         method_missing(:send, args[0])
@@ -52,7 +52,7 @@ module Gibbon
         __send__(args)
       end
     end
-  
+
     def set_instance_defaults
       @timeout = (API.timeout || 30) if @timeout.nil?
       # Two lines because the class variable could be false and (false || true) is always true
@@ -63,7 +63,7 @@ module Gibbon
     def api_key=(value)
       @api_key = value.strip if value
     end
-    
+
     def should_raise_for_response?(response)
       @throws_exceptions && response.is_a?(Hash) && response["error"]
     end
