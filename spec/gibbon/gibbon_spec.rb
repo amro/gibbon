@@ -184,16 +184,14 @@ describe Gibbon do
     it "throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
       Gibbon::APICategory.stub(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
-      expect(->{
-        @gibbon.say.hello
-      }).to raise_error(Gibbon::MailChimpError)
+      expect {@gibbon.say.hello}.to raise_error(Gibbon::MailChimpError)
     end
 
     it "not raise exception if the api returns no response body" do
       Gibbon::APICategory.stub(:post).and_return(Struct.new(:body).new(nil))
       expect(@gibbon.say.hello).to be_nil
     end
-    
+
     it "can send a campaign" do
       Gibbon::APICategory.stub(:post).and_return(Struct.new(:body).new(MultiJson.dump({"cid" => "1234567"})))
       expect(@gibbon.campaigns.send({"cid" => "1234567"})).to eq({"cid" => "1234567"})
@@ -234,9 +232,7 @@ describe Gibbon do
       reply = Struct.new(:body).new MultiJson.dump({'error' => 'bad things', 'code' => '123'})
       Gibbon::Export.stub(:post).and_return reply
 
-      expect(->{
-        @gibbon.say_hello(@body)
-      }).to raise_error(Gibbon::MailChimpError)
+      expect {@gibbon.say_hello(@body)}.to raise_error(Gibbon::MailChimpError)
     end
 
   end
