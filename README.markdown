@@ -112,6 +112,12 @@ If you want to update the existing members you need to send the boolean update_e
     
 > On :EMAIL you can send the :euid (the unique id for an email address) or the :leid (the list email id) too, instead :email.
 
+You can also unsubscribe a member from a list:
+
+    gb.lists.unsubscribe(:id => list_id, :email => {:email => "user_email"}, :delete_member => true, :send_notify => true)
+    
+> Note: :delete_member defaults to false, meaning the member stays on your mailchimp list as "unsubscribed".  See [Api Docs](http://apidocs.mailchimp.com/api/2.0/lists/unsubscribe.php) for details of options.    
+ 
 Fetch recipients who opened particular campaign:
 
     email_stats = gb.reports.opened({:cid => campaign_id})
