@@ -180,7 +180,7 @@ For example, dumping list members via the "list" method works like this:
 
 ##Thanks
 
-Thanks to everyone who's [contributed](https://github.com/amro/gibbon/contributors) to Gibbon's development. Major props to The Viking for making MailChimp API 2.0 so much easier to program against.
+Thanks to everyone who's [contributed](https://github.com/amro/gibbon/contributors) to Gibbon's development. Major props to The Viking for making MailChimp API 2.0 great.
 
 ##Copyright
 
