@@ -165,6 +165,12 @@ describe Gibbon do
       @gibbon.say.hello(:messages => 'Simon says', :headers => {'Accept-Language' => 'en'} )
     end
     
+    it "with http headers not set" do
+      @gibbon.timeout=30
+      expect_post(@url, @body.merge("messages" => 'Simon says'), @gibbon.timeout, {})
+      @gibbon.say.hello(:messages => 'Simon says' )
+    end
+    
   end
 
   describe "Gibbon instances" do
