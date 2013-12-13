@@ -158,6 +158,19 @@ describe Gibbon do
       expect_post(@url, @body.merge("fee" => 99))
       @gibbon.say.hello(:fee => 99)
     end
+    
+    it "pass through http header settings" do
+      @gibbon.timeout=30
+      expect_post(@url, @body.merge("messages" => 'Simon says'), @gibbon.timeout, {'Accept-Language' => 'en'})
+      @gibbon.say.hello(:messages => 'Simon says', :headers => {'Accept-Language' => 'en'} )
+    end
+    
+    it "with http headers not set" do
+      @gibbon.timeout=30
+      expect_post(@url, @body.merge("messages" => 'Simon says'), @gibbon.timeout, {})
+      @gibbon.say.hello(:messages => 'Simon says' )
+    end
+    
   end
 
   describe "Gibbon instances" do
@@ -239,11 +252,12 @@ describe Gibbon do
 
   private
 
-  def expect_post(expected_url, expected_body, expected_timeout=30)
+  def expect_post(expected_url, expected_body, expected_timeout=30, expected_headers={})
     Gibbon::APICategory.should_receive(:post).with do |url, opts|
       expect(url).to            eq expected_url
       expect(expected_body).to  eq MultiJson.load(URI::decode(opts[:body]))
       expect(opts[:timeout]).to eq expected_timeout
+      expect(opts[:headers]).to eq expected_headers
     end.and_return(Struct.new(:body).new("[]"))
   end
 
