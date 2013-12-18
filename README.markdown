@@ -110,7 +110,7 @@ If you want to update the existing members you need to send the boolean update_e
 
     gb.lists.batch_subscribe(:id => list_id, :batch => [{:email => {:email => "email1"}, :merge_vars => {:FNAME => "FirstName1", :LNAME => "LastName1"}}], :update_existing => true)
     
-> The `email` hash can also accept either a unique email id or a list email id. Please see the [lists/batch-subscribe](http://apidocs.mailchimp.com/api/2.0/lists/batch-subscribe.php) documentation for more information.
+> Note: The `email` hash can also accept either a unique email id or a list email id. Please see the [lists/batch-subscribe](http://apidocs.mailchimp.com/api/2.0/lists/batch-subscribe.php) documentation for more information.
 
 You can also unsubscribe a member from a list:
 
