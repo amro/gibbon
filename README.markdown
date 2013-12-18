@@ -102,13 +102,13 @@ or
 
 Batch subscribe members to a list:
 
-    gb.lists.batch_subscribe(:id => list_id, :batch => [{:EMAIL => {:email => "email1"}, :FNAME => "FirstName1", :LNAME => "LastName1"},{:EMAIL => {:email =>"email2"}, :FNAME => "FirstName2", :LNAME => "LastName2"}])
+    gb.lists.batch_subscribe(:id => list_id, :batch => [{:email => {:email => "email1"}, :merge_vars => {:FNAME => "FirstName1", :LNAME => "LastName1"}},{:email => {:email =>"email2"}, :merge_vars => {:FNAME => "FirstName2", :LNAME => "LastName2"}}])
 
 > Note: This will send welcome emails to the new subscribers
 
 If you want to update the existing members you need to send the boolean update_existing in true
 
-    gb.lists.batch_subscribe(:id => list_id, :batch => [{:EMAIL => {:email => "email1"}, :FNAME => "FirstName1", :LNAME => "LastName1"}], :update_existing => true)
+    gb.lists.batch_subscribe(:id => list_id, :batch => [{:email => {:email => "email1"}, :merge_vars => {:FNAME => "FirstName1", :LNAME => "LastName1"}}], :update_existing => true)
     
 > On :EMAIL you can send the :euid (the unique id for an email address) or the :leid (the list email id) too, instead :email.
 
