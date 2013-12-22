@@ -4,8 +4,7 @@ Gibbon is an API wrapper for MailChimp's [Primary and Export APIs](http://www.ma
 
 [![Build Status](https://secure.travis-ci.org/amro/gibbon.png)](http://travis-ci.org/amro/gibbon)
 
-##Important Notes About Version 0.5.0+
-### (It's different!)
+##Important Notes
 
 Gibbon now targets MailChimp API 2.0, which is substantially different from API 1.3. Please use Gibbon 0.4.6 if you need to use API 1.3.
 
