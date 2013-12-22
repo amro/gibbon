@@ -31,7 +31,7 @@ module Gibbon
         parsed_response = MultiJson.load(response.body)
 
         if should_raise_for_response?(parsed_response)
-          error = MailChimpError.new("MailChimp API Error: #{parsed_response["error"]} (code #{parsed_response["code"]})")
+          error = MailChimpError.new(parsed_response["error"])
           error.code = parsed_response["code"]
           raise error
         end

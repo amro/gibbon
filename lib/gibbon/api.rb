@@ -23,6 +23,10 @@ module Gibbon
       api
     end
 
+    def respond_to_missing?(method, include_private = false)
+      %{campaigns ecomm folders gallery lists helper reports templates users vip}.include?(method.to_s) || super
+    end
+
     class << self
       attr_accessor :api_key, :timeout, :throws_exceptions, :api_endpoint
 

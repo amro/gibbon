@@ -24,7 +24,7 @@ module Gibbon
         first_line = MultiJson.load(lines.first) if lines.first
 
         if should_raise_for_response?(first_line)
-          error = MailChimpError.new("MailChimp Export API Error: #{first_line["error"]} (code #{first_line["code"]})")
+          error = MailChimpError.new(first_line["error"])
           error.code = first_line["code"]
           raise error
         end
@@ -51,6 +51,10 @@ module Gibbon
       method = method[0].chr.downcase + method[1..-1].gsub(/aim$/i, 'AIM')
 
       call(method, *args)
+    end
+
+    def respond_to_missing?(method, include_private = false)
+      %{list ecommOrders ecomm_orders campaignSubscriberActivity campaign_subscriber_activity}.include?(method.to_s) || super
     end
 
     class << self
