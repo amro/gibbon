@@ -154,7 +154,20 @@ information about the error, and "code", the numeric code of the error.
 
 If you rescue Gibbon::MailChimpError, you are provided with the error message itself as well as
 a `code` attribute that you can map onto the API's error list. The API docs list possible errors
-at the bottom of each page.
+at the bottom of each page. Here's how you might do that:
+
+    begin
+      g.lists.subscribe(...)
+    rescue Gibbon::MailChimpError => e
+      # do something with e.message here
+      # do something wiht e.code here
+    end
+
+Some API endpoints, like `[lists/batch-subscribe](http://apidocs.mailchimp.com/api/2.0/lists/batch-subscribe.php)`
+return errors to let you know that some of your actions failed, but some suceeded. Gibbon will not
+raise Gibbon::MailChimpError for these endpoints because the key for the success count varies from endpoint to endpoint. 
+This makes it difficult to determine whether all of your actions failed in a generic way. **Because of this, you're responsible 
+for checking the response body for the `errors` array in these cases.**
 
 > Note: In an effort to make Gibbon easier to use, errors are raised automatically as of version 0.4.0.
 
