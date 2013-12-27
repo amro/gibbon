@@ -189,24 +189,24 @@ describe Gibbon do
 
     it "not throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = false
-      Gibbon::APICategory.stub(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
+      allow(Gibbon::APICategory).to receive(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
 
       @gibbon.say.hello
     end
 
     it "throw exception if configured to and the API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
-      Gibbon::APICategory.stub(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
+      allow(Gibbon::APICategory).to receive(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
       expect {@gibbon.say.hello}.to raise_error(Gibbon::MailChimpError)
     end
 
     it "not raise exception if the api returns no response body" do
-      Gibbon::APICategory.stub(:post).and_return(Struct.new(:body).new(nil))
+      allow(Gibbon::APICategory).to receive(:post).and_return(Struct.new(:body).new(nil))
       expect(@gibbon.say.hello).to be_nil
     end
 
     it "can send a campaign" do
-      Gibbon::APICategory.stub(:post).and_return(Struct.new(:body).new(MultiJson.dump({"cid" => "1234567"})))
+      allow(Gibbon::APICategory).to receive(:post).and_return(Struct.new(:body).new(MultiJson.dump({"cid" => "1234567"})))
       expect(@gibbon.campaigns.send({"cid" => "1234567"})).to eq({"cid" => "1234567"})
     end
   end
@@ -228,13 +228,13 @@ describe Gibbon do
       params = {:body => MultiJson.dump(@body), :timeout => 30}
 
       url = @url.gsub('us1', 'us2') + "sayHello/"
-      Gibbon::Export.should_receive(:post).with(url, params).and_return(@returns)
+      expect(Gibbon::Export).to receive(:post).with(url, params).and_return(@returns)
       @gibbon.say_hello(@body)
     end
 
     it "not throw exception if the Export API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = false
-      Gibbon::Export.stub(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
+      allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
 
       @gibbon.say_hello(@body)
     end
@@ -243,7 +243,7 @@ describe Gibbon do
       @gibbon.throws_exceptions = true
       params = {:body => @body, :timeout => 30}
       reply = Struct.new(:body).new MultiJson.dump({'error' => 'bad things', 'code' => '123'})
-      Gibbon::Export.stub(:post).and_return reply
+      allow(Gibbon::Export).to receive(:post).and_return reply
 
       expect {@gibbon.say_hello(@body)}.to raise_error(Gibbon::MailChimpError)
     end
@@ -253,12 +253,12 @@ describe Gibbon do
   private
 
   def expect_post(expected_url, expected_body, expected_timeout=30, expected_headers={})
-    Gibbon::APICategory.should_receive(:post).with do |url, opts|
+    expect(Gibbon::APICategory).to receive(:post).with { |url, opts|
       expect(url).to            eq expected_url
       expect(expected_body).to  eq MultiJson.load(URI::decode(opts[:body]))
       expect(opts[:timeout]).to eq expected_timeout
       expect(opts[:headers]).to eq expected_headers
-    end.and_return(Struct.new(:body).new("[]"))
+    }.and_return(Struct.new(:body).new("[]"))
   end
 
   # def expect_post(expected_url, expected_body, expected_timeout=30)
