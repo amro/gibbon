@@ -24,7 +24,7 @@ module Gibbon
     end
 
     def respond_to_missing?(method, include_private = false)
-      %{campaigns ecomm folders gallery lists helper reports templates users vip}.include?(method.to_s) || super
+      %w{campaigns ecomm folders gallery lists helper reports templates users vip}.include?(method.to_s) || super
     end
 
     class << self

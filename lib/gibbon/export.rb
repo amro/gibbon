@@ -54,7 +54,7 @@ module Gibbon
     end
 
     def respond_to_missing?(method, include_private = false)
-      %{list ecommOrders ecomm_orders campaignSubscriberActivity campaign_subscriber_activity}.include?(method.to_s) || super
+      %w{list ecommOrders ecomm_orders campaignSubscriberActivity campaign_subscriber_activity}.include?(method.to_s) || super
     end
 
     class << self
