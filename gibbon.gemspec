@@ -26,6 +26,6 @@ Gem::Specification.new do |s|
   s.add_dependency('multi_json', '>= 1.3.4')
 
   s.add_development_dependency 'rake'
-  s.add_development_dependency "rspec", ">= 2.13.0"
+  s.add_development_dependency "rspec", ">= 2.14.1"
 
 end
