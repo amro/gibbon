@@ -11,7 +11,7 @@ Gibbon now targets MailChimp API 2.0, which is substantially different from API 
 * Supports MailChimp API 2.0 and Export API 1.0
 * Errors are raised by default since 0.4.x
 * Timeouts can be specified per request during initialization
-* Ruby 1.9.x+ for now. A future version may be Ruby 2.0 only to take advantage of lazy iteration when using the Export API.
+* Ruby 1.9.3+ for now. A future version may be Ruby 2.0 only to take advantage of lazy iteration when using the Export API.
 
 ##Installation
 
