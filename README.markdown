@@ -34,13 +34,13 @@ You can set `api_key`, `timeout` and `throws_exceptions` globally:
     Gibbon::API.api_key = "your_api_key"
     Gibbon::API.timeout = 15
     Gibbon::API.throws_exceptions = false
-		
+
 similarly
 
     Gibbon::Export.api_key = "your_api_key"
     Gibbon::Export.timeout = 15
     Gibbon::Export.throws_exceptions = false
-    
+
 For example, you could set the values above in an `initializer` file in your `Rails` app (e.g. your\_app/config/initializers/gibbon.rb).
 
 Assuming you've set an `api_key` on Gibbon, you can conveniently make API calls on the class itself:
@@ -97,6 +97,10 @@ Subscribe a member to a list:
 
 > Note: This will send a welcome email to the new subscriber
 
+Here's an example showing pagination. The following code fetches the first page of 100 members subscribed to your list:
+
+    gb.lists.members({:id => list_id, :opts => {:start => 0, :limit => 100}})
+
 or
 
 Batch subscribe members to a list:
@@ -108,15 +112,15 @@ Batch subscribe members to a list:
 If you want to update the existing members you need to send the boolean update_existing in true
 
     gb.lists.batch_subscribe(:id => list_id, :batch => [{:email => {:email => "email1"}, :merge_vars => {:FNAME => "FirstName1", :LNAME => "LastName1"}}], :update_existing => true)
-    
+
 > Note: The `email` hash can also accept either a unique email id or a list email id. Please see the [lists/batch-subscribe](http://apidocs.mailchimp.com/api/2.0/lists/batch-subscribe.php) documentation for more information.
 
 You can also unsubscribe a member from a list:
 
     gb.lists.unsubscribe(:id => list_id, :email => {:email => "user_email"}, :delete_member => true, :send_notify => true)
-    
-> Note: :delete_member defaults to false, meaning the member stays on your mailchimp list as "unsubscribed".  See [Api Docs](http://apidocs.mailchimp.com/api/2.0/lists/unsubscribe.php) for details of options.    
- 
+
+> Note: :delete_member defaults to false, meaning the member stays on your mailchimp list as "unsubscribed".  See [Api Docs](http://apidocs.mailchimp.com/api/2.0/lists/unsubscribe.php) for details of options.
+
 Fetch recipients who opened particular campaign:
 
     email_stats = gb.reports.opened({:cid => campaign_id})
@@ -164,8 +168,8 @@ at the bottom of each page. Here's how you might do that:
 
 Some API endpoints, like `[lists/batch-subscribe](http://apidocs.mailchimp.com/api/2.0/lists/batch-subscribe.php)`
 return errors to let you know that some of your actions failed, but some suceeded. Gibbon will not
-raise Gibbon::MailChimpError for these endpoints because the key for the success count varies from endpoint to endpoint. 
-This makes it difficult to determine whether all of your actions failed in a generic way. **Because of this, you're responsible 
+raise Gibbon::MailChimpError for these endpoints because the key for the success count varies from endpoint to endpoint.
+This makes it difficult to determine whether all of your actions failed in a generic way. **Because of this, you're responsible
 for checking the response body for the `errors` array in these cases.**
 
 > Note: In an effort to make Gibbon easier to use, errors are raised automatically as of version 0.4.0.
