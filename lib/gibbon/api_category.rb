@@ -20,6 +20,8 @@ module Gibbon
     end
 
     def call(method, params = {})
+      ensure_api_key params
+
       api_url = base_api_url + method
       params = @default_params.merge(params).merge({:apikey => @api_key})
       headers = params.delete(:headers) || {}
@@ -87,6 +89,15 @@ module Gibbon
       end
 
       data_center
+    end
+
+
+    private
+
+    def ensure_api_key(params)
+      unless @api_key || @default_params[:apikey] || params[:apikey]
+        raise Gibbon::GibbonError, "You must set an api_key prior to making a call"
+      end
     end
   end
 end

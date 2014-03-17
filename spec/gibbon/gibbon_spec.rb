@@ -57,9 +57,8 @@ describe Gibbon do
       @url = "https://api.mailchimp.com/2.0/say/hello"
     end
 
-    it "handle empty api key" do
-      expect_post(@url, {"apikey" => nil})
-      @gibbon.say.hello
+    it "doesn't allow empty api key" do
+      expect {@gibbon.say.hello}.to raise_error(Gibbon::GibbonError)
     end
 
     it "handle malformed api key" do
@@ -70,7 +69,8 @@ describe Gibbon do
     end
 
     it "handle timeout" do
-      expect_post(@url, {"apikey" => nil}, 120)
+      expect_post(@url, {"apikey" => 'test'}, 120)
+      @gibbon.api_key = 'test'
       @gibbon.timeout=120
       @gibbon.say.hello
     end
