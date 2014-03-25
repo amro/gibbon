@@ -95,8 +95,6 @@ Subscribe a member to a list:
 
     gb.lists.subscribe({:id => list_id, :email => {:email => 'email_address'}, :merge_vars => {:FNAME => 'First Name', :LNAME => 'Last Name'}, :double_optin => false})
 
-> Note: This will send a welcome email to the new subscriber
-
 Here's an example showing pagination. The following code fetches the first page of 100 members subscribed to your list:
 
     gb.lists.members({:id => list_id, :opts => {:start => 0, :limit => 100}})
