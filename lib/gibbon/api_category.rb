@@ -30,7 +30,15 @@ module Gibbon
       parsed_response = nil
 
       if (response.body)
-        parsed_response = MultiJson.load(response.body)
+        begin
+          parsed_response = MultiJson.load(response.body)
+        rescue MultiJson::ParseError
+          parsed_response = {
+            error: "Unparseable response: #{response.body}", 
+            name: "UNPARSEABLE_RESPONSE", 
+            code: 500
+          }
+        end
 
         if should_raise_for_response?(parsed_response)
           error = MailChimpError.new(parsed_response["error"])
