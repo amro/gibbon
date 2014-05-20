@@ -209,6 +209,18 @@ describe Gibbon do
       allow(Gibbon::APICategory).to receive(:post).and_return(Struct.new(:body).new(MultiJson.dump({"cid" => "1234567"})))
       expect(@gibbon.campaigns.send({"cid" => "1234567"})).to eq({"cid" => "1234567"})
     end
+    
+    it "not throw exception if configured to and the API returns an unparsable response" do
+      @gibbon.throws_exceptions = false
+      allow(Gibbon::APICategory).to receive(:post).and_return(Struct.new(:body).new("<HTML>Invalid response</HTML>"))
+      expect(@gibbon.say.hello).to eq({"name" => "UNPARSEABLE_RESPONSE", "error" => "Unparseable response: <HTML>Invalid response</HTML>", "code" => 500})
+    end
+
+    it "throw exception if configured to and the API returns an unparsable response" do
+      @gibbon.throws_exceptions = true
+      allow(Gibbon::APICategory).to receive(:post).and_return(Struct.new(:body).new("<HTML>Invalid response</HTML>"))
+      expect{@gibbon.say.hello}.to raise_error(Gibbon::MailChimpError)
+    end
   end
 
   describe "export API" do

@@ -34,9 +34,9 @@ module Gibbon
           parsed_response = MultiJson.load(response.body)
         rescue MultiJson::ParseError
           parsed_response = {
-            error: "Unparseable response: #{response.body}", 
-            name: "UNPARSEABLE_RESPONSE", 
-            code: 500
+            "error" => "Unparseable response: #{response.body}", 
+            "name" => "UNPARSEABLE_RESPONSE", 
+            "code" => 500
           }
         end
 
