@@ -35,6 +35,7 @@ module Gibbon
         if should_raise_for_response?(parsed_response)
           error = MailChimpError.new(parsed_response["error"])
           error.code = parsed_response["code"]
+          error.name = parsed_response["name"]
           raise error
         end
       end
