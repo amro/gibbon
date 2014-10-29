@@ -23,6 +23,9 @@ module Gibbon
 
       lines = response.body.lines
       if @throws_exceptions
+        # ignore blank responses
+        return [] if lines.first.strip.empty?
+
         first_line = MultiJson.load(lines.first) if lines.first
 
         if should_raise_for_response?(first_line)

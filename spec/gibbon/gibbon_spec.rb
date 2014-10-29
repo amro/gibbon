@@ -158,19 +158,19 @@ describe Gibbon do
       expect_post(@url, @body.merge("fee" => 99))
       @gibbon.say.hello(:fee => 99)
     end
-    
+
     it "pass through http header settings" do
       @gibbon.timeout=30
       expect_post(@url, @body.merge("messages" => 'Simon says'), @gibbon.timeout, {'Accept-Language' => 'en'})
       @gibbon.say.hello(:messages => 'Simon says', :headers => {'Accept-Language' => 'en'} )
     end
-    
+
     it "with http headers not set" do
       @gibbon.timeout=30
       expect_post(@url, @body.merge("messages" => 'Simon says'), @gibbon.timeout, {})
       @gibbon.say.hello(:messages => 'Simon says' )
     end
-    
+
   end
 
   describe "Gibbon instances" do
@@ -209,7 +209,7 @@ describe Gibbon do
       allow(Gibbon::APICategory).to receive(:post).and_return(Struct.new(:body).new(MultiJson.dump({"cid" => "1234567"})))
       expect(@gibbon.campaigns.send({"cid" => "1234567"})).to eq({"cid" => "1234567"})
     end
-    
+
     it "not throw exception if configured to and the API returns an unparsable response" do
       @gibbon.throws_exceptions = false
       allow(Gibbon::APICategory).to receive(:post).and_return(Struct.new(:body).new("<HTML>Invalid response</HTML>"))
@@ -258,6 +258,13 @@ describe Gibbon do
       allow(Gibbon::Export).to receive(:post).and_return reply
 
       expect {@gibbon.say_hello(@body)}.to raise_error(Gibbon::MailChimpError)
+    end
+
+    it "should handle a blank response without throwing an exception" do
+      @gibbon.throws_exceptions = true
+      allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(Struct.new(:lines).new([" "])))
+
+      expect(@gibbon.say_hello(@body)).to eq([])
     end
 
   end
