@@ -8,5 +8,5 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'gibbon'
 
 RSpec.configure do |config|
-  config.color_enabled = true
+  config.color = true
 end

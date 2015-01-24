@@ -272,15 +272,12 @@ describe Gibbon do
   private
 
   def expect_post(expected_url, expected_body, expected_timeout=30, expected_headers={})
-    expect(Gibbon::APICategory).to receive(:post).with { |url, opts|
+    expect(Gibbon::APICategory).to receive(:post) { |url, opts|
       expect(url).to            eq expected_url
       expect(expected_body).to  eq MultiJson.load(URI::decode(opts[:body]))
       expect(opts[:timeout]).to eq expected_timeout
       expect(opts[:headers]).to eq expected_headers
     }.and_return(Struct.new(:body).new("[]"))
   end
-
-  # def expect_post(expected_url, expected_body, expected_timeout=30)
-  #   Gibbon::APICategory.should_receive(:post).and_return(Struct.new(:body).new(""))
-  # end
 end
+
