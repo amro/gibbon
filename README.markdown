@@ -190,7 +190,7 @@ of JSON objects rather than a single JSON array.
 
 For example, dumping list members via the "list" method works like this:
 
-    gibbon_export.list({id => list_id})
+    gibbon_export.list({:id => list_id})
 
 ##Thanks
 
