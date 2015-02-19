@@ -260,9 +260,16 @@ describe Gibbon do
       expect {@gibbon.say_hello(@body)}.to raise_error(Gibbon::MailChimpError)
     end
 
-    it "should handle a blank response without throwing an exception" do
+    it "should handle a single empty space response without throwing an exception" do
       @gibbon.throws_exceptions = true
-      allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(Struct.new(:lines).new([" "])))
+      allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(" "))
+
+      expect(@gibbon.say_hello(@body)).to eq([])
+    end
+
+    it "should handle an empty response without throwing an exception" do
+      @gibbon.throws_exceptions = true
+      allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(""))
 
       expect(@gibbon.say_hello(@body)).to eq([])
     end
