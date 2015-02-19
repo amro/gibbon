@@ -1,4 +1,6 @@
 ## [Unreleased][unreleased]
+-
+## [1.1.5] - 2015-02-19
 ### Fixed
 - Update MultiJSON dependency to 1.9.0
 - Handle single empty space in Export API response
