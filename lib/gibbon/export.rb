@@ -39,9 +39,9 @@ module Gibbon
     end
 
     def set_instance_defaults
-      super
       @api_key = self.class.api_key if @api_key.nil?
       @timeout = self.class.timeout if @timeout.nil?
+      super
     end
 
     def method_missing(method, *args)
