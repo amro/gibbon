@@ -244,6 +244,11 @@ describe Gibbon do
       @gibbon.say_hello(@body)
     end
 
+    it "uses timeout if set" do
+      Gibbon::Export.timeout = 45
+      expect(Gibbon::Export.new.timeout).to eql 45
+    end
+
     it "not throw exception if the Export API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = false
       allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
