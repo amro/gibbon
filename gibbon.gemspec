@@ -2,7 +2,7 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
-  s.name        = "fsluis-gibbon"
+  s.name        = "gibbon"
   s.version     = "1.1.6"
   s.authors     = ["Amro Mousa", "Frans van der Sluis"]
   s.email       = ["amromousa@gmail.com", "f.vandersluis@gmail.com"]
@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.post_install_message = "IMPORTANT: Gibbon now targets MailChimp API 2.0, which is substantially different from API 1.3.\n \
                             Please use Gibbon 0.4.6 if you need to use API 1.3.\nIf you're upgrading from <0.5.0 your code WILL break."
 
-  s.rubyforge_project = "fsluis-gibbon"
+  s.rubyforge_project = "gibbon"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
