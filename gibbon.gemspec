@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "gibbon"
-  s.version     = "1.1.6"
+  s.version     = Gibbon::VERSION
   s.authors     = ["Amro Mousa", "Frans van der Sluis"]
   s.email       = ["amromousa@gmail.com", "f.vandersluis@gmail.com"]
   s.homepage    = "http://github.com/fsluis/gibbon"
