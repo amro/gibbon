@@ -36,7 +36,7 @@ module Gibbon
       reset
     end
 
-    def retrieve(params: nil, headers: nil)
+    def read(params: nil, headers: nil)
       APIRequest.new(builder: self).get(params: params, headers: headers)
     ensure
       reset
