@@ -63,7 +63,7 @@ You can also set the environment variable `MAILCHIMP_API_KEY` and Gibbon will us
     gb = Gibbon::Request.new
 
 MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of availabel resources. Substitue an underscore if
-a resource name contains a hyphen (`-`).
+a resource name contains a hyphen.
 
 ### Fetching Campaigns
 
