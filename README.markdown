@@ -29,7 +29,7 @@ You can set an individual request's timeout like this:
     gibbon.timeout = 10
 
 Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
-are specified inline and a `CRUD` (`create`, `retrieve`, `, `update`, or `delete`) verb initiates the request.
+are specified inline and a `CRUD` (`create`, `retrieve`, `update`, or `delete`) verb initiates the request.
 
     gibbon.lists.retrieve
  
