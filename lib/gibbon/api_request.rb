@@ -60,7 +60,7 @@ module Gibbon
       end
     end
 
-    #private
+    protected
     
     # Convenience accessors
     def api_key

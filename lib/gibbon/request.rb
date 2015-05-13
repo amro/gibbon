@@ -48,7 +48,7 @@ module Gibbon
       reset
     end
 
-    private
+    protected
 
     def reset
       @path_parts = []
