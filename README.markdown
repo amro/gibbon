@@ -1,17 +1,12 @@
 # gibbon
 
-Gibbon is an API wrapper for MailChimp's [Primary and Export APIs](http://www.mailchimp.com/api).
+Gibbon is an API wrapper for MailChimp's [API](http://kb.mailchimp.com/api/).
 
 [![Build Status](https://secure.travis-ci.org/amro/gibbon.png)](http://travis-ci.org/amro/gibbon)
 [![Dependency Status](https://gemnasium.com/amro/gibbon.png)](https://gemnasium.com/amro/gibbon)
 ##Important Notes
 
-Gibbon now targets MailChimp API 2.0, which is substantially different from API 1.3. Please use Gibbon 0.4.6 if you need to use API 1.3.
-
-* Supports MailChimp API 2.0 and Export API 1.0
-* Errors are raised by default since 0.4.x
-* Timeouts can be specified per request during initialization
-* Ruby 1.9.3+ for now. A future version may be Ruby 2.0 only to take advantage of lazy iteration when using the Export API.
+Gibbon now targets MailChimp API 3.0, which is substantially different from the previous API. Please use Gibbon 1.1.5 if you need to use API 2.0.
 
 ##Installation
 
@@ -23,41 +18,52 @@ A MailChimp account and API key. You can see your API keys [here](http://admin.m
 
 ##Usage
 
-There are a few ways to use Gibbon:
+First, create an instance Gibbon::Request:
 
-You can create an instance of the API wrapper:
+    gibbon = Gibbon::Request.new(api_key: "your_api_key")
 
-    gb = Gibbon::API.new("your_api_key")
+Your API key should be of the form XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-DCX.
 
-You can set `api_key`, `timeout` and `throws_exceptions` globally:
+You can set an individual request's timeout like this:
 
-    Gibbon::API.api_key = "your_api_key"
-    Gibbon::API.timeout = 15
-    Gibbon::API.throws_exceptions = false
+    gibbon.timeout = 10
 
-similarly
+Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
+are specified inline and a `CRUD` (`create`, `retrieve`, `, `update`, or `delete`) verb initiates the request.
 
-    Gibbon::Export.api_key = "your_api_key"
-    Gibbon::Export.timeout = 15
-    Gibbon::Export.throws_exceptions = false
+    gibbon.lists.retrieve
+ 
+Retrieving a specific list looks like:
+
+    gibbon.lists(list_id).retrieve
+
+Retrieving a specific list's members looks like:
+
+    gibbon.lists(list_id).members.retrieve
+
+You can also specify `headers`, `params`, and `body` when calling a `CRUD` method. For example:
+
+    gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
+
+Of course, `body` is only supported on `create` and `update` calls. Those map to HTTP `POST` and `PATCH` verbs.
+
+You can set `api_key` and `timeout` globally:
+
+    Gibbon::Request.api_key = "your_api_key"
+    Gibbon::Request.timeout = 15
 
 For example, you could set the values above in an `initializer` file in your `Rails` app (e.g. your\_app/config/initializers/gibbon.rb).
 
 Assuming you've set an `api_key` on Gibbon, you can conveniently make API calls on the class itself:
 
-    Gibbon::API.lists.list
+    Gibbon::Request.lists.retrieve
 
 You can also set the environment variable `MAILCHIMP_API_KEY` and Gibbon will use it when you create an instance:
 
-    gb = Gibbon::API.new
+    gb = Gibbon::Request.new
 
-> Note: In an effort to simplify Gibbon, the environment variable 'MC_API_KEY' is no longer available as of version 0.4.0. Please use 'MAILCHIMP_API_KEY' instead.
-
-Fetching data is as simple as calling API methods directly on the wrapper
-object with a given category (e.g. campaigns.list).  The API calls may be made with either camelcase or  underscore
-separated formatting as you see in the "More Advanced Examples" section below.
-
-Check the API [documentation](http://apidocs.mailchimp.com/api/2.0/) for details.
+MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of availabel resources. Substitue an underscore if
+a resource name contains a hyphen (`-`).
 
 ### Fetching Campaigns
 
@@ -134,69 +140,18 @@ Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and h
     Gibbon::API.api_endpoint = "https://us1.api.mailchimp.com"
     Gibbon::API.api_key = your_access_token_or_api_key
 
-### Setting timeouts
-
-Gibbon defaults to a 30 second timeout. You can optionally set your own timeout (in seconds) like so:
-
-    gb = Gibbon::API.new("your_api_key", {:timeout => 5})
-
-or
-
-    gb.timeout = 5
-
 ### Error handling
 
-By default Gibbon will attempt to raise errors returned by the API automatically.
+Gibbon raises an error when the API returns an error.
 
-If you set the `throws_exceptions` boolean attribute to false, for a given instance,
-then Gibbon will not raise exceptions. This allows you to handle errors manually. The
-APIs will return a Hash with two keys "errors", a string containing some textual
-information about the error, and "code", the numeric code of the error.
-
-If you rescue Gibbon::MailChimpError, you are provided with the error message itself as well as
-a `code` attribute that you can map onto the API's error list. The API docs list possible errors
-at the bottom of each page. Here's how you might do that:
-
-    begin
-      g.lists.subscribe(...)
-    rescue Gibbon::MailChimpError => e
-      # do something with e.message here
-      # do something wiht e.code here
-    end
-
-Some API endpoints, like `[lists/batch-subscribe](http://apidocs.mailchimp.com/api/2.0/lists/batch-subscribe.php)`
-return errors to let you know that some of your actions failed, but some suceeded. Gibbon will not
-raise Gibbon::MailChimpError for these endpoints because the key for the success count varies from endpoint to endpoint.
-This makes it difficult to determine whether all of your actions failed in a generic way. **Because of this, you're responsible
-for checking the response body for the `errors` array in these cases.**
-
-> Note: In an effort to make Gibbon easier to use, errors are raised automatically as of version 0.4.0.
-
-### Export API usage
-
-In addition to the primary API, you can make calls to the [Export API](http://apidocs.mailchimp.com/export/1.0/) using an instance of GibbonExport.  Given an existing instance of Gibbon, you can request a new GibbonExporter object:
-
-    g = Gibbon::API.new("your_api_key")
-    gibbon_export = g.get_exporter
-
-or you can construct a new object directly:
-
-    gibbon_export = Gibbon::Export.new("your_api_key")
-
-Making calls to Export API endpoints is similar to making standard API calls but the
-return value is an Enumerator which loops over the lines returned from the
-Export API. This is because the data returned from the Export API is a stream
-of JSON objects rather than a single JSON array.
-
-For example, dumping list members via the "list" method works like this:
-
-    gibbon_export.list({:id => list_id})
+Gibbon::MailChimpError has the following attributes: `title`, `detail`, `body`, `raw_body`, `status_code`. Some or all of these may not be
+available depending on the nature of the error.
 
 ##Thanks
 
-Thanks to everyone who's [contributed](https://github.com/amro/gibbon/contributors) to Gibbon's development. Major props to The Viking for making MailChimp API 2.0 great.
+Thanks to everyone who's [contributed](https://github.com/amro/gibbon/contributors) to Gibbon's development.
 
 ##Copyright
 
-* Copyright (c) 2010-2014 Amro Mousa. See LICENSE.txt for details.
-* MailChimp (c) 2001-2014 The Rocket Science Group.
+* Copyright (c) 2010-2015 Amro Mousa. See LICENSE.txt for details.
+* MailChimp (c) 2001-2015 The Rocket Science Group.

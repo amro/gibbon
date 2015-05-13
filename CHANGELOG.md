@@ -1,5 +1,11 @@
 ## [Unreleased][unreleased]
 -
+## [2.0.0] - 2015-05-13
+### Fixed
+- Support for API 3.0, which means new usage. Please check out the readme.
+- Update MultiJSON dependency to 1.11.0
+- Switch to Faraday
+
 ## [1.1.5] - 2015-02-19
 ### Fixed
 - Update MultiJSON dependency to 1.9.0
