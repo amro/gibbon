@@ -1,15 +1,15 @@
-require 'gibbon/api_request'
-
 module Gibbon
   class Request
     attr_accessor :api_key, :api_endpoint, :timeout
 
-    def initialize(api_key: nil, api_endpoint: nil, timeout: 30)
+    DEFAULT_TIMEOUT = 30
+
+    def initialize(api_key: nil, api_endpoint: nil, timeout: nil)
       @path_parts = []
       @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
       @api_key = @api_key.strip if @api_key
       @api_endpoint = api_endpoint || self.class.api_endpoint
-      @timeout = timeout || self.class.timeout
+      @timeout = timeout || self.class.timeout || DEFAULT_TIMEOUT
     end
 
     def method_missing(method, *args)
@@ -36,7 +36,7 @@ module Gibbon
       reset
     end
 
-    def read(params: nil, headers: nil)
+    def retrieve(params: nil, headers: nil)
       APIRequest.new(builder: self).get(params: params, headers: headers)
     ensure
       reset

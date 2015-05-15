@@ -1,9 +1,5 @@
-require 'gibbon/request'
-require 'faraday'
-
 module Gibbon
   class APIRequest
-
     def initialize(builder: nil)
       @request_builder = builder
     end
@@ -141,7 +137,7 @@ module Gibbon
 
     def validate_api_key
       api_key = self.api_key
-      unless api_key
+      unless api_key && api_key["-"]
         raise Gibbon::GibbonError, "You must set an api_key prior to making a call"
       end
     end

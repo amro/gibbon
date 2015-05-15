@@ -2,7 +2,7 @@
 -
 ## [2.0.0] - 2015-05-13
 ### Fixed
-- Support for API 3.0, which means new usage. Please check out the readme.
+- Support for API 3.0. Usage syntax has changed. Please check out the readme.
 - Update MultiJSON dependency to 1.11.0
 - Switch to Faraday
 

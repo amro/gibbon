@@ -1,4 +1,4 @@
-require 'httparty'
+require 'faraday'
 require 'multi_json'
 require 'cgi'
 

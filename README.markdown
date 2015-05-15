@@ -31,21 +31,21 @@ You can set an individual request's timeout like this:
     gibbon.timeout = 10
 
 Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
-are specified inline and a `CRUD` (`create`, `read`, `update`, or `delete`) verb initiates the request.
+are specified inline and a `CRUD` (`create`, `retrieve`, `update`, or `delete`) verb initiates the request.
 
-    gibbon.lists.read
+    gibbon.lists.retrieve
  
 Retrieving a specific list looks like:
 
-    gibbon.lists(list_id).read
+    gibbon.lists(list_id).retrieve
 
 Retrieving a specific list's members looks like:
 
-    gibbon.lists(list_id).members.read
+    gibbon.lists(list_id).members.retrieve
 
 You can also specify `headers`, `params`, and `body` when calling a `CRUD` method. For example:
 
-    gibbon.lists.read(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
+    gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
 
 Of course, `body` is only supported on `create` and `update` calls. Those map to HTTP `POST` and `PATCH` verbs.
 
@@ -58,7 +58,7 @@ For example, you could set the values above in an `initializer` file in your `Ra
 
 Assuming you've set an `api_key` on Gibbon, you can conveniently make API calls on the class itself:
 
-    Gibbon::Request.lists.read
+    Gibbon::Request.lists.retrieve
 
 You can also set the environment variable `MAILCHIMP_API_KEY` and Gibbon will use it when you create an instance:
 
