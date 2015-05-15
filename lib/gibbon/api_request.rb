@@ -59,6 +59,7 @@ module Gibbon
     protected
     
     # Convenience accessors
+  
     def api_key
       @request_builder.api_key
     end
