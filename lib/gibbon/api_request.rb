@@ -9,7 +9,7 @@ module Gibbon
 
       begin
         response = self.rest_client.post do |request|
-          configure_request(request: request, params: params, headers: headers, body: body)
+          configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
         end
         parse_response(response.body)
       rescue => e
@@ -22,7 +22,7 @@ module Gibbon
 
       begin
         response = self.rest_client.patch do |request|
-          configure_request(request: request, params: params, headers: headers, body: body)
+          configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
         end
         parse_response(response.body)
       rescue => e
