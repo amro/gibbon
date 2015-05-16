@@ -6,7 +6,7 @@ module Gibbon
 
     def post(params: nil, headers: nil, body: nil)
       validate_api_key
-      
+
       begin
         response = self.rest_client.post do |request|
           configure_request(request: request, params: params, headers: headers, body: body)
@@ -19,7 +19,7 @@ module Gibbon
     
     def patch(params: nil, headers: nil, body: nil)
       validate_api_key
-      
+
       begin
         response = self.rest_client.patch do |request|
           configure_request(request: request, params: params, headers: headers, body: body)
@@ -32,7 +32,7 @@ module Gibbon
     
     def get(params: nil, headers: nil)
       validate_api_key
-      
+
       begin
         response = self.rest_client.get do |request|
           configure_request(request: request, params: params, headers: headers)
@@ -113,7 +113,7 @@ module Gibbon
     def rest_client
       client = Faraday.new(url: self.api_url) do |faraday|
         faraday.response :raise_error
-        faraday.adapter  Faraday.default_adapter
+        faraday.adapter Faraday.default_adapter
       end
       client.basic_auth('apikey', self.api_key)
       client
@@ -138,7 +138,7 @@ module Gibbon
 
     def validate_api_key
       api_key = self.api_key
-      unless api_key && api_key["-"]
+      unless api_key && (api_key["-"] || self.api_endpoint)
         raise Gibbon::GibbonError, "You must set an api_key prior to making a call"
       end
     end
