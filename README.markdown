@@ -24,8 +24,6 @@ First, create an instance Gibbon::Request:
 
     gibbon = Gibbon::Request.new(api_key: "your_api_key")
 
-Your API key should be of the form XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-DCX.
-
 You can set an individual request's timeout like this:
 
     gibbon.timeout = 10
@@ -34,7 +32,7 @@ Now you can make requests using the resources defined in [MailChimp's docs](http
 are specified inline and a `CRUD` (`create`, `retrieve`, `update`, or `delete`) verb initiates the request.
 
     gibbon.lists.retrieve
- 
+
 Retrieving a specific list looks like:
 
     gibbon.lists(list_id).retrieve
@@ -64,78 +62,42 @@ You can also set the environment variable `MAILCHIMP_API_KEY` and Gibbon will us
 
     gb = Gibbon::Request.new
 
-MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of availabel resources. Substitue an underscore if
+MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources. Substitute an underscore if
 a resource name contains a hyphen.
 
 ### Fetching Campaigns
 
 For example, to fetch your first 100 campaigns (page 0):
 
-    campaigns = gb.campaigns.list({:start => 0, :limit => 100})
+    campaigns = gb.campaigns.retrieve(params: {start: 0, limit: 100})
 
 ### Fetching Lists
 
 Similarly, to fetch your first 100 lists:
 
-    lists = gb.lists.list({:start => 0, :limit=> 100})
+    lists = gb.lists.retrieve(params: {start: 0, limit: 100})
 
 Or, to fetch a list by name:
 
-    list = gb.lists.list({:filters => {:list_name => list_name}})
+    lists = gb.lists.retrieve(params: {list_name: list_name})
 
 ### More Advanced Examples
 
-Getting batch member information for subscribers looks like this:
-
-    info = gb.lists.member_info({:id => list_id, :emails => [{:email => email_1}, {:email => email_2}]})
-
 List subscribers for a list:
 
-    gb.lists.members({:id => list_id})
-
-or
-
-List unsubscribed members for a list
-
-    gb.lists.members({:id => list_id, :status => "unsubscribed"})
+    gb.lists(list_id).members.retrieve
 
 Subscribe a member to a list:
 
-    gb.lists.subscribe({:id => list_id, :email => {:email => 'email_address'}, :merge_vars => {:FNAME => 'First Name', :LNAME => 'Last Name'}, :double_optin => false})
-
-Here's an example showing pagination. The following code fetches the first page of 100 members subscribed to your list:
-
-    gb.lists.members({:id => list_id, :opts => {:start => 0, :limit => 100}})
-
-or
-
-Batch subscribe members to a list:
-
-    gb.lists.batch_subscribe(:id => list_id, :batch => [{:email => {:email => "email1"}, :merge_vars => {:FNAME => "FirstName1", :LNAME => "LastName1"}},{:email => {:email =>"email2"}, :merge_vars => {:FNAME => "FirstName2", :LNAME => "LastName2"}}])
-
-> Note: This will send welcome emails to the new subscribers
-
-If you want to update the existing members you need to send the boolean update_existing in true
-
-    gb.lists.batch_subscribe(:id => list_id, :batch => [{:email => {:email => "email1"}, :merge_vars => {:FNAME => "FirstName1", :LNAME => "LastName1"}}], :update_existing => true)
-
-> Note: The `email` hash can also accept either a unique email id or a list email id. Please see the [lists/batch-subscribe](http://apidocs.mailchimp.com/api/2.0/lists/batch-subscribe.php) documentation for more information.
+    gb.lists(list_id).members.create(body: {email_address: "email_address", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
 
 You can also unsubscribe a member from a list:
 
-    gb.lists.unsubscribe(:id => list_id, :email => {:email => "user_email"}, :delete_member => true, :send_notify => true)
+    gb.lists(list_id).members(member_id).update(body: { status: unsubscribed })
 
-> Note: :delete_member defaults to false, meaning the member stays on your mailchimp list as "unsubscribed".  See [Api Docs](http://apidocs.mailchimp.com/api/2.0/lists/unsubscribe.php) for details of options.
+Fetch the number of opens for a campaign
 
-Fetch recipients who opened particular campaign:
-
-    email_stats = gb.reports.opened({:cid => campaign_id})
-
-or
-
-Create a campaign:
-
-    gb.campaigns.create({type: "regular", options: {list_id: list_id, subject: "Gibbon is cool", from_email: "you@example.com", from_name: "Darth Vader", generate_text: true}, content: {html: "<html><head></head><body><h1>Foo</h1><p>Bar</p></body></html>"}})
+    email_stats = gb.reports("13e9a94053").retrieve["opens"]
 
 Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](http://apidocs.mailchimp.com/oauth2/)):
 
