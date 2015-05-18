@@ -67,19 +67,14 @@ a resource name contains a hyphen.
 
 ### Fetching Campaigns
 
-For example, to fetch your first 100 campaigns (page 0):
 
-    campaigns = gb.campaigns.retrieve(params: {start: 0, limit: 100})
+    campaigns = gb.campaigns.retrieve
 
 ### Fetching Lists
 
-Similarly, to fetch your first 100 lists:
+Similarly, to fetch your lists
 
-    lists = gb.lists.retrieve(params: {start: 0, limit: 100})
-
-Or, to fetch a list by name:
-
-    lists = gb.lists.retrieve(params: {list_name: list_name})
+    lists = gb.lists.retrieve
 
 ### More Advanced Examples
 
