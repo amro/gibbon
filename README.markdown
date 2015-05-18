@@ -88,7 +88,7 @@ Subscribe a member to a list:
 
 You can also unsubscribe a member from a list:
 
-    gb.lists(list_id).members(member_id).update(body: { status: unsubscribed })
+    gb.lists(list_id).members(member_id).update(body: { status: "unsubscribed" })
 
 Fetch the number of opens for a campaign
 
