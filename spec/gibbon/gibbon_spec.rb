@@ -231,7 +231,6 @@ describe Gibbon do
       @gibbon = Gibbon::Export.new(@key)
       @url = "http://us1.api.mailchimp.com/export/1.0/"
       @body = {:apikey => @key, :id => "listid"}
-      #@returns = Struct.new(:body).new(MultiJson.dump(["array", "entries"]))
       @return_items = ["array", "entries"]
       @returns = MultiJson.dump(@return_items)
     end

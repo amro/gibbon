@@ -15,9 +15,8 @@ module Gibbon
     end
 
     # fsluis: Alternative, streaming, interface to mailchimp export api
-    #         Prevents having to keep shitloads of data in memory
+    #         Prevents having to keep lots of data in memory
     def call(method, params = {}, &block)
-      #puts "#{method}, #{params}, #{block_given?}"
       rows = []
 
       api_url = export_api_url + method + "/"
@@ -28,27 +27,28 @@ module Gibbon
       url = URI.parse(api_url)
       req = Net::HTTP::Post.new(url.path, initheader = {'Content-Type' => 'application/json'})
       req.body = MultiJson.dump(params)
-      #puts "Starting http call #{url.host}, #{url.port}, req: #{req.path}"
+      puts params
       Net::HTTP.start(url.host, url.port, :read_timeout => @timeout) do |http|
-        response = http.request req
-        # puts "Response: #{response}, #{response.http_version}, #{response.code}, #{response.message}"
-        i = -1
-        last = ''
-        response.read_body do |chunk|
-          #puts "Chunk length: #{chunk.length}"
-          #puts "Chunk: #{chunk}"
-          next if chunk.nil?
-          lines = (last+chunk).split("\n")
-          last = lines.pop || ''
-          lines.each do |line|
-            #puts "Parsing line: #{line}"
-            block.call(parse_response(line, i<0), i+=1) unless line.nil?
+        # http://stackoverflow.com/questions/29598196/ruby-net-http-read-body-nethttpokread-body-called-twice-ioerror
+        http.request req do |response|
+          i = -1
+          last = ''
+          response.read_body do |chunk|
+            #puts "Chunk length: #{chunk.length}"
+            #puts "Chunk: #{chunk}"
+            next if chunk.nil?
+            lines = (last+chunk).split("\n")
+            # There seems to be a bug (?) in the export API. Sometimes there's not a newline in between json objects...
+            lines = split_json(lines, '][')
+            lines = split_json(lines, '}{')
+            last = lines.pop || ''
+            lines.each do |line|
+              block.call(parse_response(line, i<0), i+=1) unless line.nil?
+            end
           end
+          block.call(parse_response(last, i<0), i+=1) unless last.nil? or last.empty?
         end
-        #puts "Parsing last line: #{last}"
-        block.call(parse_response(last, i<0), i+=1) unless last.nil? or last.empty?
       end
-      # puts "block_given: #{block_given?}, rows: #{rows}"
       rows unless block_given?
     end
 
@@ -84,6 +84,16 @@ module Gibbon
 
 
     private
+
+    def split_json(lines, delimiter)
+      lines.map do |line|
+        if line.include? delimiter
+          line.split(delimiter).each_with_index.map{ |s, i| i%2==0 ? s+delimiter[0] : delimiter[1]+s }
+        else
+          line
+        end
+      end.flatten
+    end
 
     def ensure_api_key(params)
       unless @api_key || @default_params[:apikey] || params[:apikey]
