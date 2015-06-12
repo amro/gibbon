@@ -280,7 +280,7 @@ describe Gibbon do
         to_return(:body => " ", :status => 200)
       #allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(" "))
 
-      expect(@gibbon.say_hello(@body)).to eq([[]])
+      expect(@gibbon.say_hello(@body)).to eq([])
     end
 
     it "should handle an empty response without throwing an exception" do

@@ -36,7 +36,7 @@ module Gibbon
           response.read_body do |chunk|
             #puts "Chunk length: #{chunk.length}"
             #puts "Chunk: #{chunk}"
-            next if chunk.nil?
+            next if chunk.nil? or chunk.strip.empty?
             lines = (last+chunk).split("\n")
             # There seems to be a bug (?) in the export API. Sometimes there's not a newline in between json objects...
             lines = split_json(lines, '][')
