@@ -1,13 +1,12 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require 'gibbon/version'
 
 Gem::Specification.new do |s|
   s.name        = "gibbon"
   s.version     = Gibbon::VERSION
-  s.authors     = ["Amro Mousa", "Frans van der Sluis"]
-  s.email       = ["amromousa@gmail.com", "f.vandersluis@gmail.com"]
-  s.homepage    = "http://github.com/fsluis/gibbon"
+  s.authors     = ["Amro Mousa"]
+  s.email       = ["amromousa@gmail.com"]
+  s.homepage    = "http://github.com/amro/gibbon"
 
   s.summary     = %q{A wrapper for MailChimp API 2.0 and Export API 1.0}
   s.description = %q{A wrapper for MailChimp API 2.0 and Export API 1.0}
@@ -28,6 +27,5 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake'
   s.add_development_dependency "rspec", "3.1.0"
-  s.add_development_dependency 'webmock'
 
 end
