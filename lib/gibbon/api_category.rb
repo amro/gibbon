@@ -27,27 +27,26 @@ module Gibbon
       headers = params.delete(:headers) || {}
       response = self.class.post(api_url, :body => MultiJson.dump(params), :headers => headers, :timeout => @timeout)
 
-      parsed_response = nil
+      parse_response(response.body) if response.body
+    end
 
-      if (response.body)
-        begin
-          parsed_response = MultiJson.load(response.body)
-        rescue MultiJson::ParseError
-          parsed_response = {
-            "error" => "Unparseable response: #{response.body}", 
-            "name" => "UNPARSEABLE_RESPONSE", 
-            "code" => 500
-          }
-        end
-
-        if should_raise_for_response?(parsed_response)
-          error = MailChimpError.new(parsed_response["error"])
-          error.code = parsed_response["code"]
-          error.name = parsed_response["name"]
-          raise error
-        end
+    def parse_response(response, check_error = true)
+      begin
+        parsed_response = MultiJson.load(response)
+      rescue MultiJson::ParseError
+        parsed_response = {
+          "error" => "Unparseable response: #{response}",
+          "name" => "UNPARSEABLE_RESPONSE",
+          "code" => 500
+        }
       end
 
+      if should_raise_for_response?(parsed_response)
+        error = MailChimpError.new(parsed_response["error"])
+        error.code = parsed_response["code"]
+        error.name = parsed_response["name"]
+        raise error
+      end
       parsed_response
     end
 
@@ -99,7 +98,6 @@ module Gibbon
 
       data_center
     end
-
 
     private
 

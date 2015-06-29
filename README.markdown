@@ -190,7 +190,26 @@ of JSON objects rather than a single JSON array.
 
 For example, dumping list members via the "list" method works like this:
 
-    gibbon_export.list({:id => list_id})
+    gibbon_export.list({:id => *list_id*})
+
+One can also use this in a streaming fashion, where each row is parsed on it comes in like this:
+
+    gibbon_export.list({:id => *list_id*}) { |row| *do_sth_with* row }
+
+For the streaming functionality, it is important to supply an explicit block / procedure to the export functions, not an implicit one. So, the preceding and following one will work. Please note this method also includes a counter (*i*, starting at 0) telling which row of data you're receiving:
+```
+    method = Proc.new do |row, i|
+        *do_sth_with* row
+    end
+    gibbon_export.list(params, &method)
+```
+
+Please note, the following example gives a block that is outside of the function and therefore **won't** work:
+```
+    gibbon_export.list({:id => *list_id*}) do |row|
+        *do_sth_with* row
+    end
+```
 
 ##Thanks
 

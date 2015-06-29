@@ -5,4 +5,8 @@ platforms :rbx do
   gem 'rubinius-developer_tools'
 end
 
+group :development, :test do
+  gem 'webmock'
+end
+
 gemspec

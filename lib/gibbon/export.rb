@@ -14,28 +14,47 @@ module Gibbon
       "http://#{get_data_center_from_api_key}api.mailchimp.com/export/1.0/"
     end
 
-    def call(method, params = {})
-      ensure_api_key params
+    # fsluis: Alternative, streaming, interface to mailchimp export api
+    #         Prevents having to keep lots of data in memory
+    def call(method, params = {}, &block)
+      rows = []
 
       api_url = export_api_url + method + "/"
       params = @default_params.merge(params).merge({:apikey => @api_key})
-      response = self.class.post(api_url, :body => MultiJson.dump(params), :timeout => @timeout)
+      block = Proc.new { |row| rows << row } unless block_given?
+      ensure_api_key params
 
-      lines = response.body.lines
-      if @throws_exceptions
-        # ignore blank responses
-        return [] if !lines.first || lines.first.strip.empty?
-
-        first_line = MultiJson.load(lines.first) if lines.first
-
-        if should_raise_for_response?(first_line)
-          error = MailChimpError.new(first_line["error"])
-          error.code = first_line["code"]
-          raise error
+      url = URI.parse(api_url)
+      req = Net::HTTP::Post.new(url.path, initheader = {'Content-Type' => 'application/json'})
+      req.body = MultiJson.dump(params)
+      puts params
+      Net::HTTP.start(url.host, url.port, :read_timeout => @timeout) do |http|
+        # http://stackoverflow.com/questions/29598196/ruby-net-http-read-body-nethttpokread-body-called-twice-ioerror
+        http.request req do |response|
+          i = -1
+          last = ''
+          response.read_body do |chunk|
+            #puts "Chunk length: #{chunk.length}"
+            #puts "Chunk: #{chunk}"
+            next if chunk.nil? or chunk.strip.empty?
+            lines = (last+chunk).split("\n")
+            # There seems to be a bug (?) in the export API. Sometimes there's not a newline in between json objects...
+            lines = split_json(lines, '][')
+            lines = split_json(lines, '}{')
+            last = lines.pop || ''
+            lines.each do |line|
+              block.call(parse_response(line, i<0), i+=1) unless line.nil?
+            end
+          end
+          block.call(parse_response(last, i<0), i+=1) unless last.nil? or last.empty?
         end
       end
+      rows unless block_given?
+    end
 
-      lines
+    def parse_response(res, check_error)
+      return [] if res.strip.empty?
+      super(res, check_error)
     end
 
     def set_instance_defaults
@@ -44,7 +63,8 @@ module Gibbon
       super
     end
 
-    def method_missing(method, *args)
+    # fsluis: added a &block to this method and function call
+    def method_missing(method, *args, &block)
       # To support underscores, we camelize the method name
 
       # Thanks for the camelize gsub, Rails
@@ -55,7 +75,7 @@ module Gibbon
       # must be upcased (See "Campaign Report Data Methods" in their API docs).
       method = method[0].chr.downcase + method[1..-1].gsub(/aim$/i, 'AIM')
 
-      call(method, *args)
+      call(method, *args, &block)
     end
 
     def respond_to_missing?(method, include_private = false)
@@ -64,6 +84,16 @@ module Gibbon
 
 
     private
+
+    def split_json(lines, delimiter)
+      lines.map do |line|
+        if line.include? delimiter
+          line.split(delimiter).each_with_index.map{ |s, i| i%2==0 ? s+delimiter[0] : delimiter[1]+s }
+        else
+          line
+        end
+      end.flatten
+    end
 
     def ensure_api_key(params)
       unless @api_key || @default_params[:apikey] || params[:apikey]

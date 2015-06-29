@@ -1,5 +1,7 @@
 require 'spec_helper'
 require 'cgi'
+require 'webmock'
+require 'webmock/rspec'
 
 describe Gibbon do
 
@@ -229,7 +231,8 @@ describe Gibbon do
       @gibbon = Gibbon::Export.new(@key)
       @url = "http://us1.api.mailchimp.com/export/1.0/"
       @body = {:apikey => @key, :id => "listid"}
-      @returns = Struct.new(:body).new(MultiJson.dump(["array", "entries"]))
+      @return_items = ["array", "entries"]
+      @returns = MultiJson.dump(@return_items)
     end
 
     it "handle api key with dc" do
@@ -237,11 +240,15 @@ describe Gibbon do
       @gibbon = Gibbon::Export.new(@api_key)
 
       @body[:apikey] = @api_key
-      params = {:body => MultiJson.dump(@body), :timeout => 30}
-
       url = @url.gsub('us1', 'us2') + "sayHello/"
-      expect(Gibbon::Export).to receive(:post).with(url, params).and_return(@returns)
+
+      # Fake request
+      stub_request(:post, url).
+        to_return(:body => @returns, :status => 200)
+
+      # Check request url
       @gibbon.say_hello(@body)
+      expect(WebMock).to have_requested(:post, url).with(:body => @body)
     end
 
     it "uses timeout if set" do
@@ -251,33 +258,51 @@ describe Gibbon do
 
     it "not throw exception if the Export API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = false
-      allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(MultiJson.dump({'error' => 'bad things'})))
+      reply = MultiJson.dump({:error => 'bad things'})
+      stub_request(:post, @url + 'sayHello/').
+        to_return(:body => reply, :status => 200)
 
       @gibbon.say_hello(@body)
     end
 
     it "throw exception if configured to and the Export API replies with a JSON hash containing a key called 'error'" do
       @gibbon.throws_exceptions = true
-      params = {:body => @body, :timeout => 30}
-      reply = Struct.new(:body).new MultiJson.dump({'error' => 'bad things', 'code' => '123'})
-      allow(Gibbon::Export).to receive(:post).and_return reply
+      reply = MultiJson.dump({:error => 'bad things', :code => '123'})
+      stub_request(:post, @url + 'sayHello/').
+        to_return(:body => reply, :status => 200)
 
       expect {@gibbon.say_hello(@body)}.to raise_error(Gibbon::MailChimpError)
     end
 
     it "should handle a single empty space response without throwing an exception" do
       @gibbon.throws_exceptions = true
-      allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(" "))
+      stub_request(:post, @url + 'sayHello/').
+        to_return(:body => " ", :status => 200)
+      #allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(" "))
 
       expect(@gibbon.say_hello(@body)).to eq([])
     end
 
     it "should handle an empty response without throwing an exception" do
       @gibbon.throws_exceptions = true
-      allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(""))
+      stub_request(:post, @url + 'sayHello/').
+        to_return(:body => "", :status => 200)
+      #allow(Gibbon::Export).to receive(:post).and_return(Struct.new(:body).new(""))
 
       expect(@gibbon.say_hello(@body)).to eq([])
     end
+
+    it "should feed API results per row to a given block" do
+      # Fake request
+      stub_request(:post, @url + 'sayHello/').
+        to_return(:body => @returns, :status => 200)
+
+      # Check request url
+      @result = []
+      @gibbon.say_hello(@body) { |res| @result << res }
+      expect(@result).to contain_exactly(@return_items)
+    end
+
 
   end
 
