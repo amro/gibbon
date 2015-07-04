@@ -6,7 +6,7 @@ Gibbon is an API wrapper for MailChimp's [API](http://kb.mailchimp.com/api/).
 [![Dependency Status](https://gemnasium.com/amro/gibbon.png)](https://gemnasium.com/amro/gibbon)
 ##Important Notes
 
-Gibbon now targets MailChimp API 3.0, which is substantially different from the previous API. Please use Gibbon 1.1.5 if you need to use API 2.0.
+Gibbon now targets MailChimp API 3.0, which is substantially different from the previous API. Please use Gibbon 1.1.x if you need to use API 2.0.
 
 Please read MailChimp's [Getting Started Guide](http://kb.mailchimp.com/api/article/api-3-overview).
 
@@ -108,7 +108,7 @@ available depending on the nature of the error.
 
 ##Thanks
 
-Thanks to everyone who's [contributed](https://github.com/amro/gibbon/contributors) to Gibbon's development.
+Thanks to everyone who has [contributed](https://github.com/amro/gibbon/contributors) to Gibbon's development.
 
 ##Copyright
 
