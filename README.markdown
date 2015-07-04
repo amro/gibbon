@@ -9,9 +9,8 @@ Gibbon is an API wrapper for MailChimp's [Primary and Export APIs](http://www.ma
 Gibbon now targets MailChimp API 2.0, which is substantially different from API 1.3. Please use Gibbon 0.4.6 if you need to use API 1.3.
 
 * Supports MailChimp API 2.0 and Export API 1.0
-* Errors are raised by default since 0.4.x
+* Errors are raised by default
 * Timeouts can be specified per request during initialization
-* Ruby 1.9.3+ for now. A future version may be Ruby 2.0 only to take advantage of lazy iteration when using the Export API.
 
 ##Installation
 
