@@ -96,8 +96,8 @@ Fetch the number of opens for a campaign
 
 Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](http://apidocs.mailchimp.com/oauth2/)):
 
-    Gibbon::API.api_endpoint = "https://us1.api.mailchimp.com"
-    Gibbon::API.api_key = your_access_token_or_api_key
+    Gibbon::Request.api_endpoint = "https://us1.api.mailchimp.com"
+    Gibbon::Request.api_key = your_access_token_or_api_key
 
 ### Error handling
 
