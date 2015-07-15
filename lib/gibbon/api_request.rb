@@ -102,9 +102,9 @@ module Gibbon
 
     def configure_request(request: nil, params: nil, headers: nil, body: nil)
       if request
-        request.params.merge(params) if params
+        request.params.merge!(params) if params
         request.headers['Content-Type'] = 'application/json'
-        request.headers.merge(headers) if headers
+        request.headers.merge!(headers) if headers
         request.body = body if body
         request.options.timeout = self.timeout
       end
