@@ -3,7 +3,8 @@
 
 ## [1.2.0] - 2015-07-16
 - Same as 1.1.6 but rereleased because it's a breaking change
-- Support for Ruby 2 streaming with Export API. Now returns an Array of Array of Strings instead of an Array of Strings
+- Support for Ruby 2 streaming with Export API. Now returns an Array of Array of Strings instead of an Array of Strings.
+- Fix a bug that caused calling methods statically on Gibbon::Export to fail
 
 ## [1.1.6] - 2015-06-04 (Yanked)
 - Support for Ruby 2 streaming with Export API
