@@ -60,7 +60,7 @@ module Gibbon
       if ((args.length > 0) && args[0].is_a?(Hash))
         method_missing(:send, args[0])
       else
-        __send__(args)
+        __send__(*args)
       end
     end
 
