@@ -1,12 +1,18 @@
 ## [Unreleased][unreleased]
 -
+
+## [1.2.0] - 2015-07-16
+- Same as 1.1.6 but rereleased because it's a breaking change
+- Support for Ruby 2 streaming with Export API. Now returns an Array of Array of Strings instead of an Array of Strings
+
+## [1.1.6] - 2015-06-04 (Yanked)
+- Support for Ruby 2 streaming with Export API
+
 ## [1.1.5] - 2015-02-19
-### Fixed
 - Update MultiJSON dependency to 1.9.0
 - Handle single empty space in Export API response
 
 ## [1.1.4] - 2012-11-04
-### Fixed
 - Fix JSON::ParserError on export calls that return blank results
 
 [unreleased]: https://github.com/amro/gibbon/compare/v1.1.5...HEAD

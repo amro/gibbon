@@ -27,26 +27,20 @@ module Gibbon
       url = URI.parse(api_url)
       req = Net::HTTP::Post.new(url.path, initheader = {'Content-Type' => 'application/json'})
       req.body = MultiJson.dump(params)
-      puts params
       Net::HTTP.start(url.host, url.port, :read_timeout => @timeout) do |http|
         # http://stackoverflow.com/questions/29598196/ruby-net-http-read-body-nethttpokread-body-called-twice-ioerror
         http.request req do |response|
           i = -1
           last = ''
           response.read_body do |chunk|
-            #puts "Chunk length: #{chunk.length}"
-            #puts "Chunk: #{chunk}"
             next if chunk.nil? or chunk.strip.empty?
             lines = (last+chunk).split("\n")
-            # There seems to be a bug (?) in the export API. Sometimes there's not a newline in between json objects...
-            lines = split_json(lines, '][')
-            lines = split_json(lines, '}{')
             last = lines.pop || ''
             lines.each do |line|
-              block.call(parse_response(line, i<0), i+=1) unless line.nil?
+              block.call(parse_response(line, i < 0), i += 1) unless line.nil?
             end
           end
-          block.call(parse_response(last, i<0), i+=1) unless last.nil? or last.empty?
+          block.call(parse_response(last, i < 0), i += 1) unless last.nil? or last.empty?
         end
       end
       rows unless block_given?
@@ -82,13 +76,12 @@ module Gibbon
       %w{list ecommOrders ecomm_orders campaignSubscriberActivity campaign_subscriber_activity}.include?(method.to_s) || super
     end
 
-
     private
 
     def split_json(lines, delimiter)
       lines.map do |line|
         if line.include? delimiter
-          line.split(delimiter).each_with_index.map{ |s, i| i%2==0 ? s+delimiter[0] : delimiter[1]+s }
+          line.split(delimiter).each_with_index.map{ |s, i|  i % 2 == 0 ? s + delimiter[0] : delimiter[1] + s }
         else
           line
         end
