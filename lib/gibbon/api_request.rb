@@ -122,7 +122,7 @@ module Gibbon
     def parse_response(response_body)
       parsed_response = nil
 
-      if response_body
+      if response_body && !response_body.empty?
         begin
           parsed_response = MultiJson.load(response_body)
         rescue MultiJson::ParseError

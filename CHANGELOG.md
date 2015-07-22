@@ -1,6 +1,9 @@
 ## [Unreleased][unreleased]
--
-## [2.0.0] - 2015-7-16
+
+## [2.0.1.pre] - 2015-7-22
+- Handle empty response payloads
+
+## [2.0.0.pre] - 2015-7-16
 - Support for API 3.0. Usage syntax has changed. Please check out the readme.
 - Update MultiJSON dependency to 1.11.0
 - Switch to Faraday
@@ -21,7 +24,6 @@
 - Fix JSON::ParserError on export calls that return blank results
 
 [unreleased]: https://github.com/amro/gibbon/compare/v1.2.0...HEAD
-[1.1.4]: https://github.com/amro/gibbon/compare/v1.1.5...v1.2.0
-[1.1.4]: https://github.com/amro/gibbon/compare/v1.1.5...v1.1.5
+[1.2.0]: https://github.com/amro/gibbon/compare/v1.1.5...v1.2.0
+[1.1.5]: https://github.com/amro/gibbon/compare/v1.1.5...v1.1.4
 [1.1.4]: https://github.com/amro/gibbon/compare/v1.1.3...v1.1.4
-[1.1.5]: https://github.com/amro/gibbon/compare/v1.1.4...v1.1.5
