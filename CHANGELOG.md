@@ -1,6 +1,6 @@
 ## [Unreleased][unreleased]
 
-## [2.0.1.pre] - 2015-7-22
+## [2.0.0.1.pre] - 2015-7-22
 - Handle empty response payloads
 
 ## [2.0.0.pre] - 2015-7-16
