@@ -1,5 +1,7 @@
 ## [Unreleased][unreleased]
 -
+## [1.2.1] - 2015-07-16
+- Fix lack of newline issue (contributed by @michaeldawson)
 
 ## [1.2.0] - 2015-07-16
 - Same as 1.1.6 but rereleased because it's a breaking change
@@ -16,6 +18,7 @@
 ## [1.1.4] - 2012-11-04
 - Fix JSON::ParserError on export calls that return blank results
 
-[unreleased]: https://github.com/amro/gibbon/compare/v1.1.5...HEAD
+[1.2.1]: https://github.com/amro/gibbon/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/amro/gibbon/compare/v1.1.4...v1.2.0
 [1.1.4]: https://github.com/amro/gibbon/compare/v1.1.3...v1.1.4
 [1.1.5]: https://github.com/amro/gibbon/compare/v1.1.4...v1.1.5

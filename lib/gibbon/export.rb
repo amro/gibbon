@@ -34,6 +34,7 @@ module Gibbon
           last = ''
           response.read_body do |chunk|
             next if chunk.nil? or chunk.strip.empty?
+            last += "\n" if last[-1, 1]==']'
             lines = (last+chunk).split("\n")
             last = lines.pop || ''
             lines.each do |line|
