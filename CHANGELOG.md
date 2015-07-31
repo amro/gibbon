@@ -1,6 +1,6 @@
 ## [Unreleased][unreleased]
 -
-## [1.2.1] - 2015-07-16
+## [1.2.1] - 2015-07-30
 - Fix lack of newline issue (contributed by @michaeldawson)
 
 ## [1.2.0] - 2015-07-16
