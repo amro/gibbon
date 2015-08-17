@@ -142,7 +142,7 @@ available depending on the nature of the error.
 
 ### Migrating from Gibbon 1.x
 
-Gibbon 2.x has different syntax from version 1.x. This is because Gibbon maps to MailChimp's API and MailChimp API 2 is different from version 3. First, the name of the primary class has changed from `API` to `Request`. And the way you pass an API key during initialization is different. A few examples below.
+Gibbon 2.x has different syntax from version 1.x. This is because Gibbon maps to MailChimp's API and because version 3 of the API is quite different from version 2. First, the name of the primary class has changed from `API` to `Request`. And the way you pass an API key during initialization is different. A few examples below.
 
 #### Initialization
 
