@@ -154,6 +154,8 @@ Gibbon 2.x:
 
     gibbon = Gibbon::Request.new(api_key: "your_api_key")
 
+MailChimp API 3 is a RESTful API, so Gibbon's syntax now requires a trailing call to a verb, as described above.
+
 #### Fetching Lists
 
 Gibbon 1.x:
