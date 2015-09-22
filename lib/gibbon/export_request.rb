@@ -11,6 +11,9 @@ module Gibbon
     end
     
     def list(id: nil, status: nil, segment: nil, since: nil, &block)
+      validate_api_key
+      validate_id
+
       params = {}
       params[:id] = id if id
       params[:status] = status if status
@@ -19,14 +22,18 @@ module Gibbon
       post("list", params, &block)
     end
 
-    def ecomm_orders(id: nil, since: nil, &block)
+    def ecomm_orders(since: nil, &block)
+      validate_api_key
+
       params = {}
-      params[:id] = id if id
       params[:since] = since if since
       post("ecommOrders", params, &block)
     end
 
     def campaign_subscriber_activity(id: nil, include_empty: false, since: nil, &block)
+      validate_api_key
+      validate_id
+      
       params = {}
       params[:id] = id if id
       params[:include_empty] = include_empty if include_empty
@@ -36,12 +43,14 @@ module Gibbon
 
     protected
     
-    def validate_required_params(params)
+    def validate_api_key
       api_key = self.api_key
       unless api_key && (api_key["-"] || self.api_endpoint)
         raise Gibbon::GibbonError, "You must set an api_key prior to making a request"
       end
-
+    end
+  
+    def validate_id
       unless params[:id] || params["id"]
         raise Gibbon::GibbonError, "You must pass a list id when making a request"
       end
@@ -64,8 +73,6 @@ module Gibbon
     end
         
     def post(method, params, &block)
-      validate_required_params(params)
-
       rows = []
       block = Proc.new { |row| rows << row } unless block_given?
       params = params.merge({apikey: @api_key})
