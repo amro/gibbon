@@ -12,7 +12,7 @@ module Gibbon
     
     def list(id: nil, status: nil, segment: nil, since: nil, &block)
       validate_api_key
-      validate_id(id)
+      validate_id
 
       params = {}
       params[:id] = id if id
@@ -32,7 +32,7 @@ module Gibbon
 
     def campaign_subscriber_activity(id: nil, include_empty: false, since: nil, &block)
       validate_api_key
-      validate_id(id)
+      validate_id
       
       params = {}
       params[:id] = id if id
@@ -50,8 +50,8 @@ module Gibbon
       end
     end
   
-    def validate_id(id)
-      unless id
+    def validate_id
+      unless params[:id] || params["id"]
         raise Gibbon::GibbonError, "You must pass a list id when making a request"
       end
     end
