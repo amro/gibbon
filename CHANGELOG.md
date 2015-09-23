@@ -1,8 +1,5 @@
 ## [Unreleased][unreleased]
 
-## [2.1.0] - 2015-9-22
-- [Experimental] Support for Export API 1.0
-
 ## [2.0.0] - 2015-7-28
 - Support for API 3.0. Usage syntax has changed. Please check out the readme.
 - Update MultiJSON dependency to 1.11.0
