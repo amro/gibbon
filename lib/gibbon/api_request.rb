@@ -29,6 +29,19 @@ module Gibbon
         handle_error(e)
       end
     end
+
+    def put(params: nil, headers: nil, body: nil)
+      validate_api_key
+
+      begin
+        response = self.rest_client.put do |request|
+          configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
+        end
+        parse_response(response.body)
+      rescue => e
+        handle_error(e)
+      end
+    end
     
     def get(params: nil, headers: nil)
       validate_api_key

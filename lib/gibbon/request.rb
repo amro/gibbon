@@ -36,6 +36,12 @@ module Gibbon
       reset
     end
 
+    def upsert(params: nil, headers: nil, body: nil)
+      APIRequest.new(builder: self).put(params: params, headers: headers, body: body)
+    ensure
+      reset
+    end
+
     def retrieve(params: nil, headers: nil)
       APIRequest.new(builder: self).get(params: params, headers: headers)
     ensure
