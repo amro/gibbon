@@ -29,7 +29,7 @@ You can set an individual request's timeout like this:
     gibbon.timeout = 10
 
 Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
-are specified inline and a `CRUD` (`create`, `retrieve`, `update`, `upsert`, or `delete`) verb initiates the request. `upsert` maps to the HTTP PUT verb and lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
+are specified inline and a `CRUD` (`create`, `retrieve`, `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
 
     gibbon.lists.retrieve
 
@@ -45,7 +45,7 @@ You can also specify `headers`, `params`, and `body` when calling a `CRUD` metho
 
     gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
 
-Of course, `body` is only supported on `create` and `update` calls. Those map to HTTP `POST` and `PATCH` verbs.
+Of course, `body` is only supported on `create`, `update`, and `upsert` calls. Those map to HTTP `POST`, `PATCH`, and `PUT` verbs respectively.
 
 You can set `api_key` and `timeout` globally:
 
