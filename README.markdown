@@ -29,7 +29,7 @@ You can set an individual request's timeout like this:
     gibbon.timeout = 10
 
 Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
-are specified inline and a `CRUD` (`create`, `retrieve`, `update`, or `delete`) verb initiates the request.
+are specified inline and a `CRUD` (`create`, `retrieve`, `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
 
     gibbon.lists.retrieve
 
@@ -67,7 +67,6 @@ a resource name contains a hyphen.
 
 ### Fetching Campaigns
 
-
     campaigns = gb.campaigns.retrieve
 
 ### Fetching Lists
@@ -85,6 +84,8 @@ List subscribers for a list:
 Subscribe a member to a list:
 
     gibbon.lists(list_id).members.create(body: {email_address: "email_address", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
+
+Note: You could call `upsert` instead of `create` in the example above to update the member if they already exist or subscribe them if they do not.
 
 You can also unsubscribe a member from a list:
 
