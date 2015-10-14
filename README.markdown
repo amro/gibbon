@@ -83,11 +83,11 @@ List subscribers for a list:
 
 Subscribe a member to a list:
 
-    gibbon.lists(list_id).members.create(body: {email_address: "email_address", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
+    gibbon.lists(list_id).members.create(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
 
 If you want to `upsert` instead, you would do the following:
 
-    gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: "email_address", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
+    gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
 
 You can also unsubscribe a member from a list:
 
@@ -183,11 +183,11 @@ Gibbon 2.x:
 
 Gibbon 1.x:
 
-    gibbon.lists.subscribe({:id => list_id, :email => {:email => "email_address"}, :merge_vars => {:FNAME => "Bob", :LNAME => "Smith"}})
+    gibbon.lists.subscribe({:id => list_id, :email => {:email => "foo@bar.com"}, :merge_vars => {:FNAME => "Bob", :LNAME => "Smith"}})
     
 Gibbon 2.x:
 
-    gibbon.lists(list_id).members.create(body: {email_address: "email_address", status: "subscribed", merge_fields: {FNAME: "Bob", LNAME: "Smith"}})
+    gibbon.lists(list_id).members.create(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "Bob", LNAME: "Smith"}})
 
 ##Thanks
 
