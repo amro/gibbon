@@ -85,7 +85,9 @@ Subscribe a member to a list:
 
     gibbon.lists(list_id).members.create(body: {email_address: "email_address", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
 
-Note: You could call `upsert` instead of `create` in the example above to update the member if they already exist or subscribe them if they do not.
+If you want to `upsert` instead, you would do the following:
+
+    gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: "email_address", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
 
 You can also unsubscribe a member from a list:
 
