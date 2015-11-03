@@ -22,87 +22,121 @@ A MailChimp account and API key. You can see your API keys [here](http://admin.m
 
 First, create an instance Gibbon::Request:
 
-    gibbon = Gibbon::Request.new(api_key: "your_api_key")
+```ruby
+gibbon = Gibbon::Request.new(api_key: "your_api_key")
+```
 
 You can set an individual request's timeout like this:
 
-    gibbon.timeout = 10
+```ruby
+gibbon.timeout = 10
+```
 
 Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
 are specified inline and a `CRUD` (`create`, `retrieve`, `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
 
 *Please note that `upsert` requires Gibbon version 2.1.0 or newer!*
 
-    gibbon.lists.retrieve
+```ruby
+gibbon.lists.retrieve
+```
 
 Retrieving a specific list looks like:
 
-    gibbon.lists(list_id).retrieve
+```ruby
+gibbon.lists(list_id).retrieve
+```
 
 Retrieving a specific list's members looks like:
 
-    gibbon.lists(list_id).members.retrieve
+```ruby
+gibbon.lists(list_id).members.retrieve
+```
 
 You can also specify `headers`, `params`, and `body` when calling a `CRUD` method. For example:
 
-    gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
+```ruby
+gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
+```
 
 Of course, `body` is only supported on `create`, `update`, and `upsert` calls. Those map to HTTP `POST`, `PATCH`, and `PUT` verbs respectively.
 
 You can set `api_key` and `timeout` globally:
 
-    Gibbon::Request.api_key = "your_api_key"
-    Gibbon::Request.timeout = 15
+```ruby
+Gibbon::Request.api_key = "your_api_key"
+Gibbon::Request.timeout = 15
+```
 
 For example, you could set the values above in an `initializer` file in your `Rails` app (e.g. your\_app/config/initializers/gibbon.rb).
 
 Assuming you've set an `api_key` on Gibbon, you can conveniently make API calls on the class itself:
 
-    Gibbon::Request.lists.retrieve
+```ruby
+Gibbon::Request.lists.retrieve
+```
 
 You can also set the environment variable `MAILCHIMP_API_KEY` and Gibbon will use it when you create an instance:
 
-    gibbon = Gibbon::Request.new
+```ruby
+gibbon = Gibbon::Request.new
+```
 
 MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources. Substitute an underscore if
 a resource name contains a hyphen.
 
 ### Fetching Campaigns
 
-    campaigns = gb.campaigns.retrieve
+```ruby
+campaigns = gb.campaigns.retrieve
+```
 
 ### Fetching Lists
 
 Similarly, to fetch your lists
 
-    lists = gibbon.lists.retrieve
+```ruby
+lists = gibbon.lists.retrieve
+```
 
 ### More Advanced Examples
 
 List subscribers for a list:
 
-    gibbon.lists(list_id).members.retrieve
+```ruby
+gibbon.lists(list_id).members.retrieve
+```
 
 Subscribe a member to a list:
 
-    gibbon.lists(list_id).members.create(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
+```ruby
+gibbon.lists(list_id).members.create(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
+```
 
 If you want to `upsert` instead, you would do the following:
 
-    gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
+```ruby
+gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "First Name", LNAME: "Last Name"}})
+```
 
 You can also unsubscribe a member from a list:
 
-    gibbon.lists(list_id).members(member_id).update(body: { status: "unsubscribed" })
+```ruby
+gibbon.lists(list_id).members(member_id).update(body: { status: "unsubscribed" })
+```
 
 Fetch the number of opens for a campaign
 
-    email_stats = gibbon.reports(campaign_id).retrieve["opens"]
+```ruby
+email_stats = gibbon.reports(campaign_id).retrieve["opens"]
+```
 
 Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](http://apidocs.mailchimp.com/oauth2/)):
 
-    Gibbon::Request.api_endpoint = "https://us1.api.mailchimp.com"
-    Gibbon::Request.api_key = your_access_token_or_api_key
+```ruby
+Gibbon::Request.api_endpoint = "https://us1.api.mailchimp.com"
+Gibbon::Request.api_key = your_access_token_or_api_key
+```
 
 ### Interests
 
@@ -110,31 +144,45 @@ Interests are a little more complicated than other parts of the API, so here's a
 
 Subscribing a member to a list with specific interests up front:
 
-    g.lists(list_id).members.create(body: {email_address: user_email_address, status: "subscribed", interests: {some_interest_id: true, another_interest_id: true}})
+```ruby
+g.lists(list_id).members.create(body: {email_address: user_email_address, status: "subscribed", interests: {some_interest_id: true, another_interest_id: true}})
+```
 
 Updating a list member's interests:
 
-    gibbon.lists(list_id).members(member_id).update(body: {interests: {some_interest_id: true, another_interest_id: false}})
+```ruby
+gibbon.lists(list_id).members(member_id).update(body: {interests: {some_interest_id: true, another_interest_id: false}})
+```
 
 So how do we get the interest IDs? When you query the API for a specific list member's information:
 
-    g.lists(list_id).members(member_id).retrieve
+```ruby
+g.lists(list_id).members(member_id).retrieve
+```
 
 The response looks someting like this (unrelated things removed):
 
-    {"id"=>"...", "email_address"=>"...", ..., "interests"=>{"3def637141"=>true, "f7cc4ee841"=>false, "fcdc951b9f"=>false, "3daf3cf27d"=>true, "293a3703ed"=>false, "72370e0d1f"=>false, "d434d21a1c"=>false, "bdb1ff199f"=>false, "a54e78f203"=>false, "c4527fd018"=>false} ...}
+```ruby
+{"id"=>"...", "email_address"=>"...", ..., "interests"=>{"3def637141"=>true, "f7cc4ee841"=>false, "fcdc951b9f"=>false, "3daf3cf27d"=>true, "293a3703ed"=>false, "72370e0d1f"=>false, "d434d21a1c"=>false, "bdb1ff199f"=>false, "a54e78f203"=>false, "c4527fd018"=>false} ...}
+```
 
 The API returns a map of interest ID to boolean value. Now we to get interest details so we know what these interest IDs map to. Looking at [this doc page](http://kb.mailchimp.com/api/resources/lists/interest-categories/interests/lists-interests-collection), we need to do this:
 
-    g.lists(list_id).interest_categories.retrieve
+```ruby
+g.lists(list_id).interest_categories.retrieve
+```
 
 To get a list of interest categories. That gives us something like:
 
-    {"list_id"=>"...", "categories"=>[{"list_id"=>"...", "id"=>"0ace7aa498", "title"=>"Food Preferences", ...}] ...}
+```ruby
+{"list_id"=>"...", "categories"=>[{"list_id"=>"...", "id"=>"0ace7aa498", "title"=>"Food Preferences", ...}] ...}
+```
 
 In this case, we're interested in the ID of the "Food Preferences" interest, which is `0ace7aa498`. Now we can fetch the details for this interest group:
 
-    g.lists(list_id).interest_categories("0ace7aa498").interests.retrieve
+```ruby
+g.lists(list_id).interest_categories("0ace7aa498").interests.retrieve
+```
 
 That response gives the interest data, including the ID for the interests themselves, which we can use to update a list member's interests or set them when we call the API to subscribe her or him to a list.
 
@@ -153,11 +201,15 @@ Gibbon 2.x has different syntax from version 1.x. This is because Gibbon maps to
 
 Gibbon 1.x:
 
-    gibbon = Gibbon::API.new("your_api_key")
+```ruby
+gibbon = Gibbon::API.new("your_api_key")
+```
     
 Gibbon 2.x:
 
-    gibbon = Gibbon::Request.new(api_key: "your_api_key")
+```ruby
+gibbon = Gibbon::Request.new(api_key: "your_api_key")
+```
 
 MailChimp API 3 is a RESTful API, so Gibbon's syntax now requires a trailing call to a verb, as described above.
 
@@ -165,37 +217,49 @@ MailChimp API 3 is a RESTful API, so Gibbon's syntax now requires a trailing cal
 
 Gibbon 1.x:
 
-    gibbon.lists.list
+```ruby
+gibbon.lists.list
+```
     
 Gibbon 2.x:
 
-    gibbon.lists.retrieve
+```ruby
+gibbon.lists.retrieve
+```
 
 #### Fetching List Members
 
 Gibbon 1.x:
 
-    gibbon.lists.members({:id => list_id})
+```ruby
+gibbon.lists.members({:id => list_id})
+```
     
 Gibbon 2.x:
 
-    gibbon.lists(list_id).members.retrieve
+```ruby
+gibbon.lists(list_id).members.retrieve
+```
 
 #### Subscribing a Member to a List
 
 Gibbon 1.x:
 
-    gibbon.lists.subscribe({:id => list_id, :email => {:email => "foo@bar.com"}, :merge_vars => {:FNAME => "Bob", :LNAME => "Smith"}})
+```ruby
+gibbon.lists.subscribe({:id => list_id, :email => {:email => "foo@bar.com"}, :merge_vars => {:FNAME => "Bob", :LNAME => "Smith"}})
+```
     
 Gibbon 2.x:
 
-    gibbon.lists(list_id).members.create(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "Bob", LNAME: "Smith"}})
+```ruby
+gibbon.lists(list_id).members.create(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "Bob", LNAME: "Smith"}})
+```
 
-##Thanks
+## Thanks
 
 Thanks to everyone who has [contributed](https://github.com/amro/gibbon/contributors) to Gibbon's development.
 
-##Copyright
+## Copyright
 
 * Copyright (c) 2010-2015 Amro Mousa. See LICENSE.txt for details.
 * MailChimp (c) 2001-2015 The Rocket Science Group.
