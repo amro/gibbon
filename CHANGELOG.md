@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [2.1.1] - 2015-11-05
+- Fix surfacing unparseable Faraday request exception.
+
 ## [2.1.0] - 2015-10-12
 - Upsert support
 
