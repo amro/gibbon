@@ -15,6 +15,13 @@ describe Gibbon::APIRequest do
     expect { @gibbon.lists.retrieve }.to raise_error(Gibbon::MailChimpError)
   end
 
+  it "surfaces an unparseable client request exception as a Gibbon::MailChimpError" do
+    exception = Faraday::Error::ClientError.new(
+      "the server responded with status 503")
+    stub_request(:get, "#{@api_root}/lists").to_raise(exception)
+    expect { @gibbon.lists.retrieve }.to raise_error(Gibbon::MailChimpError)
+  end
+
   it "surfaces an unparseable response body as a Gibbon::MailChimpError" do
     response_values = {:status => 503, :headers => {}, :body => '[foo]'}
     exception = Faraday::Error::ClientError.new("the server responded with status 503", response_values)
