@@ -124,7 +124,7 @@ module Gibbon
     end
 
     def rest_client
-      client = Faraday.new(url: self.api_url) do |faraday|
+      client = Faraday.new(self.api_url) do |faraday|
         faraday.response :raise_error
         faraday.adapter Faraday.default_adapter
       end
