@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [2.1.2] - 2015-11-05
+- Allow Faraday default\_connection\_options to be set
+
 ## [2.1.1] - 2015-11-05
 - Fix surfacing unparseable Faraday request exception.
 
