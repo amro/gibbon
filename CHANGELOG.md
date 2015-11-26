@@ -1,9 +1,9 @@
 ## [Unreleased][unreleased]
 
-## [2.1.3] - 2015-11-05
+## [2.1.3] - 2015-11-26
 - Fixes issue #159, which prevented sending campaigns from working. Thanks to @q3-tech for the bug report.
 
-## [2.1.2] - 2015-11-05
+## [2.1.2] - 2015-11-11
 - Allow Faraday default\_connection\_options to be set
 
 ## [2.1.1] - 2015-11-05
