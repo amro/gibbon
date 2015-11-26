@@ -20,6 +20,14 @@ module Gibbon
       self
     end
     
+    def send(*args)
+      if args.length == 0
+        method_missing(:send, args)
+      else
+        __send__(*args)
+      end
+    end
+    
     def path
       @path_parts.join('/')
     end
