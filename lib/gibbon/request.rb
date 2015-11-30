@@ -1,15 +1,16 @@
 module Gibbon
   class Request
-    attr_accessor :api_key, :api_endpoint, :timeout
+    attr_accessor :api_key, :api_endpoint, :timeout, :proxy_url
 
     DEFAULT_TIMEOUT = 30
 
-    def initialize(api_key: nil, api_endpoint: nil, timeout: nil)
+    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, proxy_url: nil)
       @path_parts = []
       @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
       @api_key = @api_key.strip if @api_key
       @api_endpoint = api_endpoint || self.class.api_endpoint
       @timeout = timeout || self.class.timeout || DEFAULT_TIMEOUT
+      @proxy_url = proxy_url || self.class.proxy_url || ENV['MAILCHIMP_PROXY_URL']
     end
 
     def method_missing(method, *args)
@@ -69,10 +70,10 @@ module Gibbon
     end
 
     class << self
-      attr_accessor :api_key, :timeout, :api_endpoint
+      attr_accessor :api_key, :timeout, :api_endpoint, :proxy_url
 
       def method_missing(sym, *args, &block)
-        new(api_key: self.api_key, api_endpoint: self.api_endpoint, timeout: self.timeout).send(sym, *args, &block)
+        new(api_key: self.api_key, api_endpoint: self.api_endpoint, timeout: self.timeout, proxy_url: self.proxy_url).send(sym, *args, &block)
       end
     end
   end
