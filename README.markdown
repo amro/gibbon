@@ -35,7 +35,7 @@ gibbon.timeout = 10
 You can set an optional proxy url like this:
 
 ```ruby
-gibbon.proxy = 'http://your_proxy_url.com:80'
+gibbon.proxy_url = 'http://your_proxy_url.com:80'
 ```
 
 Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
