@@ -32,7 +32,7 @@ You can set an individual request's timeout like this:
 gibbon.timeout = 10
 ```
 
-You can set an optional proxy url like this:
+You can set an optional proxy url like this (or with an environment variable MAILCHIMP_PROXY_URL):
 
 ```ruby
 gibbon.proxy_url = 'http://your_proxy_url.com:80'
