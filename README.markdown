@@ -156,7 +156,7 @@ body = {
 begin
   gibbon.campaigns.create(body: body)
 rescue Gibbon::MailChimpError => e
-  puts "Houston, we have a problem: #{e.message}"
+  puts "Houston, we have a problem: #{e.message} - #{e.raw_body}"
 end
 ```
 
@@ -231,7 +231,14 @@ g.lists(list_id).interest_categories("0ace7aa498").interests.retrieve
 
 That response gives the interest data, including the ID for the interests themselves, which we can use to update a list member's interests or set them when we call the API to subscribe her or him to a list.
 
-### More Advanced Examples
+### Error handling
+
+Gibbon raises an error when the API returns an error.
+
+Gibbon::MailChimpError has the following attributes: `title`, `detail`, `body`, `raw_body`, `status_code`. Some or all of these may not be
+available depending on the nature of the error.
+
+### Other
 
 Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](http://apidocs.mailchimp.com/oauth2/)):
 
@@ -239,13 +246,6 @@ Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and h
 Gibbon::Request.api_endpoint = "https://us1.api.mailchimp.com"
 Gibbon::Request.api_key = your_access_token_or_api_key
 ```
-
-### Error handling
-
-Gibbon raises an error when the API returns an error.
-
-Gibbon::MailChimpError has the following attributes: `title`, `detail`, `body`, `raw_body`, `status_code`. Some or all of these may not be
-available depending on the nature of the error.
 
 ### Migrating from Gibbon 1.x
 
