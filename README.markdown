@@ -37,23 +37,7 @@ are specified inline and a `CRUD` (`create`, `retrieve`, `update`, `upsert`, or 
 
 *Please note that `upsert` requires Gibbon version 2.1.0 or newer!*
 
-```ruby
-gibbon.lists.retrieve
-```
-
-Retrieving a specific list looks like:
-
-```ruby
-gibbon.lists(list_id).retrieve
-```
-
-Retrieving a specific list's members looks like:
-
-```ruby
-gibbon.lists(list_id).members.retrieve
-```
-
-You can also specify `headers`, `params`, and `body` when calling a `CRUD` method. For example:
+You can specify `headers`, `params`, and `body` when calling a `CRUD` method. For example:
 
 ```ruby
 gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
@@ -85,23 +69,31 @@ gibbon = Gibbon::Request.new
 MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources. Substitute an underscore if
 a resource name contains a hyphen.
 
-### Fetching Campaigns
+## Examples
+
+### Lists
+
+Fetch all lists:
 
 ```ruby
-campaigns = gb.campaigns.retrieve
+gibbon.lists.retrieve
 ```
 
-### Fetching Lists
-
-Similarly, to fetch your lists
+Retrieving a specific list looks like:
 
 ```ruby
-lists = gibbon.lists.retrieve
+gibbon.lists(list_id).retrieve
 ```
 
-### More Advanced Examples
+Retrieving a specific list's members looks like:
 
-List subscribers for a list:
+```ruby
+gibbon.lists(list_id).members.retrieve
+```
+
+### Subscribers
+
+Get all subscribers for a list:
 
 ```ruby
 gibbon.lists(list_id).members.retrieve
@@ -125,17 +117,70 @@ You can also unsubscribe a member from a list:
 gibbon.lists(list_id).members(member_id).update(body: { status: "unsubscribed" })
 ```
 
+### Campaigns
+
+Get all campaigns:
+
+```ruby
+campaigns = gibbon.campaigns.retrieve
+```
+
 Fetch the number of opens for a campaign
 
 ```ruby
 email_stats = gibbon.reports(campaign_id).retrieve["opens"]
 ```
 
-Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](http://apidocs.mailchimp.com/oauth2/)):
+Create a new campaign:
 
 ```ruby
-Gibbon::Request.api_endpoint = "https://us1.api.mailchimp.com"
-Gibbon::Request.api_key = your_access_token_or_api_key
+recipients = {
+  list_id: list_id,
+  segment_opts: {
+    saved_segment_id: segment_id
+  }
+}
+settings = {
+  subject_line: "Subject Line",
+  title: "Name of Campaign",
+  from_name: "From Name",
+  reply_to: "my@email.com"
+}
+
+body = {
+  type: "regular",
+  recipients: recipients,
+  settings: settings
+}
+
+begin
+  gibbon.campaigns.create(body: body)
+rescue Gibbon::MailChimpError => e
+  puts "Houston, we have a problem: #{e.message} - #{e.raw_body}"
+end
+```
+
+Add content to a campaign:
+
+*(Please note that Mailchimp does not currently support dynamic replacement of mc:edit areas in their drag-and-drop templates using their API.  Custom templates [can be used](http://stackoverflow.com/questions/29366766/mailchimp-api-not-replacing-mcedit-content-sections-using-ruby-library) instead.)*
+
+```ruby
+body = {
+  template: {
+    id: template_id,
+    sections: {
+      "name-of-mc-edit-area": "Content here"
+    }
+  }
+}
+
+gibbon.campaigns(campaign_id).content.upsert(body: body)
+```
+
+Send a campaign:
+
+```ruby
+gibbon.campaigns(campaign_id).actions.send.create
 ```
 
 ### Interests
@@ -192,6 +237,15 @@ Gibbon raises an error when the API returns an error.
 
 Gibbon::MailChimpError has the following attributes: `title`, `detail`, `body`, `raw_body`, `status_code`. Some or all of these may not be
 available depending on the nature of the error.
+
+### Other
+
+Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](http://apidocs.mailchimp.com/oauth2/)):
+
+```ruby
+Gibbon::Request.api_endpoint = "https://us1.api.mailchimp.com"
+Gibbon::Request.api_key = your_access_token_or_api_key
+```
 
 ### Migrating from Gibbon 1.x
 
