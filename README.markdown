@@ -32,6 +32,12 @@ You can set an individual request's timeout like this:
 gibbon.timeout = 10
 ```
 
+You can set an optional proxy url like this:
+
+```ruby
+gibbon.proxy = 'http://your_proxy_url.com:80'
+```
+
 Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
 are specified inline and a `CRUD` (`create`, `retrieve`, `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
 
