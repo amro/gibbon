@@ -7,13 +7,14 @@ describe Gibbon do
       Gibbon::APIRequest.send(:public, *Gibbon::APIRequest.protected_instance_methods)
 
       @api_key = "123-us1"
+      @proxy = 'the_proxy'
     end
 
     it "have no API by default" do
       @gibbon = Gibbon::Request.new
       expect(@gibbon.api_key).to be_nil
     end
-
+    
     it "set an API key in constructor" do
       @gibbon = Gibbon::Request.new(api_key: @api_key)
       expect(@gibbon.api_key).to eq(@api_key)
@@ -52,6 +53,24 @@ describe Gibbon do
       @gibbon = Gibbon::Request.new(api_key: @api_key, api_endpoint: api_endpoint)
       expect(api_endpoint).to eq(@gibbon.api_endpoint)
     end
+    
+    it "have no Proxy url by default" do
+      @gibbon = Gibbon::Request.new
+      expect(@gibbon.proxy).to be_nil
+    end    
+
+    it "set an proxy url key from the 'MAILCHIMP_PROXY_URL' ENV variable" do
+      ENV['MAILCHIMP_PROXY'] = @proxy
+      @gibbon = Gibbon::Request.new
+      expect(@gibbon.proxy).to eq(@proxy)
+      ENV.delete('MAILCHIMP_PROXY')
+    end  
+    
+    it "set an API key via setter" do
+      @gibbon = Gibbon::Request.new
+      @gibbon.proxy = @proxy
+      expect(@gibbon.proxy).to eq(@proxy)
+    end    
   end
 
   describe "build api url" do
@@ -117,4 +136,3 @@ describe Gibbon do
     end
   end
 end
-
