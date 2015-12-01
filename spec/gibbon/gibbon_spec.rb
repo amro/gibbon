@@ -14,26 +14,25 @@ describe Gibbon do
       @gibbon = Gibbon::Request.new
       expect(@gibbon.api_key).to be_nil
     end
-    
-    it "set an API key in constructor" do
+    it "sets an API key in the constructor" do
       @gibbon = Gibbon::Request.new(api_key: @api_key)
       expect(@gibbon.api_key).to eq(@api_key)
     end
 
-    it "set an API key from the 'MAILCHIMP_API_KEY' ENV variable" do
+    it "sets an API key from the 'MAILCHIMP_API_KEY' ENV variable" do
       ENV['MAILCHIMP_API_KEY'] = @api_key
       @gibbon = Gibbon::Request.new
       expect(@gibbon.api_key).to eq(@api_key)
       ENV.delete('MAILCHIMP_API_KEY')
     end
 
-    it "set an API key via setter" do
+    it "sets an API key via setter" do
       @gibbon = Gibbon::Request.new
       @gibbon.api_key = @api_key
       expect(@gibbon.api_key).to eq(@api_key)
     end
 
-    it "set timeout and get" do
+    it "sets timeout and get" do
       @gibbon = Gibbon::Request.new
       timeout = 30
       @gibbon.timeout = timeout
@@ -53,24 +52,30 @@ describe Gibbon do
       @gibbon = Gibbon::Request.new(api_key: @api_key, api_endpoint: api_endpoint)
       expect(api_endpoint).to eq(@gibbon.api_endpoint)
     end
-    
-    it "have no Proxy url by default" do
+
+    it "has no Proxy url by default" do
       @gibbon = Gibbon::Request.new
       expect(@gibbon.proxy).to be_nil
-    end    
+    end
 
-    it "set an proxy url key from the 'MAILCHIMP_PROXY_URL' ENV variable" do
+    it "sets an proxy url key from the 'MAILCHIMP_PROXY_URL' ENV variable" do
       ENV['MAILCHIMP_PROXY'] = @proxy
       @gibbon = Gibbon::Request.new
       expect(@gibbon.proxy).to eq(@proxy)
       ENV.delete('MAILCHIMP_PROXY')
-    end  
-    
-    it "set an API key via setter" do
+    end
+
+    it "sets an API key via setter" do
       @gibbon = Gibbon::Request.new
       @gibbon.proxy = @proxy
       expect(@gibbon.proxy).to eq(@proxy)
-    end    
+    end
+
+    it "sets an adapter in the constructor" do
+      adapter = :em_synchrony
+      @gibbon = Gibbon::Request.new(faraday_adapter: adapter)
+      expect(@gibbon.faraday_adapter).to eq(adapter)
+    end
   end
 
   describe "build api url" do

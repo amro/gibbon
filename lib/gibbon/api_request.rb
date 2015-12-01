@@ -16,7 +16,7 @@ module Gibbon
         handle_error(e)
       end
     end
-    
+
     def patch(params: nil, headers: nil, body: nil)
       validate_api_key
 
@@ -42,7 +42,7 @@ module Gibbon
         handle_error(e)
       end
     end
-    
+
     def get(params: nil, headers: nil)
       validate_api_key
 
@@ -55,7 +55,7 @@ module Gibbon
         handle_error(e)
       end
     end
-    
+
     def delete(params: nil, headers: nil)
       validate_api_key
 
@@ -70,23 +70,27 @@ module Gibbon
     end
 
     protected
-    
+
     # Convenience accessors
-  
+
     def api_key
       @request_builder.api_key
     end
-    
+
     def api_endpoint
       @request_builder.api_endpoint
     end
-    
+
     def timeout
       @request_builder.timeout
     end
     
     def proxy
       @request_builder.proxy
+    end
+
+    def adapter
+      @request_builder.faraday_adapter
     end
 
     # Helpers
@@ -130,7 +134,7 @@ module Gibbon
     def rest_client
       client = Faraday.new(self.api_url, proxy: self.proxy) do |faraday|
         faraday.response :raise_error
-        faraday.adapter Faraday.default_adapter
+        faraday.adapter adapter
       end
       client.basic_auth('apikey', self.api_key)
       client
