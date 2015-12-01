@@ -32,12 +32,6 @@ You can set an individual request's timeout like this:
 gibbon.timeout = 10
 ```
 
-You can set an optional proxy url like this (or with an environment variable MAILCHIMP_PROXY):
-
-```ruby
-gibbon.proxy = 'http://your_proxy.com:80'
-```
-
 Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
 are specified inline and a `CRUD` (`create`, `retrieve`, `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
 
@@ -253,6 +247,18 @@ Gibbon::Request.api_endpoint = "https://us1.api.mailchimp.com"
 Gibbon::Request.api_key = your_access_token_or_api_key
 ```
 
+You can set an optional proxy url like this (or with an environment variable MAILCHIMP_PROXY):
+
+```ruby
+gibbon.proxy = 'http://your_proxy.com:80'
+```
+
+You can set a different Faraday adapter during initialization:
+
+```ruby
+gibbon = Gibbon::Request.new(api_key: "your_api_key", faraday_adapter: :net_http)
+```
+
 ### Migrating from Gibbon 1.x
 
 Gibbon 2.x has different syntax from version 1.x. This is because Gibbon maps to MailChimp's API and because version 3 of the API is quite different from version 2. First, the name of the primary class has changed from `API` to `Request`. And the way you pass an API key during initialization is different. A few examples below.
@@ -321,5 +327,5 @@ Thanks to everyone who has [contributed](https://github.com/amro/gibbon/contribu
 
 ## Copyright
 
-* Copyright (c) 2010-2015 Amro Mousa. See LICENSE.txt for details.
-* MailChimp (c) 2001-2015 The Rocket Science Group.
+* Copyright (c) 2010-2016 Amro Mousa. See LICENSE.txt for details.
+* MailChimp (c) 2001-2016 The Rocket Science Group.

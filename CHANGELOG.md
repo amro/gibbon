@@ -1,5 +1,9 @@
 ## [Unreleased][unreleased]
 
+## [2.2.0] - 2015-12-01
+- Adds support for proxies
+- Adds support for faraday_adapters
+
 ## [2.1.3] - 2015-11-26
 - Fixes issue #159, which prevented sending campaigns from working. Thanks to @q3-tech for the bug report.
 
