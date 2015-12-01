@@ -253,7 +253,7 @@ You can set an optional proxy url like this (or with an environment variable MAI
 gibbon.proxy = 'http://your_proxy.com:80'
 ```
 
-You can set a different Faraday adapter during initialization:
+You can set a different [Faraday adapter](https://github.com/lostisland/faraday) during initialization:
 
 ```ruby
 gibbon = Gibbon::Request.new(api_key: "your_api_key", faraday_adapter: :net_http)
