@@ -7,7 +7,7 @@ describe Gibbon do
       Gibbon::APIRequest.send(:public, *Gibbon::APIRequest.protected_instance_methods)
 
       @api_key = "123-us1"
-      @proxy_url = 'the_proxy_url'
+      @proxy = 'the_proxy'
     end
 
     it "have no API by default" do
@@ -56,20 +56,20 @@ describe Gibbon do
     
     it "have no Proxy url by default" do
       @gibbon = Gibbon::Request.new
-      expect(@gibbon.proxy_url).to be_nil
+      expect(@gibbon.proxy).to be_nil
     end    
 
     it "set an proxy url key from the 'MAILCHIMP_PROXY_URL' ENV variable" do
-      ENV['MAILCHIMP_PROXY_URL'] = @proxy_url
+      ENV['MAILCHIMP_PROXY'] = @proxy
       @gibbon = Gibbon::Request.new
-      expect(@gibbon.proxy_url).to eq(@proxy_url)
-      ENV.delete('MAILCHIMP_PROXY_URL')
+      expect(@gibbon.proxy).to eq(@proxy)
+      ENV.delete('MAILCHIMP_PROXY')
     end  
     
     it "set an API key via setter" do
       @gibbon = Gibbon::Request.new
-      @gibbon.proxy_url = @proxy_url
-      expect(@gibbon.proxy_url).to eq(@proxy_url)
+      @gibbon.proxy = @proxy
+      expect(@gibbon.proxy).to eq(@proxy)
     end    
   end
 

@@ -85,8 +85,8 @@ module Gibbon
       @request_builder.timeout
     end
     
-    def proxy_url
-      @request_builder.proxy_url
+    def proxy
+      @request_builder.proxy
     end
 
     # Helpers
@@ -128,7 +128,7 @@ module Gibbon
     end
 
     def rest_client
-      client = Faraday.new(self.api_url, proxy: self.proxy_url) do |faraday|
+      client = Faraday.new(self.api_url, proxy: self.proxy) do |faraday|
         faraday.response :raise_error
         faraday.adapter Faraday.default_adapter
       end
