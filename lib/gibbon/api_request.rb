@@ -84,7 +84,7 @@ module Gibbon
     def timeout
       @request_builder.timeout
     end
-    
+
     def proxy
       @request_builder.proxy
     end
@@ -96,11 +96,9 @@ module Gibbon
     # Helpers
 
     def handle_error(error)
-      error_to_raise = nil
+      error_to_raise = MailChimpError.new(error.message)
 
       begin
-        error_to_raise = MailChimpError.new(error.message)
-
         if error.is_a?(Faraday::Error::ClientError) && error.response
           parsed_response = MultiJson.load(error.response[:body])
 
@@ -114,7 +112,6 @@ module Gibbon
           error_to_raise.raw_body = error.response[:body]
         end
       rescue MultiJson::ParseError
-        error_to_raise.message = error.message
         error_to_raise.status_code = error.response[:status]
       end
 
