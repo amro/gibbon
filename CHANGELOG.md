@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [2.2.1] - 2016-01-01
+- Improve MailChimpError logging
+
 ## [2.2.0] - 2015-12-01
 - Adds support for proxies
 - Adds support for faraday_adapters
