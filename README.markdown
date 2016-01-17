@@ -114,7 +114,7 @@ gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: 
 You can also unsubscribe a member from a list:
 
 ```ruby
-gibbon.lists(list_id).members(member_id).update(body: { status: "unsubscribed" })
+gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).update(body: { status: "unsubscribed" })
 ```
 
 ### Campaigns
