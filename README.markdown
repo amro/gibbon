@@ -91,6 +91,25 @@ Retrieving a specific list's members looks like:
 gibbon.lists(list_id).members.retrieve
 ```
 
+By default V3 of the Mailchimp API only returns 10 results. For 50 results use:
+
+```ruby
+gibbon.lists(list_id).members("?count=50").retrieve
+```
+
+For the next 50 results (members 51-100) use: 
+
+```ruby
+gibbon.lists(list_id).members("?count=50&offset=50)").retrieve
+```
+
+For all the resuts you need two calls :
+```ruby
+number_of_list_members = gibbon.lists(list_id).members.retrieve["total_items"]
+gibbon.lists(list_id).members("?count=#{number_of_list_members}").retrieve
+```
+
+
 ### Subscribers
 
 Get all subscribers for a list:
