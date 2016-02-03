@@ -111,11 +111,6 @@ For the next 50 results (members 51-100) use:
 gibbon.lists(list_id).members.retrieve(params: {"count": "50", "offset: "50"})
 ```
 
-For all the resuts you need two calls :
-```ruby
-number_of_list_members = gibbon.lists(list_id).members.retrieve["total_items"]
-gibbon.lists(list_id).members.retrieve(params: {count: "#{number_of_list_members}"})
-```
 Subscribe a member to a list:
 
 ```ruby
