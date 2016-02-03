@@ -99,13 +99,13 @@ Get all subscribers for a list:
 gibbon.lists(list_id).members.retrieve
 ```
 
-By default V3 of the Mailchimp API only returns 10 results. For 50 results use:
+By default the Mailchimp API returns 10 results. To set the count to 50:
 
 ```ruby
 gibbon.lists(list_id).members.retrieve(params: {"count": "50"})
 ```
 
-For the next 50 results (members 51-100) use: 
+And to retrieve the next 50 members: 
 
 ```ruby
 gibbon.lists(list_id).members.retrieve(params: {"count": "50", "offset: "50"})
