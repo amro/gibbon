@@ -129,6 +129,20 @@ You can also unsubscribe a member from a list:
 gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).update(body: { status: "unsubscribed" })
 ```
 
+### Fields
+
+Only get ids and names from all lists
+
+```ruby
+gibbon.lists.retrieve(params: {"fields": "lists.id,lists.name"})
+```
+
+Only get emails from all members
+
+```ruby
+gibbon.lists(list_id).members.retrieve(params: {"fields": "members.email_address"})
+```
+
 ### Campaigns
 
 Get all campaigns:
