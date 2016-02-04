@@ -131,13 +131,13 @@ gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).update(body: 
 
 ### Fields
 
-Only get ids and names from all lists
+Only retrieve ids and names for fetched lists:
 
 ```ruby
 gibbon.lists.retrieve(params: {"fields": "lists.id,lists.name"})
 ```
 
-Only get emails from all members
+Only retrieve emails for fetched lists:
 
 ```ruby
 gibbon.lists(list_id).members.retrieve(params: {"fields": "members.email_address"})
