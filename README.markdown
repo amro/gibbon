@@ -105,7 +105,7 @@ By default the Mailchimp API returns 10 results. To set the count to 50:
 gibbon.lists(list_id).members.retrieve(params: {"count": "50"})
 ```
 
-And to retrieve the next 50 members: 
+And to retrieve the next 50 members:
 
 ```ruby
 gibbon.lists(list_id).members.retrieve(params: {"count": "50", "offset: "50"})
@@ -261,8 +261,18 @@ That response gives the interest data, including the ID for the interests themse
 
 Gibbon raises an error when the API returns an error.
 
-Gibbon::MailChimpError has the following attributes: `title`, `detail`, `body`, `raw_body`, `status_code`. Some or all of these may not be
-available depending on the nature of the error.
+`Gibbon::MailChimpError` has the following attributes: `title`, `detail`, `body`, `raw_body`, `status_code`. Some or all of these may not be
+available depending on the nature of the error. For example:
+
+```ruby
+begin
+  gibbon.lists(...)members.create( body: {
+                                  ...
+                                  })
+rescue Gibbon::MailChimpError => e
+  puts "Houston, we have a problem: #{e.message} - #{e.raw_body}"
+end
+```
 
 ### Other
 
@@ -296,7 +306,7 @@ Gibbon 1.x:
 ```ruby
 gibbon = Gibbon::API.new("your_api_key")
 ```
-    
+
 Gibbon 2.x:
 
 ```ruby
@@ -312,7 +322,7 @@ Gibbon 1.x:
 ```ruby
 gibbon.lists.list
 ```
-    
+
 Gibbon 2.x:
 
 ```ruby
@@ -326,7 +336,7 @@ Gibbon 1.x:
 ```ruby
 gibbon.lists.members({:id => list_id})
 ```
-    
+
 Gibbon 2.x:
 
 ```ruby
@@ -340,7 +350,7 @@ Gibbon 1.x:
 ```ruby
 gibbon.lists.subscribe({:id => list_id, :email => {:email => "foo@bar.com"}, :merge_vars => {:FNAME => "Bob", :LNAME => "Smith"}})
 ```
-    
+
 Gibbon 2.x:
 
 ```ruby
