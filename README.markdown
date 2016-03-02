@@ -266,9 +266,7 @@ available depending on the nature of the error. For example:
 
 ```ruby
 begin
-  gibbon.lists(...)members.create( body: {
-                                  ...
-                                  })
+  gibbon.lists(...)members.create( body: {...})
 rescue Gibbon::MailChimpError => e
   puts "Houston, we have a problem: #{e.message} - #{e.raw_body}"
 end
