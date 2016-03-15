@@ -99,6 +99,18 @@ Get all subscribers for a list:
 gibbon.lists(list_id).members.retrieve
 ```
 
+By default the Mailchimp API returns 10 results. To set the count to 50:
+
+```ruby
+gibbon.lists(list_id).members.retrieve(params: {"count": "50"})
+```
+
+And to retrieve the next 50 members:
+
+```ruby
+gibbon.lists(list_id).members.retrieve(params: {"count": "50", "offset: "50"})
+```
+
 Subscribe a member to a list:
 
 ```ruby
@@ -114,7 +126,21 @@ gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).upsert(body: 
 You can also unsubscribe a member from a list:
 
 ```ruby
-gibbon.lists(list_id).members(member_id).update(body: { status: "unsubscribed" })
+gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).update(body: { status: "unsubscribed" })
+```
+
+### Fields
+
+Only retrieve ids and names for fetched lists:
+
+```ruby
+gibbon.lists.retrieve(params: {"fields": "lists.id,lists.name"})
+```
+
+Only retrieve emails for fetched lists:
+
+```ruby
+gibbon.lists(list_id).members.retrieve(params: {"fields": "members.email_address"})
 ```
 
 ### Campaigns
@@ -235,8 +261,16 @@ That response gives the interest data, including the ID for the interests themse
 
 Gibbon raises an error when the API returns an error.
 
-Gibbon::MailChimpError has the following attributes: `title`, `detail`, `body`, `raw_body`, `status_code`. Some or all of these may not be
-available depending on the nature of the error.
+`Gibbon::MailChimpError` has the following attributes: `title`, `detail`, `body`, `raw_body`, `status_code`. Some or all of these may not be
+available depending on the nature of the error. For example:
+
+```ruby
+begin
+  gibbon.lists(list_id)members.create(body: body)
+rescue Gibbon::MailChimpError => e
+  puts "Houston, we have a problem: #{e.message} - #{e.raw_body}"
+end
+```
 
 ### Other
 
@@ -270,7 +304,7 @@ Gibbon 1.x:
 ```ruby
 gibbon = Gibbon::API.new("your_api_key")
 ```
-    
+
 Gibbon 2.x:
 
 ```ruby
@@ -286,7 +320,7 @@ Gibbon 1.x:
 ```ruby
 gibbon.lists.list
 ```
-    
+
 Gibbon 2.x:
 
 ```ruby
@@ -300,7 +334,7 @@ Gibbon 1.x:
 ```ruby
 gibbon.lists.members({:id => list_id})
 ```
-    
+
 Gibbon 2.x:
 
 ```ruby
@@ -314,7 +348,7 @@ Gibbon 1.x:
 ```ruby
 gibbon.lists.subscribe({:id => list_id, :email => {:email => "foo@bar.com"}, :merge_vars => {:FNAME => "Bob", :LNAME => "Smith"}})
 ```
-    
+
 Gibbon 2.x:
 
 ```ruby
