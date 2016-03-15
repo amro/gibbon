@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [2.2.2] - 2016-03-15
+- Update dependencies
+
 ## [2.2.1] - 2016-01-01
 - Improve MailChimpError logging
 
