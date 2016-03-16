@@ -100,6 +100,9 @@ module Gibbon
 
       begin
         if error.is_a?(Faraday::Error::ClientError) && error.response
+          error_params[:status_code] = error.response[:status]
+          error_params[:raw_body] = error.response[:body]
+          
           parsed_response = MultiJson.load(error.response[:body])
 
           if parsed_response
@@ -108,11 +111,8 @@ module Gibbon
             error_params[:detail] = parsed_response["detail"] if parsed_response["detail"]
           end
 
-          error_params[:status_code] = error.response[:status]
-          error_params[:raw_body] = error.response[:body]
         end
       rescue MultiJson::ParseError
-        error_params[:status_code] = error.response[:status]
       end
 
       error_to_raise = MailChimpError.new(error.message, error_params)
