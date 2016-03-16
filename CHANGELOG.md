@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [2.2.3] - 2016-03-16
+- Capture status code and raw body when response is not json.
+
 ## [2.2.2] - 2016-03-15
 - Update dependencies
 
