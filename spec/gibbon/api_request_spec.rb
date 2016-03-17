@@ -29,4 +29,18 @@ describe Gibbon::APIRequest do
     stub_request(:get, "#{@api_root}/lists").to_raise(exception)
     expect { @gibbon.lists.retrieve }.to raise_error(Gibbon::MailChimpError)
   end
+
+  context "handle_error" do
+    it "includes status and raw body even when json can't be parsed" do
+      response_values = {:status => 503, :headers => {}, :body => 'A non JSON response'}
+      exception = Faraday::Error::ClientError.new("the server responded with status 503", response_values)
+      api_request = Gibbon::APIRequest.new
+      begin
+        api_request.send :handle_error, exception
+      rescue => boom
+        expect(boom.status_code).to eq 503
+        expect(boom.raw_body).to eq "A non JSON response"
+      end
+    end
+  end
 end
