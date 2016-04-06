@@ -63,12 +63,11 @@ And:
 
 	gibbon.file_manager.files.retrieve
 
-performs a `retrieve` action on the `/file-manager/files` resource. 
+performs a `retrieve` (read) action on the `/file-manager/files` resource. 
 
 ###Note
 1. `upsert` updates a record if it exists and if supported by the Mailchimp API will create it if it doesn't exist.
 2. If an API endpoint uses dashes `-` such as `/file-manager/files` you should use underscores to call it `gibbon.file_manager.files.retrieve`
-3. 
 
 
 ###More complex requests
@@ -211,6 +210,29 @@ Send a campaign:
 
 ```ruby
 gibbon.campaigns(campaign_id).actions.send.create
+```
+
+### File Manager
+
+List all files:
+
+```ruby
+gibbon.file_manager.files.retrieve
+```
+Actaul API call : `GET /file-manager/files`
+
+Delete a file:
+
+```ruby
+gibbon.file_manager.files(file_id).delete
+```
+Actaul API call : `DELETE /file-manager/files/{file_id}`
+
+Upload a file:
+
+```ruby
+file_in_base64 = Base64.encode64(File.open("path/to/yourfile.jpg", "rb").read)
+gibbon.file_manager.files.create(body:{folder_id: folder_id, name: "yourfile.jpg", file_data: file_in_base64})
 ```
 
 ### Interests
