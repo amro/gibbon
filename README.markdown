@@ -234,6 +234,7 @@ Upload a file:
 file_in_base64 = Base64.encode64(File.open("path/to/yourfile.jpg", "rb").read)
 gibbon.file_manager.files.create(body:{folder_id: folder_id, name: "yourfile.jpg", file_data: file_in_base64})
 ```
+Actaul API call : `POST /file-manager/files Data: {"folder_id": folder_id,"name":"yourfile.jpg","file_data":"QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIu"}`
 
 ### Interests
 
