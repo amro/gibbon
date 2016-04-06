@@ -20,41 +20,26 @@ A MailChimp account and API key. You can see your API keys [here](http://admin.m
 
 ##Usage
 
-First, create an instance Gibbon::Request:
+First, create an Request instance Gibbon::Request:
 
 ```ruby
 gibbon = Gibbon::Request.new(api_key: "your_api_key")
 ```
 
-You can set an individual request's timeout like this:
+You can set an individual request's timeout with:
 
 ```ruby
 gibbon.timeout = 10
 ```
 
-Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
-are specified inline and a `CRUD` (`create`, `retrieve`, `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
-
-*Please note that `upsert` requires Gibbon version 2.1.0 or newer!*
-
-You can specify `headers`, `params`, and `body` when calling a `CRUD` method. For example:
-
-```ruby
-gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
-```
-
-Of course, `body` is only supported on `create`, `update`, and `upsert` calls. Those map to HTTP `POST`, `PATCH`, and `PUT` verbs respectively.
-
-You can set `api_key` and `timeout` globally:
+Alternatively you can set `api_key` and `timeout` globally which is useful in a Rails app. Put the following in a initializer file such as ***your\_app/config/initializers/gibbon.rb***
 
 ```ruby
 Gibbon::Request.api_key = "your_api_key"
 Gibbon::Request.timeout = 15
 ```
 
-For example, you could set the values above in an `initializer` file in your `Rails` app (e.g. your\_app/config/initializers/gibbon.rb).
-
-Assuming you've set an `api_key` on Gibbon, you can conveniently make API calls on the class itself:
+Assuming you've set an `api_key` on Gibbon, you can make API calls on the class itself:
 
 ```ruby
 Gibbon::Request.lists.retrieve
@@ -66,8 +51,36 @@ You can also set the environment variable `MAILCHIMP_API_KEY` and Gibbon will us
 gibbon = Gibbon::Request.new
 ```
 
-MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources. Substitute an underscore if
-a resource name contains a hyphen.
+###Constructing a request
+Gibbon uses some [method_missing](http://rubylearning.com/satishtalim/ruby_method_missing.html) magic to so you can make requests using the resources defined in the [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource ID's
+are specified inline and a [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) (`create`, `retrieve`, `update`, `upsert`, or `delete`) verb initiates the request. For example:
+
+	gibbon.campaigns.create( params )
+
+performs a `create` action on the `/campaigns` resource passing in `params`. 
+
+And:
+
+	gibbon.file_manager.files.retrieve
+
+performs a `retrieve` action on the `/file-manager/files` resource. 
+
+###Note
+1. `upsert` updates a record if it exists and if supported by the Mailchimp API will create it if it doesn't exist.
+2. If an API endpoint uses dashes `-` such as `/file-manager/files` you should use underscores to call it `gibbon.file_manager.files.retrieve`
+3. 
+
+
+###More complex requests
+You can specify `headers`, `params`, and `body` when calling a **CRUD** method. For example:
+
+```ruby
+gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
+```
+
+`body` is only supported on `create`, `update`, and `upsert` calls. Those map to HTTP `POST`, `PATCH`, and `PUT` verbs respectively.
+
+MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) contains a full list of available resources. 
 
 ## Examples
 
