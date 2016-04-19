@@ -135,6 +135,51 @@ You can also unsubscribe a member from a list:
 gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).update(body: { status: "unsubscribed" })
 ```
 
+### Batch Operations
+
+Any API call that can be made directly can also be organized into batch operations.  Basically,
+your API interactions are wrapped into individual hashes and passed as an `Array` to the
+Batch endpoint.  Each operation will be executed based on the parameters provided.
+
+```ruby
+# Create a new batch job that will create new list members
+gibbon.batches.create(body: {
+  operations: [
+    {
+      method: "POST",
+      path: "lists/#{ list_id }/members",
+      body: "{...}" # The JSON payload for PUT, POST, or PATCH
+    },
+    ...
+  ]
+})
+```
+
+This will create a new batch job and return a Batch response.  The response will include an `id` attribute which can be used to check the
+status of a particular batch job.
+
+##### Checking on a Batch Job
+```ruby
+gibbon.batches(batch_id).retrieve
+```
+
+###### Response
+```ruby
+{
+  "id"=>"0ca62e43cc",
+  "status"=>"started",
+  "total_operations"=>1,
+  "finished_operations"=>1,
+  "errored_operations"=>0,
+  "submitted_at"=>"2016-04-19T01:16:58+00:00",
+  "completed_at"=>"",
+  "response_body_url"=>""
+}
+```
+
+**NOTE** This response truncated for brevity.  Reference the MailChimp
+[API documentation for Batch Operations](http://developer.mailchimp.com/documentation/mailchimp/reference/batches/) for more details.
+
 ### Fields
 
 Only retrieve ids and names for fetched lists:
