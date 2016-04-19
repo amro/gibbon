@@ -66,8 +66,9 @@ You can also set the environment variable `MAILCHIMP_API_KEY` and Gibbon will us
 gibbon = Gibbon::Request.new
 ```
 
-MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources. Substitute an underscore if
-a resource name contains a hyphen.
+MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources.
+
+***Note*** Substitute an underscore if a resource name contains a hyphen.
 
 ## Examples
 
@@ -137,9 +138,7 @@ gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).update(body: 
 
 ### Batch Operations
 
-Any API call that can be made directly can also be organized into batch operations.  Basically,
-your API interactions are wrapped into individual hashes and passed as an `Array` to the
-Batch endpoint.  Each operation will be executed based on the parameters provided.
+Any API call that can be made directly can also be organized into batch operations. Performing batch operations requires you to generate a hash for each individual API call and pass them as an `Array` to the Batch endpoint.
 
 ```ruby
 # Create a new batch job that will create new list members
@@ -155,8 +154,7 @@ gibbon.batches.create(body: {
 })
 ```
 
-This will create a new batch job and return a Batch response.  The response will include an `id` attribute which can be used to check the
-status of a particular batch job.
+This will create a new batch job and return a Batch response. The response will include an `id` attribute which can be used to check the status of a particular batch job.
 
 ##### Checking on a Batch Job
 ```ruby
@@ -177,7 +175,7 @@ gibbon.batches(batch_id).retrieve
 }
 ```
 
-**NOTE** This response truncated for brevity.  Reference the MailChimp
+**NOTE** This response truncated for brevity. Reference the MailChimp
 [API documentation for Batch Operations](http://developer.mailchimp.com/documentation/mailchimp/reference/batches/) for more details.
 
 ### Fields
