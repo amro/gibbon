@@ -66,9 +66,9 @@ You can also set the environment variable `MAILCHIMP_API_KEY` and Gibbon will us
 gibbon = Gibbon::Request.new
 ```
 
-MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources.
-
 ***Note*** Substitute an underscore if a resource name contains a hyphen.
+
+MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources.
 
 ## Examples
 
