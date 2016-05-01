@@ -315,7 +315,7 @@ available depending on the nature of the error. For example:
 
 ```ruby
 begin
-  gibbon.lists(list_id)members.create(body: body)
+  gibbon.lists(list_id).members.create(body: body)
 rescue Gibbon::MailChimpError => e
   puts "Houston, we have a problem: #{e.message} - #{e.raw_body}"
 end
