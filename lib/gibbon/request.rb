@@ -1,10 +1,10 @@
 module Gibbon
   class Request
-    attr_accessor :api_key, :api_endpoint, :timeout, :proxy, :faraday_adapter
+    attr_accessor :api_key, :api_endpoint, :timeout, :proxy, :faraday_adapter, :debug
 
     DEFAULT_TIMEOUT = 30
 
-    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, proxy: nil, faraday_adapter: nil)
+    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, proxy: nil, faraday_adapter: nil, debug: false)
       @path_parts = []
       @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
       @api_key = @api_key.strip if @api_key
@@ -12,6 +12,7 @@ module Gibbon
       @timeout = timeout || self.class.timeout || DEFAULT_TIMEOUT
       @proxy = proxy || self.class.proxy || ENV['MAILCHIMP_PROXY']
       @faraday_adapter = faraday_adapter || Faraday.default_adapter
+      @debug = debug
     end
 
     def method_missing(method, *args)
