@@ -6,7 +6,7 @@ platforms :rbx do
 end
 
 group :development, :test do
-  gem 'webmock'
+  gem 'webmock', '~>1.24.0'
 end
 
 gemspec
