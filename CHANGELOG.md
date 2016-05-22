@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [2.2.4] - 2016-05-21
+- Add debug logging
+
 ## [2.2.3] - 2016-03-16
 - Capture status code and raw body when response is not json.
 

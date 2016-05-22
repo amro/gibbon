@@ -70,6 +70,14 @@ gibbon = Gibbon::Request.new
 
 MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources.
 
+##Debug Logging
+
+Pass `debug: true` to enable debug logging to STDOUT.
+
+```ruby
+gibbon = Gibbon::Request.new(api_key: "your_api_key", debug: true)
+```
+
 ## Examples
 
 ### Lists
