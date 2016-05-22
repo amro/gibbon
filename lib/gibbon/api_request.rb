@@ -134,6 +134,9 @@ module Gibbon
       client = Faraday.new(self.api_url, proxy: self.proxy) do |faraday|
         faraday.response :raise_error
         faraday.adapter adapter
+        if @request_builder.debug
+          faraday.response :logger, ::Logger.new(STDOUT), bodies: true
+        end
       end
       client.basic_auth('apikey', self.api_key)
       client

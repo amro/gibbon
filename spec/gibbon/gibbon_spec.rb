@@ -76,6 +76,16 @@ describe Gibbon do
       @gibbon = Gibbon::Request.new(faraday_adapter: adapter)
       expect(@gibbon.faraday_adapter).to eq(adapter)
     end
+
+    it "debug false by default" do
+      @gibbon = Gibbon::Request.new
+      expect(@gibbon.debug).to be false
+    end
+
+    it "sets debug in the constructor" do
+      @gibbon = Gibbon::Request.new(debug: true)
+      expect(@gibbon.debug).to be true
+    end
   end
 
   describe "build api url" do
