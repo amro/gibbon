@@ -43,7 +43,7 @@ describe Gibbon do
       @gibbon = Gibbon::Request.new
       timeout = 30
       @gibbon.timeout = timeout
-      @request = Gibbon::APIRequest.new(builder: @gibbon)
+      @request = Gibbon::APIRequest.new(@gibbon)
       expect(timeout).to eq(@request.timeout)
     end
 
@@ -110,7 +110,7 @@ describe Gibbon do
       @api_key = "TESTKEY-us1"
       @gibbon.api_key = @api_key
       @gibbon.try
-      @request = Gibbon::APIRequest.new(builder: @gibbon)
+      @request = Gibbon::APIRequest.new(@gibbon)
       expect(@request.api_url).to eq("https://us1.api.mailchimp.com/3.0/try")
     end
 
@@ -119,7 +119,7 @@ describe Gibbon do
       @api_key = "TESTKEY"
       @gibbon.api_key = @api_key
       @gibbon.api_endpoint = "https://us6.api.mailchimp.com"
-      @request = Gibbon::APIRequest.new(builder: @gibbon)
+      @request = Gibbon::APIRequest.new(@gibbon)
       expect {@request.validate_api_key}.not_to raise_error
     end
   end
