@@ -1,15 +1,19 @@
 module Gibbon
   class APIRequest
-    def initialize(builder: nil)
+    def initialize(builder = nil)
       @request_builder = builder
     end
 
-    def post(params: nil, headers: nil, body: nil)
+    def post(options = {})
+      options.reverse_update(params: nil, headers: nil, body: nil)
+
       validate_api_key
 
       begin
         response = self.rest_client.post do |request|
-          configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
+          options[:request] = request
+          options[:body] = MultiJson.dump(options[:body])
+          configure_request(options)
         end
         parse_response(response.body)
       rescue => e
@@ -17,12 +21,16 @@ module Gibbon
       end
     end
 
-    def patch(params: nil, headers: nil, body: nil)
+    def patch(options = {})
+      options.reverse_update(params: nil, headers: nil, body: nil)
+
       validate_api_key
 
       begin
         response = self.rest_client.patch do |request|
-          configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
+          options[:request] = request
+          options[:body] = MultiJson.dump(options[:body])
+          configure_request(options)
         end
         parse_response(response.body)
       rescue => e
@@ -30,12 +38,16 @@ module Gibbon
       end
     end
 
-    def put(params: nil, headers: nil, body: nil)
+    def put(options = {})
+      options.reverse_update(params: nil, headers: nil, body: nil)
+
       validate_api_key
 
       begin
         response = self.rest_client.put do |request|
-          configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
+          options[:request] = request
+          options[:body] = MultiJson.dump(options[:body])
+          configure_request(options)
         end
         parse_response(response.body)
       rescue => e
@@ -43,12 +55,15 @@ module Gibbon
       end
     end
 
-    def get(params: nil, headers: nil)
+    def get(options = {})
+      options.reverse_update(params: nil, headers: nil)
+
       validate_api_key
 
       begin
         response = self.rest_client.get do |request|
-          configure_request(request: request, params: params, headers: headers)
+          options[:request] = request
+          configure_request(options)
         end
         parse_response(response.body)
       rescue => e
@@ -56,12 +71,15 @@ module Gibbon
       end
     end
 
-    def delete(params: nil, headers: nil)
+    def delete(options = {})
+      options.reverse_update(params: nil, headers: nil)
+
       validate_api_key
 
       begin
         response = self.rest_client.delete do |request|
-          configure_request(request: request, params: params, headers: headers)
+          options[:request] = request
+          configure_request(options)
         end
         parse_response(response.body)
       rescue => e
@@ -107,8 +125,8 @@ module Gibbon
 
           if parsed_response
             error_params[:body] = parsed_response
-            error_params[:title] = parsed_response["title"] if parsed_response["title"]
-            error_params[:detail] = parsed_response["detail"] if parsed_response["detail"]
+            error_params[:title] = parsed_response['title'] if parsed_response['title']
+            error_params[:detail] = parsed_response['detail'] if parsed_response['detail']
           end
 
         end
@@ -120,12 +138,16 @@ module Gibbon
       raise error_to_raise
     end
 
-    def configure_request(request: nil, params: nil, headers: nil, body: nil)
+    def configure_request(options = {})
+      options.reverse_update(request: nil, params: nil, headers: nil, body: nil)
+
+      request = options[:request]
+
       if request
-        request.params.merge!(params) if params
+        request.params.merge!(options[:params]) if options[:params]
         request.headers['Content-Type'] = 'application/json'
-        request.headers.merge!(headers) if headers
-        request.body = body if body
+        request.headers.merge!(options[:headers]) if options[:headers]
+        request.body = options[:body] if options[:body]
         request.options.timeout = self.timeout
       end
     end
@@ -150,7 +172,7 @@ module Gibbon
           parsed_response = MultiJson.load(response_body)
         rescue MultiJson::ParseError
           error = MailChimpError.new("Unparseable response: #{response_body}")
-          error.title = "UNPARSEABLE_RESPONSE"
+          error.title = 'UNPARSEABLE_RESPONSE'
           error.status_code = 500
           raise error
         end
@@ -161,8 +183,8 @@ module Gibbon
 
     def validate_api_key
       api_key = self.api_key
-      unless api_key && (api_key["-"] || self.api_endpoint)
-        raise Gibbon::GibbonError, "You must set an api_key prior to making a call"
+      unless api_key && (api_key['-'] || self.api_endpoint)
+        raise Gibbon::GibbonError, 'You must set an api_key prior to making a call'
       end
     end
 
@@ -177,9 +199,9 @@ module Gibbon
 
     def get_data_center_from_api_key
       # Return an empty string for invalid API keys so Gibbon hits the main endpoint
-      data_center = ""
+      data_center = ''
 
-      if self.api_key && self.api_key["-"]
+      if self.api_key && self.api_key['-']
         # Add a period since the data_center is a subdomain and it keeps things dry
         data_center = "#{self.api_key.split('-').last}."
       end

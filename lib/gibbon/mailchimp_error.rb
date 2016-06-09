@@ -2,7 +2,7 @@ module Gibbon
   class MailChimpError < StandardError
     attr_reader :title, :detail, :body, :raw_body, :status_code
 
-    def initialize(message = "", params = {})
+    def initialize(message = '', params = {})
       @title       = params[:title]
       @detail      = params[:detail]
       @body        = params[:body]
@@ -13,7 +13,7 @@ module Gibbon
     end
 
     def to_s
-      super + " " + instance_variables_to_s
+      super + ' ' + instance_variables_to_s
     end
 
     private
@@ -23,7 +23,7 @@ module Gibbon
         attr_value = send(attr)
 
         "@#{attr}=#{attr_value.inspect}"
-      end.join(", ")
+      end.join(', ')
     end
   end
 end

@@ -4,15 +4,17 @@ module Gibbon
 
     DEFAULT_TIMEOUT = 30
 
-    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, proxy: nil, faraday_adapter: nil, debug: false)
+    def initialize(options = {})
+      options.reverse_update(api_key: nil, api_endpoint: nil, timeout: nil, proxy: nil, faraday_adapter: nil, debug: false)
+
       @path_parts = []
-      @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
+      @api_key = options[:api_key] || self.class.api_key || ENV['MAILCHIMP_API_KEY']
       @api_key = @api_key.strip if @api_key
-      @api_endpoint = api_endpoint || self.class.api_endpoint
-      @timeout = timeout || self.class.timeout || DEFAULT_TIMEOUT
-      @proxy = proxy || self.class.proxy || ENV['MAILCHIMP_PROXY']
-      @faraday_adapter = faraday_adapter || Faraday.default_adapter
-      @debug = debug
+      @api_endpoint = options[:api_endpoint] || self.class.api_endpoint
+      @timeout = options[:timeout] || self.class.timeout || DEFAULT_TIMEOUT
+      @proxy = options[:proxy] || self.class.proxy || ENV['MAILCHIMP_PROXY']
+      @faraday_adapter = options[:faraday_adapter] || Faraday.default_adapter
+      @debug = options[:debug]
     end
 
     def method_missing(method, *args)
@@ -35,32 +37,42 @@ module Gibbon
       @path_parts.join('/')
     end
 
-    def create(params: nil, headers: nil, body: nil)
-      APIRequest.new(builder: self).post(params: params, headers: headers, body: body)
+    def create(options = {})
+      options.reverse_update(params: nil, headers: nil, body: nil)
+
+      APIRequest.new(self).post(options)
     ensure
       reset
     end
 
-    def update(params: nil, headers: nil, body: nil)
-      APIRequest.new(builder: self).patch(params: params, headers: headers, body: body)
+    def update(options = {})
+      options.reverse_update(params: nil, headers: nil, body: nil)
+
+      APIRequest.new(self).patch(options)
     ensure
       reset
     end
 
-    def upsert(params: nil, headers: nil, body: nil)
-      APIRequest.new(builder: self).put(params: params, headers: headers, body: body)
+    def upsert(options = {})
+      options.reverse_update(params: nil, headers: nil, body: nil)
+
+      APIRequest.new(self).put(options)
     ensure
       reset
     end
 
-    def retrieve(params: nil, headers: nil)
-      APIRequest.new(builder: self).get(params: params, headers: headers)
+    def retrieve(options = {})
+      options.reverse_update(params: nil, headers: nil)
+
+      APIRequest.new(self).get(options)
     ensure
       reset
     end
 
-    def delete(params: nil, headers: nil)
-      APIRequest.new(builder: self).delete(params: params, headers: headers)
+    def delete(options = {})
+      options.reverse_update(params: nil, headers: nil)
+
+      APIRequest.new(self).delete(options)
     ensure
       reset
     end
