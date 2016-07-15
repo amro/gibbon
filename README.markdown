@@ -117,13 +117,13 @@ gibbon.lists(list_id).members.retrieve(params: {"count": "50"})
 And to retrieve the next 50 members:
 
 ```ruby
-gibbon.lists(list_id).members.retrieve(params: {"count": "50", "offset: "50"})
+gibbon.lists(list_id).members.retrieve(params: {"count": "50", "offset": "50"})
 ```
 
 And to retrieve only subscribed members
 
 ```ruby
-gibbon.lists(list_id).members.retrieve(params: {"count": "50", "offset: "50", "status": "subscribed"})
+gibbon.lists(list_id).members.retrieve(params: {"count": "50", "offset": "50", "status": "subscribed"})
 ```
 
 Subscribe a member to a list:
