@@ -144,6 +144,12 @@ You can also unsubscribe a member from a list:
 gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).update(body: { status: "unsubscribed" })
 ```
 
+Get a specific member's information (open/click rates etc.) from MailChimp:
+
+```ruby
+gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).retrieve
+```
+
 ### Batch Operations
 
 Any API call that can be made directly can also be organized into batch operations. Performing batch operations requires you to generate a hash for each individual API call and pass them as an `Array` to the Batch endpoint.
