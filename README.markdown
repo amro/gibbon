@@ -20,11 +20,13 @@ A MailChimp account and API key. You can see your API keys [here](http://admin.m
 
 ##Usage
 
-First, create an instance Gibbon::Request:
+First, create a *one-time use instance* of Gibbon::Request:
 
 ```ruby
 gibbon = Gibbon::Request.new(api_key: "your_api_key")
 ```
+
+*Important: Don't reuse instances of Gibbon. Requests are light weight objects that update an internal path based on a call chain. When you terminate a call chain with a verb, a request instance makes a request.*
 
 You can set an individual request's timeout like this:
 
