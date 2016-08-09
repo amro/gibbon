@@ -26,7 +26,7 @@ First, create a *one-time use instance* of Gibbon::Request:
 gibbon = Gibbon::Request.new(api_key: "your_api_key")
 ```
 
-*Important: Don't reuse instances of Gibbon. Requests are light weight objects that update an internal path based on a call chain. When you terminate a call chain with a verb, a request instance makes a request.*
+***Note*** Only reuse instances of Gibbon after terminating a call with a verb, which makes a request. Requests are light weight objects that update an internal path based on your call chain. When you terminate a call chain with a verb, a request instance makes a request an resets the path.
 
 You can set an individual request's timeout like this:
 
@@ -37,7 +37,7 @@ gibbon.timeout = 10
 Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
 are specified inline and a `CRUD` (`create`, `retrieve`, `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
 
-*Please note that `upsert` requires Gibbon version 2.1.0 or newer!*
+***Note*** `upsert` requires Gibbon version 2.1.0 or newer!
 
 You can specify `headers`, `params`, and `body` when calling a `CRUD` method. For example:
 
@@ -191,7 +191,7 @@ gibbon.batches(batch_id).retrieve
 }
 ```
 
-**NOTE** This response truncated for brevity. Reference the MailChimp
+***Note*** This response truncated for brevity. Reference the MailChimp
 [API documentation for Batch Operations](http://developer.mailchimp.com/documentation/mailchimp/reference/batches/) for more details.
 
 ### Fields
