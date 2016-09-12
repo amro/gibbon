@@ -135,7 +135,7 @@ module Gibbon
         faraday.response :raise_error
         faraday.adapter adapter
         if @request_builder.debug
-          faraday.response :logger, builder.logger, bodies: true
+          faraday.response :logger, @request_builder.logger, bodies: true
         end
       end
       client.basic_auth('apikey', self.api_key)
