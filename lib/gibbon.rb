@@ -1,6 +1,7 @@
 require 'faraday'
 require 'multi_json'
 require 'cgi'
+require 'logger'
 
 require 'gibbon/gibbon_error'
 require 'gibbon/mailchimp_error'

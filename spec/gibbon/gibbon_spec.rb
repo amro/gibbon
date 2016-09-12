@@ -86,6 +86,19 @@ describe Gibbon do
       @gibbon = Gibbon::Request.new(debug: true)
       expect(@gibbon.debug).to be true
     end
+
+    it "sets logger in constructor" do
+      logger = double(:logger)
+      @gibbon = Gibbon::Request.new(logger: logger)
+      expect(@gibbon.logger).to eq(logger)
+    end
+
+    it "is a Logger instance by default" do
+      @gibbon = Gibbon::Request.new
+      expect(@gibbon.logger).to be_a Logger
+    end
+
+
   end
 
   describe "build api url" do
@@ -125,16 +138,20 @@ describe Gibbon do
   end
 
   describe "class variables" do
+    let(:logger) { double(:logger) }
+
     before do
       Gibbon::Request.api_key = "123-us1"
       Gibbon::Request.timeout = 15
       Gibbon::Request.api_endpoint = 'https://us6.api.mailchimp.com'
+      Gibbon::Request.logger = logger
     end
 
     after do
       Gibbon::Request.api_key = nil
       Gibbon::Request.timeout = nil
       Gibbon::Request.api_endpoint = nil
+      Gibbon::Request.logger = nil
     end
 
     it "set api key on new instances" do
@@ -148,6 +165,10 @@ describe Gibbon do
     it "set api_endpoint on new instances" do
       expect(Gibbon::Request.api_endpoint).not_to be_nil
       expect(Gibbon::Request.new.api_endpoint).to eq(Gibbon::Request.api_endpoint)
+    end
+
+    it "set logger on new instances" do
+      expect(Gibbon::Request.new.logger).to eq(logger)
     end
   end
 end
