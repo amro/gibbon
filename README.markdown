@@ -80,6 +80,20 @@ Pass `debug: true` to enable debug logging to STDOUT.
 gibbon = Gibbon::Request.new(api_key: "your_api_key", debug: true)
 ```
 
+### Custom logger
+
+Ruby `Logger.new` is used by default, but it can be overrided using:
+
+```ruby
+gibbon = Gibbon::Request.new(api_key: "your_api_key", debug: true, logger: MyLogger.new)
+```
+
+Logger can be also set by globally:
+
+```ruby
+Gibbon::Request.logger = MyLogger.new
+```
+
 ## Examples
 
 ### Lists

@@ -102,7 +102,7 @@ module Gibbon
         if error.is_a?(Faraday::Error::ClientError) && error.response
           error_params[:status_code] = error.response[:status]
           error_params[:raw_body] = error.response[:body]
-          
+
           parsed_response = MultiJson.load(error.response[:body])
 
           if parsed_response
@@ -135,7 +135,7 @@ module Gibbon
         faraday.response :raise_error
         faraday.adapter adapter
         if @request_builder.debug
-          faraday.response :logger, ::Logger.new(STDOUT), bodies: true
+          faraday.response :logger, builder.logger, bodies: true
         end
       end
       client.basic_auth('apikey', self.api_key)
