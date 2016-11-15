@@ -307,7 +307,7 @@ Interests are a little more complicated than other parts of the API, so here's a
 Subscribing a member to a list with specific interests up front:
 
 ```ruby
-g.lists(list_id).members.create(body: {email_address: user_email_address, status: "subscribed", interests: {some_interest_id: true, another_interest_id: true}})
+gibbon.lists(list_id).members.create(body: {email_address: user_email_address, status: "subscribed", interests: {some_interest_id: true, another_interest_id: true}})
 ```
 
 Updating a list member's interests:
@@ -319,7 +319,7 @@ gibbon.lists(list_id).members(member_id).update(body: {interests: {some_interest
 So how do we get the interest IDs? When you query the API for a specific list member's information:
 
 ```ruby
-g.lists(list_id).members(member_id).retrieve
+gibbon.lists(list_id).members(member_id).retrieve
 ```
 
 The response looks someting like this (unrelated things removed):
@@ -331,7 +331,7 @@ The response looks someting like this (unrelated things removed):
 The API returns a map of interest ID to boolean value. Now we to get interest details so we know what these interest IDs map to. Looking at [this doc page](http://kb.mailchimp.com/api/resources/lists/interest-categories/interests/lists-interests-collection), we need to do this:
 
 ```ruby
-g.lists(list_id).interest_categories.retrieve
+gibbon.lists(list_id).interest_categories.retrieve
 ```
 
 To get a list of interest categories. That gives us something like:
@@ -343,7 +343,7 @@ To get a list of interest categories. That gives us something like:
 In this case, we're interested in the ID of the "Food Preferences" interest, which is `0ace7aa498`. Now we can fetch the details for this interest group:
 
 ```ruby
-g.lists(list_id).interest_categories("0ace7aa498").interests.retrieve
+gibbon.lists(list_id).interest_categories("0ace7aa498").interests.retrieve
 ```
 
 That response gives the interest data, including the ID for the interests themselves, which we can use to update a list member's interests or set them when we call the API to subscribe her or him to a list.
