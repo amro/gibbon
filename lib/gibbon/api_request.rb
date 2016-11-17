@@ -1,5 +1,7 @@
 module Gibbon
   class APIRequest
+    attr_accessor :response_headers
+
     def initialize(builder: nil)
       @request_builder = builder
     end
@@ -11,6 +13,7 @@ module Gibbon
         response = self.rest_client.post do |request|
           configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
         end
+        @response_headers = response.headers
         parse_response(response.body)
       rescue => e
         handle_error(e)
@@ -24,6 +27,7 @@ module Gibbon
         response = self.rest_client.patch do |request|
           configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
         end
+        @response_headers = response.headers
         parse_response(response.body)
       rescue => e
         handle_error(e)
@@ -37,6 +41,7 @@ module Gibbon
         response = self.rest_client.put do |request|
           configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
         end
+        @response_headers = response.headers
         parse_response(response.body)
       rescue => e
         handle_error(e)
@@ -50,6 +55,7 @@ module Gibbon
         response = self.rest_client.get do |request|
           configure_request(request: request, params: params, headers: headers)
         end
+        @response_headers = response.headers
         parse_response(response.body)
       rescue => e
         handle_error(e)
@@ -63,6 +69,7 @@ module Gibbon
         response = self.rest_client.delete do |request|
           configure_request(request: request, params: params, headers: headers)
         end
+        @response_headers = response.headers
         parse_response(response.body)
       rescue => e
         handle_error(e)

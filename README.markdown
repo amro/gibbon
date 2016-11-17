@@ -300,6 +300,16 @@ body = {
 gibbon.campaigns(campaign_id).actions.schedule.create(body: body)
 ```
 
+### Response headers
+
+Some information is inside the response headers, such as the admin URL one can use to redirect to after the creation of a campaign. As such, the reply headers object can be retrieved:
+
+```ruby
+campaigns_obj = gibbon.campaigns
+campaigns_obj.create(body: body)
+response_headers = campaigns_obj.response_headers
+```
+
 ### Interests
 
 Interests are a little more complicated than other parts of the API, so here's an example of how you would set interests during at subscription time or update them later. The ID of the interests you want to opt in or out of must be known ahead of time so an example of how to find interest IDs is also included.
