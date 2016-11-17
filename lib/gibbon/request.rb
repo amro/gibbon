@@ -1,6 +1,7 @@
 module Gibbon
   class Request
     attr_accessor :api_key, :api_endpoint, :timeout, :proxy, :faraday_adapter, :debug, :logger
+    attr_accessor :response_headers
 
     DEFAULT_TIMEOUT = 30
 
@@ -37,31 +38,46 @@ module Gibbon
     end
 
     def create(params: nil, headers: nil, body: nil)
-      APIRequest.new(builder: self).post(params: params, headers: headers, body: body)
+      api_request = APIRequest.new(builder: self)
+      result = api_request.post(params: params, headers: headers, body: body)
+      @response_headers = api_request.response_headers
+      result
     ensure
       reset
     end
 
     def update(params: nil, headers: nil, body: nil)
-      APIRequest.new(builder: self).patch(params: params, headers: headers, body: body)
+      api_request = APIRequest.new(builder: self)
+      result = api_request.patch(params: params, headers: headers, body: body)
+      @response_headers = api_request.response_headers
+      result
     ensure
       reset
     end
 
     def upsert(params: nil, headers: nil, body: nil)
-      APIRequest.new(builder: self).put(params: params, headers: headers, body: body)
+      api_request = APIRequest.new(builder: self)
+      result = api_request.put(params: params, headers: headers, body: body)
+      @response_headers = api_request.response_headers
+      result
     ensure
       reset
     end
 
     def retrieve(params: nil, headers: nil)
-      APIRequest.new(builder: self).get(params: params, headers: headers)
+      api_request = APIRequest.new(builder: self)
+      result = api_request.get(params: params, headers: headers)
+      @response_headers = api_request.response_headers
+      result
     ensure
       reset
     end
 
     def delete(params: nil, headers: nil)
-      APIRequest.new(builder: self).delete(params: params, headers: headers)
+      api_request = APIRequest.new(builder: self)
+      result = api_request.delete(params: params, headers: headers)
+      @response_headers = api_request.response_headers
+      result
     ensure
       reset
     end
