@@ -34,17 +34,23 @@ module Gibbon
           last = ''
           response.read_body do |chunk|
             next if chunk.nil? or chunk.strip.empty?
-            last += "\n" if last[-1,1]=="]"
-            lines = (last+chunk).split("\n")
-            last = lines.pop || ''
-            lines.each do |line|
-              block.call(parse_response(line, i < 0), i += 1) unless line.nil?
-            end
+            infix = "\n" if last[-1, 1]==']'
+            lines, last = try_parse_response("#{last}#{infix}#{chunk}")
+            lines.each { |line| block.call(line, i += 1) }
           end
           block.call(parse_response(last, i < 0), i += 1) unless last.nil? or last.empty?
         end
       end
       rows unless block_given?
+    end
+
+    def try_parse_response(res)
+      lines = res.split("\n")
+      last = lines.pop || ''
+      lines.map! { |line| parse_response(line, false) }
+      [lines.compact, last]
+    rescue Gibbon::MailChimpError
+      [[], last]
     end
 
     def parse_response(res, check_error)
