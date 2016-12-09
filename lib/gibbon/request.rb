@@ -1,15 +1,17 @@
 module Gibbon
   class Request
-    attr_accessor :api_key, :api_endpoint, :timeout, :proxy, :faraday_adapter, :debug, :logger
+    attr_accessor :api_key, :api_endpoint, :timeout, :open_timeout, :proxy, :faraday_adapter, :debug, :logger
 
     DEFAULT_TIMEOUT = 30
+    DEFAULT_OPEN_TIMEOUT = 60
 
-    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, proxy: nil, faraday_adapter: nil, debug: false, logger: nil)
+    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, open_timeout: nil, proxy: nil, faraday_adapter: nil, debug: false, logger: nil)
       @path_parts = []
       @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
       @api_key = @api_key.strip if @api_key
       @api_endpoint = api_endpoint || self.class.api_endpoint
       @timeout = timeout || self.class.timeout || DEFAULT_TIMEOUT
+      @open_timeout = open_timeout || self.class.open_timeout || DEFAULT_OPEN_TIMEOUT
       @proxy = proxy || self.class.proxy || ENV['MAILCHIMP_PROXY']
       @faraday_adapter = faraday_adapter || Faraday.default_adapter
       @logger = logger || self.class.logger || ::Logger.new(STDOUT)
@@ -73,10 +75,10 @@ module Gibbon
     end
 
     class << self
-      attr_accessor :api_key, :timeout, :api_endpoint, :proxy, :logger
+      attr_accessor :api_key, :timeout, :open_timeout, :api_endpoint, :proxy, :logger
 
       def method_missing(sym, *args, &block)
-        new(api_key: self.api_key, api_endpoint: self.api_endpoint, timeout: self.timeout, proxy: self.proxy, logger: self.logger).send(sym, *args, &block)
+        new(api_key: self.api_key, api_endpoint: self.api_endpoint, timeout: self.timeout, open_timeout: self.open_timeout, proxy: self.proxy, logger: self.logger).send(sym, *args, &block)
       end
     end
   end

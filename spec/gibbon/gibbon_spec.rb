@@ -39,12 +39,27 @@ describe Gibbon do
       expect(timeout).to eq(@gibbon.timeout)
     end
 
+    it "sets the open_timeout and get" do
+      @gibbon = Gibbon::Request.new
+      open_timeout = 30
+      @gibbon.open_timeout = open_timeout
+      expect(open_timeout).to eq(@gibbon.open_timeout)
+    end
+
     it "timeout properly passed to APIRequest" do
       @gibbon = Gibbon::Request.new
       timeout = 30
       @gibbon.timeout = timeout
       @request = Gibbon::APIRequest.new(builder: @gibbon)
       expect(timeout).to eq(@request.timeout)
+    end
+
+    it "timeout properly based on open_timeout passed to APIRequest" do
+      @gibbon = Gibbon::Request.new
+      open_timeout = 30
+      @gibbon.open_timeout = open_timeout
+      @request = Gibbon::APIRequest.new(builder: @gibbon)
+      expect(open_timeout).to eq(@request.open_timeout)
     end
 
     it "detect api endpoint from initializer parameters" do
