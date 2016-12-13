@@ -85,6 +85,10 @@ module Gibbon
       @request_builder.timeout
     end
 
+    def open_timeout
+      @request_builder.open_timeout
+    end
+
     def proxy
       @request_builder.proxy
     end
@@ -127,6 +131,7 @@ module Gibbon
         request.headers.merge!(headers) if headers
         request.body = body if body
         request.options.timeout = self.timeout
+        request.options.open_timeout = self.open_timeout
       end
     end
 
