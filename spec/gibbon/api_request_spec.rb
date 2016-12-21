@@ -34,7 +34,7 @@ describe Gibbon::APIRequest do
     it "includes status and raw body even when json can't be parsed" do
       response_values = {:status => 503, :headers => {}, :body => 'A non JSON response'}
       exception = Faraday::Error::ClientError.new("the server responded with status 503", response_values)
-      api_request = Gibbon::APIRequest.new
+      api_request = Gibbon::APIRequest.new(builder: Gibbon::Request)
       begin
         api_request.send :handle_error, exception
       rescue => boom
