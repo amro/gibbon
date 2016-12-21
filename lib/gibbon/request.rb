@@ -1,11 +1,11 @@
 module Gibbon
   class Request
-    attr_accessor :api_key, :api_endpoint, :timeout, :open_timeout, :proxy, :faraday_adapter, :debug, :logger
+    attr_accessor :api_key, :api_endpoint, :timeout, :open_timeout, :proxy, :faraday_adapter, :symbolize_keys, :debug, :logger
 
     DEFAULT_TIMEOUT = 30
     DEFAULT_OPEN_TIMEOUT = 60
 
-    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, open_timeout: nil, proxy: nil, faraday_adapter: nil, debug: false, logger: nil)
+    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, open_timeout: nil, proxy: nil, faraday_adapter: nil, symbolize_keys: false, debug: false, logger: nil)
       @path_parts = []
       @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
       @api_key = @api_key.strip if @api_key
@@ -14,6 +14,7 @@ module Gibbon
       @open_timeout = open_timeout || self.class.open_timeout || DEFAULT_OPEN_TIMEOUT
       @proxy = proxy || self.class.proxy || ENV['MAILCHIMP_PROXY']
       @faraday_adapter = faraday_adapter || Faraday.default_adapter
+      @symbolize_keys = symbolize_keys
       @logger = logger || self.class.logger || ::Logger.new(STDOUT)
       @debug = debug
     end

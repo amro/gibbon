@@ -97,6 +97,10 @@ module Gibbon
       @request_builder.faraday_adapter
     end
 
+    def symbolize_keys
+      @request_builder.symbolize_keys
+    end
+
     # Helpers
 
     def handle_error(error)
@@ -107,7 +111,7 @@ module Gibbon
           error_params[:status_code] = error.response[:status]
           error_params[:raw_body] = error.response[:body]
 
-          parsed_response = MultiJson.load(error.response[:body])
+          parsed_response = MultiJson.load(error.response[:body], symbolize_keys: symbolize_keys)
 
           if parsed_response
             error_params[:body] = parsed_response
@@ -152,7 +156,7 @@ module Gibbon
 
       if response_body && !response_body.empty?
         begin
-          parsed_response = MultiJson.load(response_body)
+          parsed_response = MultiJson.load(response_body, symbolize_keys: symbolize_keys)
         rescue MultiJson::ParseError
           error = MailChimpError.new("Unparseable response: #{response_body}")
           error.title = "UNPARSEABLE_RESPONSE"
