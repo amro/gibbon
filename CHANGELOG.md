@@ -1,5 +1,10 @@
 ## [Unreleased][unreleased]
 
+## [2.2.5] - 2016-12-23
+- Adds open_timeout
+- Adds symbolize_keys
+- Change default timeout from 30 to 60 seconds
+
 ## [2.2.4] - 2016-05-21
 - Add debug logging
 

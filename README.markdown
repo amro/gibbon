@@ -28,11 +28,14 @@ gibbon = Gibbon::Request.new(api_key: "your_api_key")
 
 ***Note*** Only reuse instances of Gibbon after terminating a call with a verb, which makes a request. Requests are light weight objects that update an internal path based on your call chain. When you terminate a call chain with a verb, a request instance makes a request an resets the path.
 
-You can set an individual request's timeout like this:
+You can set an individual request's `timeout` and `open_timeout` like this:
 
 ```ruby
-gibbon.timeout = 10
+gibbon.timeout = 30
+gibbon.open_timeout = 30
 ```
+
+You can read about `timeout` and `open_timeout` in the [Net::HTTP](https://ruby-doc.org/stdlib-2.3.3/libdoc/net/http/rdoc/Net/HTTP.html) doc.
 
 Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
 are specified inline and a `CRUD` (`create`, `retrieve`, `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
@@ -47,11 +50,12 @@ gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"quer
 
 Of course, `body` is only supported on `create`, `update`, and `upsert` calls. Those map to HTTP `POST`, `PATCH`, and `PUT` verbs respectively.
 
-You can set `api_key` and `timeout` globally:
+You can set `api_key`, `timeout`, and `open_timeout` globally:
 
 ```ruby
 Gibbon::Request.api_key = "your_api_key"
 Gibbon::Request.timeout = 15
+Gibbon::Request.open_timeout = 15
 ```
 
 For example, you could set the values above in an `initializer` file in your `Rails` app (e.g. your\_app/config/initializers/gibbon.rb).

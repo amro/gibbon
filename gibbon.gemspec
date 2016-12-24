@@ -13,8 +13,6 @@ Gem::Specification.new do |s|
   s.description = %q{A wrapper for MailChimp API 3.0}
   s.license     = "MIT"
 
-  s.post_install_message = "IMPORTANT: Gibbon now targets MailChimp API 3.0, which is very different from API 2.0. Use Gibbon 1.x if you need to target API 2.0."
-
   s.rubyforge_project = "gibbon"
 
   s.files         = `git ls-files`.split("\n")

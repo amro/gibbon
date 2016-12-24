@@ -2,7 +2,7 @@ module Gibbon
   class Request
     attr_accessor :api_key, :api_endpoint, :timeout, :open_timeout, :proxy, :faraday_adapter, :symbolize_keys, :debug, :logger
 
-    DEFAULT_TIMEOUT = 30
+    DEFAULT_TIMEOUT = 60
     DEFAULT_OPEN_TIMEOUT = 60
 
     def initialize(api_key: nil, api_endpoint: nil, timeout: nil, open_timeout: nil, proxy: nil, faraday_adapter: nil, symbolize_keys: false, debug: false, logger: nil)
