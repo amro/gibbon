@@ -70,7 +70,7 @@ gibbon = Gibbon::Request.new
 
 ***Note*** Substitute an underscore if a resource name contains a hyphen.
 
-You can use symbols as hash keys in api responses by passing `symbolize_keys: true`.
+Pass `symbolize_keys: true` to use symbols (instead of strings) as hash keys in API responses.
 
 ```ruby
 gibbon = Gibbon::Request.new(api_key: "your_api_key", symbolize_keys: true)
