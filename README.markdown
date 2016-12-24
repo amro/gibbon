@@ -70,6 +70,12 @@ gibbon = Gibbon::Request.new
 
 ***Note*** Substitute an underscore if a resource name contains a hyphen.
 
+You can use symbols as hash keys in api responses by passing `symbolize_keys: true`.
+
+```ruby
+gibbon = Gibbon::Request.new(api_key: "your_api_key", symbolize_keys: true)
+```
+
 MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources.
 
 ##Debug Logging

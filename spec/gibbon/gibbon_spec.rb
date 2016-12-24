@@ -92,6 +92,16 @@ describe Gibbon do
       expect(@gibbon.faraday_adapter).to eq(adapter)
     end
 
+    it "symbolize_keys false by default" do
+      @gibbon = Gibbon::Request.new
+      expect(@gibbon.symbolize_keys).to be false
+    end
+
+    it "sets symbolize_keys in the constructor" do
+      @gibbon = Gibbon::Request.new(symbolize_keys: true)
+      expect(@gibbon.symbolize_keys).to be true
+    end
+
     it "debug false by default" do
       @gibbon = Gibbon::Request.new
       expect(@gibbon.debug).to be false
