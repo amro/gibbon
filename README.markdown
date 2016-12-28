@@ -83,7 +83,7 @@ Pass `symbolize_keys: true` to use symbols (instead of strings) as hash keys in 
 gibbon = Gibbon::Request.new(api_key: "your_api_key", symbolize_keys: true)
 ```
 
-Pass `returns_response_object: true` to make Gibbon return a Gibbon::Response instead of the response body directly. Gibbon::Response exposes the parsed response `body` and `headers`:
+Pass `returns_response_object: true` to make Gibbon return a `Gibbon::Response` instead of the response body directly. `Gibbon::Response` exposes the parsed response `body` and `headers`:
 
 ```ruby
 gibbon = Gibbon::Request.new(api_key: "your_api_key", returns_response_object: true)
