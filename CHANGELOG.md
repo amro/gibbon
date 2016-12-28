@@ -1,8 +1,13 @@
 ## [Unreleased][unreleased]
 
+## [2.2.6] - 2016-12-28
+- Adds returns_response_object
+    - Setting this to true and Gibbon will return a Gibbon::Response that exposes the response `body` and `headers` (Suggested by @nuno84)
+- Adds `symbolize_keys`, `debug`, `faraday_adapter`, and `returns_response_object` as class vars
+
 ## [2.2.5] - 2016-12-23
 - Adds open_timeout
-- Adds symbolize_keys
+- Adds `symbolize_keys`
 - Change default timeout from 30 to 60 seconds
 
 ## [2.2.4] - 2016-05-21

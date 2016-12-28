@@ -50,12 +50,15 @@ gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"quer
 
 Of course, `body` is only supported on `create`, `update`, and `upsert` calls. Those map to HTTP `POST`, `PATCH`, and `PUT` verbs respectively.
 
-You can set `api_key`, `timeout`, and `open_timeout` globally:
+You can set `api_key`, `timeout`, `open_timeout`, `faraday_adapter`, `proxy`, `symbolize_keys`, `returns_response_object`, `logger`, and `debug` globally:
 
 ```ruby
 Gibbon::Request.api_key = "your_api_key"
 Gibbon::Request.timeout = 15
 Gibbon::Request.open_timeout = 15
+Gibbon::Request.symbolize_keys = true
+Gibbon::Request.returns_response_object = false
+Gibbon::Request.debug = false
 ```
 
 For example, you could set the values above in an `initializer` file in your `Rails` app (e.g. your\_app/config/initializers/gibbon.rb).
@@ -78,6 +81,12 @@ Pass `symbolize_keys: true` to use symbols (instead of strings) as hash keys in 
 
 ```ruby
 gibbon = Gibbon::Request.new(api_key: "your_api_key", symbolize_keys: true)
+```
+
+Pass `returns_response_object: true` to make Gibbon return a Gibbon::Response instead of the response body directly. Gibbon::Response exposes the parsed response `body` and `headers`:
+
+```ruby
+gibbon = Gibbon::Request.new(api_key: "your_api_key", returns_response_object: true)
 ```
 
 MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources.

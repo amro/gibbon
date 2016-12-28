@@ -11,7 +11,7 @@ module Gibbon
         response = self.rest_client.post do |request|
           configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
         end
-        parse_response(response.body)
+        parse_response(response)
       rescue => e
         handle_error(e)
       end
@@ -24,7 +24,7 @@ module Gibbon
         response = self.rest_client.patch do |request|
           configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
         end
-        parse_response(response.body)
+        parse_response(response)
       rescue => e
         handle_error(e)
       end
@@ -37,7 +37,7 @@ module Gibbon
         response = self.rest_client.put do |request|
           configure_request(request: request, params: params, headers: headers, body: MultiJson.dump(body))
         end
-        parse_response(response.body)
+        parse_response(response)
       rescue => e
         handle_error(e)
       end
@@ -50,7 +50,7 @@ module Gibbon
         response = self.rest_client.get do |request|
           configure_request(request: request, params: params, headers: headers)
         end
-        parse_response(response.body)
+        parse_response(response)
       rescue => e
         handle_error(e)
       end
@@ -63,7 +63,7 @@ module Gibbon
         response = self.rest_client.delete do |request|
           configure_request(request: request, params: params, headers: headers)
         end
-        parse_response(response.body)
+        parse_response(response)
       rescue => e
         handle_error(e)
       end
@@ -99,6 +99,10 @@ module Gibbon
 
     def symbolize_keys
       @request_builder.symbolize_keys
+    end
+    
+    def returns_response_object
+      @request_builder.returns_response_object
     end
 
     # Helpers
@@ -151,14 +155,20 @@ module Gibbon
       client
     end
 
-    def parse_response(response_body)
+    def parse_response(response)      
       parsed_response = nil
 
-      if response_body && !response_body.empty?
+      if response.body && !response.body.empty?
         begin
-          parsed_response = MultiJson.load(response_body, symbolize_keys: symbolize_keys)
+          body = MultiJson.load(response.body, symbolize_keys: symbolize_keys)
+          if returns_response_object
+            headers = response.headers
+            parsed_response = Response.new(headers: headers, body: body)
+          else 
+            parsed_response = body
+          end
         rescue MultiJson::ParseError
-          error = MailChimpError.new("Unparseable response: #{response_body}")
+          error = MailChimpError.new("Unparseable response: #{response.body}")
           error.title = "UNPARSEABLE_RESPONSE"
           error.status_code = 500
           raise error
