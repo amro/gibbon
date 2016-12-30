@@ -127,11 +127,6 @@ describe Gibbon do
       expect(@gibbon.logger).to be_a Logger
     end
 
-    it "sets returns_response_object in the constructor" do
-      @gibbon = Gibbon::Request.new(returns_response_object: true)
-      expect(@gibbon.returns_response_object).to be true
-    end
-
   end
 
   describe "build api url" do
@@ -179,7 +174,6 @@ describe Gibbon do
       Gibbon::Request.api_endpoint = 'https://us6.api.mailchimp.com'
       Gibbon::Request.logger = logger
       Gibbon::Request.proxy = "http://1234.com"
-      Gibbon::Request.returns_response_object = true
       Gibbon::Request.symbolize_keys = true
       Gibbon::Request.faraday_adapter = :net_http
       Gibbon::Request.debug = true
@@ -191,7 +185,6 @@ describe Gibbon do
       Gibbon::Request.api_endpoint = nil
       Gibbon::Request.logger = nil
       Gibbon::Request.proxy = nil
-      Gibbon::Request.returns_response_object = nil
       Gibbon::Request.symbolize_keys = nil
       Gibbon::Request.faraday_adapter = nil
       Gibbon::Request.debug = nil
@@ -216,10 +209,6 @@ describe Gibbon do
 
     it "set symbolize_keys on new instances" do
       expect(Gibbon::Request.new.symbolize_keys).to eq(Gibbon::Request.symbolize_keys)
-    end
-
-    it "set returns_response_object on new instances" do
-      expect(Gibbon::Request.new.returns_response_object).to eq(Gibbon::Request.returns_response_object)
     end
 
     it "set debug on new instances" do

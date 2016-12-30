@@ -1,5 +1,7 @@
 module Gibbon
   class APIRequest
+    include Helpers
+
     def initialize(builder: nil)
       @request_builder = builder
     end
@@ -101,10 +103,6 @@ module Gibbon
       @request_builder.symbolize_keys
     end
     
-    def returns_response_object
-      @request_builder.returns_response_object
-    end
-
     # Helpers
 
     def handle_error(error)
@@ -160,13 +158,9 @@ module Gibbon
 
       if response.body && !response.body.empty?
         begin
+          headers = response.headers
           body = MultiJson.load(response.body, symbolize_keys: symbolize_keys)
-          if returns_response_object
-            headers = response.headers
-            parsed_response = Response.new(headers: headers, body: body)
-          else 
-            parsed_response = body
-          end
+          parsed_response = Response.new(headers: headers, body: body)
         rescue MultiJson::ParseError
           error = MailChimpError.new("Unparseable response: #{response.body}")
           error.title = "UNPARSEABLE_RESPONSE"
@@ -190,20 +184,8 @@ module Gibbon
     end
 
     def base_api_url
-      computed_api_endpoint = "https://#{get_data_center_from_api_key}api.mailchimp.com"
+      computed_api_endpoint = "https://#{get_data_center_from_api_key(self.api_key)}api.mailchimp.com"
       "#{self.api_endpoint || computed_api_endpoint}/3.0/"
-    end
-
-    def get_data_center_from_api_key
-      # Return an empty string for invalid API keys so Gibbon hits the main endpoint
-      data_center = ""
-
-      if self.api_key && self.api_key["-"]
-        # Add a period since the data_center is a subdomain and it keeps things dry
-        data_center = "#{self.api_key.split('-').last}."
-      end
-
-      data_center
     end
   end
 end

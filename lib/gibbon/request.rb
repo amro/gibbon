@@ -1,11 +1,11 @@
 module Gibbon
   class Request
-    attr_accessor :api_key, :api_endpoint, :timeout, :open_timeout, :proxy, :faraday_adapter, :symbolize_keys, :returns_response_object, :debug, :logger
+    attr_accessor :api_key, :api_endpoint, :timeout, :open_timeout, :proxy, :faraday_adapter, :symbolize_keys, :debug, :logger
 
     DEFAULT_TIMEOUT = 60
     DEFAULT_OPEN_TIMEOUT = 60
 
-    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, open_timeout: nil, proxy: nil, faraday_adapter: nil, symbolize_keys: false, returns_response_object: false, debug: false, logger: nil)
+    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, open_timeout: nil, proxy: nil, faraday_adapter: nil, symbolize_keys: false, debug: false, logger: nil)
       @path_parts = []
       @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
       @api_key = @api_key.strip if @api_key
@@ -15,7 +15,6 @@ module Gibbon
       @proxy = proxy || self.class.proxy || ENV['MAILCHIMP_PROXY']
       @faraday_adapter = faraday_adapter || Faraday.default_adapter
       @symbolize_keys = symbolize_keys || self.class.symbolize_keys || false
-      @returns_response_object = returns_response_object || self.class.returns_response_object || false
       @debug = debug || self.class.debug || false
       @logger = logger || self.class.logger || ::Logger.new(STDOUT)
     end
@@ -77,10 +76,10 @@ module Gibbon
     end
 
     class << self
-      attr_accessor :api_key, :timeout, :open_timeout, :api_endpoint, :proxy, :faraday_adapter, :symbolize_keys, :returns_response_object, :debug, :logger
+      attr_accessor :api_key, :timeout, :open_timeout, :api_endpoint, :proxy, :faraday_adapter, :symbolize_keys, :debug, :logger
 
       def method_missing(sym, *args, &block)
-        new(api_key: self.api_key, api_endpoint: self.api_endpoint, timeout: self.timeout, open_timeout: self.open_timeout, faraday_adapter: self.faraday_adapter, symbolize_keys: self.symbolize_keys, returns_response_object: self.returns_response_object, debug: self.debug, proxy: self.proxy, logger: self.logger).send(sym, *args, &block)
+        new(api_key: self.api_key, api_endpoint: self.api_endpoint, timeout: self.timeout, open_timeout: self.open_timeout, faraday_adapter: self.faraday_adapter, symbolize_keys: self.symbolize_keys, debug: self.debug, proxy: self.proxy, logger: self.logger).send(sym, *args, &block)
       end
     end
   end
