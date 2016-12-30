@@ -460,14 +460,19 @@ gibbon.lists(list_id).members.create(body: {email_address: "foo@bar.com", status
 ## Export API 1.0
 
 Gibbon 3.0.0+ supports MailChimp's [Export API 1.0](https://apidocs.mailchimp.com/export/1.0/). You can choose to handle the API response all at
-once or line by line by passing a block. An example of fetching list information:
+once or line by line by passing a block. To access the Export API with Gibbon, you must first create an instance of Gibbon::Export:
 
 ```ruby
 export = Gibbon::Export.new(api_key: '2f96e248e3bf536220fce126f52ba929-us1')
+```
+
+Next, call the method corresponding to the API endpoint you'd like to query:
+
+```ruby
 export.list(id: list_id)
 ```
 
-To stream the results individually, pass a block:
+This fetches and returns all of the results at once. Pass a block if you'd like to handle the response as individual lines:
 
 ```ruby
 export = Gibbon::Export.new(api_key: '2f96e248e3bf536220fce126f52ba929-us1')
@@ -476,7 +481,9 @@ export.list(id: list_id) do |row|
 end
 ```
 
-Gibbon supports the three existing Export API endpoints: `list`, `ecommOrders`, and `campaignSubscriberActivity`. They're mapped onto Ruby methods with similar names: `list()`, `ecomm_orders()`, and `campaign_subscriber_activity()`. Please see MailChimp's API documentation for supported parameters.
+This is useful when handling large sets of data.
+
+Gibbon supports all current Export API endpoints: `/list`, `/ecommOrders`, and `/campaignSubscriberActivity`. They're mapped onto Ruby methods with similar names: `list()`, `ecomm_orders()`, and `campaign_subscriber_activity()` respectively. Please see MailChimp's API documentation for supported parameters.
 
 ## Thanks
 
