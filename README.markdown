@@ -6,9 +6,9 @@ Gibbon is an API wrapper for MailChimp's [API](http://kb.mailchimp.com/api/).
 [![Dependency Status](https://gemnasium.com/amro/gibbon.svg)](https://gemnasium.com/amro/gibbon)
 ##Important Notes
 
-Gibbon now targets MailChimp API 3.0, which is substantially different from the previous API. Please use Gibbon 1.1.x if you need to use API 2.0.
-
 Please read MailChimp's [Getting Started Guide](http://kb.mailchimp.com/api/article/api-3-overview).
+
+Gibbon 3.0.0+ returns a `Gibbon::Response` instead of the response body directly. `Gibbon::Response` exposes the parsed response `body` and `headers`.
 
 ##Installation
 
@@ -25,8 +25,6 @@ First, create a *one-time use instance* of Gibbon::Request:
 ```ruby
 gibbon = Gibbon::Request.new(api_key: "your_api_key")
 ```
-
-Gibbon 3.0.0+ returns a `Gibbon::Response` instead of the response body directly. `Gibbon::Response` exposes the parsed response `body` and `headers`.
 
 ***Note*** Only reuse instances of Gibbon after terminating a call with a verb, which makes a request. Requests are light weight objects that update an internal path based on your call chain. When you terminate a call chain with a verb, a request instance makes a request an resets the path.
 
