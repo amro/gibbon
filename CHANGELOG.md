@@ -74,5 +74,6 @@
 [2.1.0]: https://github.com/amro/gibbon/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/amro/gibbon/compare/v1.2.0...v2.0.0
 [1.2.0]: https://github.com/amro/gibbon/compare/v1.1.5...v1.2.0
-[1.1.5]: https://github.com/amro/gibbon/compare/v1.1.5...v1.1.4
+[1.1.6]: https://github.com/amro/gibbon/compare/v1.1.5...v1.1.6
+[1.1.5]: https://github.com/amro/gibbon/compare/v1.1.4...v1.1.5
 [1.1.4]: https://github.com/amro/gibbon/compare/v1.1.3...v1.1.4
