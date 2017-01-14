@@ -1,5 +1,11 @@
 ## [Unreleased][unreleased]
 
+## [3.0.1] - 2017-01-13
+- Gibbon::Request (API 3.0) now returns a `Gibbon::Response` object that exposes `headers` and the parsed response `body`
+- Remove Export API support (this is deprected after all)
+- Adds `symbolize_keys`, `debug`, and `faraday_adapter` as class vars
+- Bump version to 3.0.1 (not sticking to semver here so folks who downloaded 3.0.0 have a way to easily move forward)
+
 ## [3.0.0] - 2017-01-13
 - Gibbon::Request (API 3.0) now returns a `Gibbon::Response` object that exposes `headers` and the parsed response `body`
 - Adds Export API support
@@ -60,7 +66,8 @@
 ## [1.1.4] - 2012-11-04
 - Fix JSON::ParserError on export calls that return blank results
 
-[unreleased]: https://github.com/amro/gibbon/compare/v3.0.0...HEAD
+[unreleased]: https://github.com/amro/gibbon/compare/v3.0.1...HEAD
+[3.0.1]: https://github.com/amro/gibbon/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/amro/gibbon/compare/v2.2.5...v3.0.0
 [2.2.5]: https://github.com/amro/gibbon/compare/v2.2.4...v2.2.5
 [2.2.4]: https://github.com/amro/gibbon/compare/v2.2.2...v2.2.4
