@@ -1,10 +1,10 @@
 ## [Unreleased][unreleased]
 
 ## [3.0.0] - 2017-01-13
-- Gibbon now returns a `Gibbon::Response` object that exposes `headers` and the parsed response `body`
-- Adds Export API support (experimental, needs tests)
+- Gibbon::Request (API 3.0) now returns a `Gibbon::Response` object that exposes `headers` and the parsed response `body`
+- Adds Export API support
 - Adds `symbolize_keys`, `debug`, and `faraday_adapter` as class vars
-- Bump version to 3.0.0 since we're making a breaking API change
+- Bump version to 3.0.0 due to breaking API change
 
 ## [2.2.5] - 2016-12-23
 - Adds open_timeout

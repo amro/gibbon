@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.email       = ["amromousa@gmail.com"]
   s.homepage    = "http://github.com/amro/gibbon"
 
-  s.summary     = %q{A wrapper for MailChimp API 3.0}
-  s.description = %q{A wrapper for MailChimp API 3.0}
+  s.summary     = %q{A wrapper for MailChimp API 3.0 and Export API}
+  s.description = %q{A wrapper for MailChimp API 3.0 and Export API}
   s.license     = "MIT"
 
   s.rubyforge_project = "gibbon"
