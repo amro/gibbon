@@ -20,7 +20,7 @@ A MailChimp account and API key. You can see your API keys [here](http://admin.m
 
 ##Usage
 
-First, create a *one-time use instance* of Gibbon::Request:
+First, create a *one-time use instance* of `Gibbon::Request`:
 
 ```ruby
 gibbon = Gibbon::Request.new(api_key: "your_api_key")
