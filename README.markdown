@@ -398,7 +398,7 @@ gibbon = Gibbon::Request.new(api_key: "your_api_key", faraday_adapter: :net_http
 
 ### Migrating from Gibbon 1.x
 
-Gibbon 2.x has different syntax from version 1.x. This is because Gibbon maps to MailChimp's API and because version 3 of the API is quite different from version 2. First, the name of the primary class has changed from `API` to `Request`. And the way you pass an API key during initialization is different. A few examples below.
+Gibbon 2.x+ exposes a different API from version 1.x. This is because Gibbon maps to MailChimp's API and because version 3 of the API is quite different from version 2. First, the name of the primary class has changed from `API` to `Request`. And the way you pass an API key during initialization is different. A few examples below.
 
 #### Initialization
 
@@ -408,7 +408,7 @@ Gibbon 1.x:
 gibbon = Gibbon::API.new("your_api_key")
 ```
 
-Gibbon 2.x:
+Gibbon 2.x+:
 
 ```ruby
 gibbon = Gibbon::Request.new(api_key: "your_api_key")
@@ -424,7 +424,7 @@ Gibbon 1.x:
 gibbon.lists.list
 ```
 
-Gibbon 2.x:
+Gibbon 2.x+:
 
 ```ruby
 gibbon.lists.retrieve
@@ -438,7 +438,7 @@ Gibbon 1.x:
 gibbon.lists.members({:id => list_id})
 ```
 
-Gibbon 2.x:
+Gibbon 2.x+:
 
 ```ruby
 gibbon.lists(list_id).members.retrieve
@@ -452,7 +452,7 @@ Gibbon 1.x:
 gibbon.lists.subscribe({:id => list_id, :email => {:email => "foo@bar.com"}, :merge_vars => {:FNAME => "Bob", :LNAME => "Smith"}})
 ```
 
-Gibbon 2.x:
+Gibbon 2.x+:
 
 ```ruby
 gibbon.lists(list_id).members.create(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "Bob", LNAME: "Smith"}})
