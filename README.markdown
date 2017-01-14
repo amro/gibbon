@@ -203,7 +203,7 @@ This will create a new batch job and return a Batch response. The response will 
 gibbon.batches(batch_id).retrieve
 ```
 
-###### Response
+###### Response Body (i.e. `response.body`)
 ```ruby
 {
   "id"=>"0ca62e43cc",
@@ -334,7 +334,7 @@ So how do we get the interest IDs? When you query the API for a specific list me
 gibbon.lists(list_id).members(member_id).retrieve
 ```
 
-The response looks someting like this (unrelated things removed):
+The response body (i.e. `response.body`) looks someting like this (unrelated things removed):
 
 ```ruby
 {"id"=>"...", "email_address"=>"...", ..., "interests"=>{"3def637141"=>true, "f7cc4ee841"=>false, "fcdc951b9f"=>false, "3daf3cf27d"=>true, "293a3703ed"=>false, "72370e0d1f"=>false, "d434d21a1c"=>false, "bdb1ff199f"=>false, "a54e78f203"=>false, "c4527fd018"=>false} ...}
@@ -346,7 +346,7 @@ The API returns a map of interest ID to boolean value. Now we to get interest de
 gibbon.lists(list_id).interest_categories.retrieve
 ```
 
-To get a list of interest categories. That gives us something like:
+To get a list of interest categories. That gives us something like (again, this is the `response.body`):
 
 ```ruby
 {"list_id"=>"...", "categories"=>[{"list_id"=>"...", "id"=>"0ace7aa498", "title"=>"Food Preferences", ...}] ...}

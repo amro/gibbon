@@ -46,12 +46,9 @@ module Gibbon
           last = ''
           response.read_body do |chunk|
             next if chunk.nil? or chunk.strip.empty?
-            last += "\n" if last[-1,1]=="]"
-            lines = (last+chunk).split("\n")
-            last = lines.pop || ''
-            lines.each do |line|
-              block.call(parse_line(line), i += 1) unless line.nil?
-            end
+            infix = "\n" if last[-1, 1]==']'
+            lines, last = try_parse_line("#{last}#{infix}#{chunk}")
+            lines.each { |line| block.call(line, i += 1) }
           end
           block.call(parse_line(last), i += 1) unless last.nil? or last.empty?
         end
@@ -59,6 +56,16 @@ module Gibbon
       rows unless block_given?
     end
 
+    def try_parse_line(res)
+      lines = res.split("\n")
+      last = lines.pop || ''
+      lines.map! { |line| parse_line(line) }
+      [lines.compact, last]
+    rescue MultiJson::ParseError
+      [[], last]
+    end
+     
+     
     def parse_line(line)
       parsed_response = MultiJson.load(line)
     rescue MultiJson::ParseError
