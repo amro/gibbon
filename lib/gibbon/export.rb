@@ -1,4 +1,4 @@
-require 'net/http'
+require 'net/https'
 
 module Gibbon
   class Export
@@ -26,7 +26,7 @@ module Gibbon
     protected
 
     def export_api_url
-      "http://#{get_data_center_from_api_key(@api_key)}api.mailchimp.com/export/1.0/"
+      "https://#{get_data_center_from_api_key(@api_key)}api.mailchimp.com/export/1.0/"
     end
 
     def call(method, params = {}, &block)
@@ -41,7 +41,7 @@ module Gibbon
       url = URI.parse(api_url)
       req = Net::HTTP::Post.new(url.path, initheader = {'Content-Type' => 'application/json'})
       req.body = MultiJson.dump(params)
-      Net::HTTP.start(url.host, url.port, read_timeout: @timeout) do |http|
+      Net::HTTP.start(url.host, url.port, read_timeout: @timeout, use_ssl: true) do |http|
         # http://stackoverflow.com/questions/29598196/ruby-net-http-read-body-nethttpokread-body-called-twice-ioerror
         http.request req do |response|
           i = -1

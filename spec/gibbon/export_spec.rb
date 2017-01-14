@@ -20,7 +20,7 @@ describe Gibbon::Export do
   it "sets correct endpoint from api key" do
     @api_key = "TESTKEY-us1"
     @export.api_key = @api_key
-    expect(@export.export_api_url).to eq("http://us1.api.mailchimp.com/export/1.0/")
+    expect(@export.export_api_url).to eq("https://us1.api.mailchimp.com/export/1.0/")
   end
 
   it "sets correct timeout" do
