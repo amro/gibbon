@@ -463,7 +463,7 @@ Gibbon 3.0.0+ supports MailChimp's [Export API 1.0](https://apidocs.mailchimp.co
 once or line by line by passing a block. To access the Export API with Gibbon, you must first create an instance of Gibbon::Export:
 
 ```ruby
-export = Gibbon::Export.new(api_key: '2f96e248e3bf536220fce126f52ba929-us1')
+export = Gibbon::Export.new(api_key: "your_api_key")
 ```
 
 Next, call the method corresponding to the API endpoint you'd like to query:
@@ -475,7 +475,7 @@ export.list(id: list_id)
 This fetches and returns all of the results at once. Pass a block if you'd like to handle the response as individual lines:
 
 ```ruby
-export = Gibbon::Export.new(api_key: '2f96e248e3bf536220fce126f52ba929-us1')
+export = Gibbon::Export.new(api_key: "your_api_key")
 export.list(id: list_id) do |row| 
   puts row
 end
