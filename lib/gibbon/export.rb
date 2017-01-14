@@ -4,6 +4,8 @@ module Gibbon
   class Export
     include Helpers
 
+    attr_accessor :api_key, :timeout
+
     def initialize(api_key: nil, timeout: nil)
       @api_key = api_key || self.class.api_key
       @timeout = timeout || self.class.timeout || 600
@@ -75,7 +77,7 @@ module Gibbon
     private
 
     def ensure_api_key(params)
-      unless params[:apikey]
+      unless params[:apikey] && (get_data_center_from_api_key(params[:apikey]) != "")
         raise Gibbon::GibbonError, "You must set an api_key prior to making a call"
       end
     end

@@ -134,7 +134,6 @@ describe Gibbon do
       Gibbon::APIRequest.send(:public, *Gibbon::APIRequest.protected_instance_methods)
 
       @gibbon = Gibbon::Request.new
-      @url = "https://api.mailchimp.com/3.0/lists/"
     end
 
     it "doesn't allow empty api key" do
