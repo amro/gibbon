@@ -10,15 +10,15 @@ Please read MailChimp's [Getting Started Guide](http://kb.mailchimp.com/api/arti
 
 Gibbon 3.0.0+ returns a `Gibbon::Response` instead of the response body directly. `Gibbon::Response` exposes the parsed response `body` and `headers`.
 
-##Installation
+## Installation
 
     $ gem install gibbon
 
-##Requirements
+## Requirements
 
 A MailChimp account and API key. You can see your API keys [here](http://admin.mailchimp.com/account/api).
 
-##Usage
+## Usage
 
 First, create a *one-time use instance* of `Gibbon::Request`:
 
@@ -84,7 +84,7 @@ gibbon = Gibbon::Request.new(api_key: "your_api_key", symbolize_keys: true)
 
 MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources.
 
-##Debug Logging
+## Debug Logging
 
 Pass `debug: true` to enable debug logging to STDOUT.
 
