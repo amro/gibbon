@@ -117,8 +117,12 @@ module Gibbon
 
           if parsed_response
             error_params[:body] = parsed_response
-            error_params[:title] = parsed_response["title"] if parsed_response["title"]
-            error_params[:detail] = parsed_response["detail"] if parsed_response["detail"]
+
+            title_key = symbolize_keys ? :title : "title"
+            detail_key = symbolize_keys ? :detail : "detail"
+
+            error_params[:title] = parsed_response[title_key] if parsed_response[title_key]
+            error_params[:detail] = parsed_response[detail_key] if parsed_response[detail_key]
           end
 
         end
