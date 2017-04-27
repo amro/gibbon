@@ -42,5 +42,19 @@ describe Gibbon::APIRequest do
         expect(boom.raw_body).to eq "A non JSON response"
       end
     end
+
+    context "when symbolize_keys is true" do
+      it "sets title and detail on the error params" do
+        response_values = {:status => 422, :headers => {}, :body => '{"title": "foo", "detail": "bar"}'}
+        exception = Faraday::Error::ClientError.new("the server responded with status 422", response_values)
+        api_request = Gibbon::APIRequest.new(builder: Gibbon::Request.new(symbolize_keys: true))
+        begin
+          api_request.send :handle_error, exception
+        rescue => boom
+          expect(boom.title).to eq "foo"
+          expect(boom.detail).to eq "bar"
+        end
+      end
+    end
   end
 end
