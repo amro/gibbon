@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [3.0.2] - 2017-05-08
+- Fix subtle bug in `symbolize_keys` when parsing error
+
 ## [3.0.1] - 2017-01-13
 - Gibbon::Request (API 3.0) now returns a `Gibbon::Response` object that exposes `headers` and the parsed response `body`
 - Remove Export API support (this is deprected after all)
