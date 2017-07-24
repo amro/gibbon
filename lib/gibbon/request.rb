@@ -27,6 +27,10 @@ module Gibbon
       self
     end
 
+    def respond_to_missing?(method_name, include_private = false)
+      true
+    end
+
     def send(*args)
       if args.length == 0
         method_missing(:send, args)
@@ -80,6 +84,10 @@ module Gibbon
 
       def method_missing(sym, *args, &block)
         new(api_key: self.api_key, api_endpoint: self.api_endpoint, timeout: self.timeout, open_timeout: self.open_timeout, faraday_adapter: self.faraday_adapter, symbolize_keys: self.symbolize_keys, debug: self.debug, proxy: self.proxy, logger: self.logger).send(sym, *args, &block)
+      end
+
+      def respond_to_missing?(method_name, include_private = false)
+        true
       end
     end
   end
