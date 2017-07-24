@@ -222,4 +222,13 @@ describe Gibbon do
       expect(Gibbon::Request.new.logger).to eq(logger)
     end
   end
+
+  describe "missing methods" do
+    it "respond to .method call on class" do
+      expect(Gibbon::Request.method(:lists)).to be_a(Method)
+    end
+    it "respond to .method call on instance" do
+      expect(Gibbon::Request.new.method(:lists)).to be_a(Method)
+    end
+  end
 end
