@@ -73,7 +73,9 @@
 ## [1.1.4] - 2012-11-04
 - Fix JSON::ParserError on export calls that return blank results
 
-[unreleased]: https://github.com/amro/gibbon/compare/v3.0.1...HEAD
+[unreleased]: https://github.com/amro/gibbon/compare/v3.1.0...HEAD
+[3.1.0]: https://github.com/amro/gibbon/compare/v3.0.2...v3.1.0
+[3.0.2]: https://github.com/amro/gibbon/compare/v3.0.1...v3.0.2
 [3.0.1]: https://github.com/amro/gibbon/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/amro/gibbon/compare/v2.2.5...v3.0.0
 [2.2.5]: https://github.com/amro/gibbon/compare/v2.2.4...v2.2.5
