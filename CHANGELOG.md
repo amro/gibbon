@@ -1,5 +1,9 @@
 ## [Unreleased][unreleased]
 
+## [3.1.0] - 2017-07-27
+- Add back support for Export API until MailChimp stops supporting it
+- Implement `responds_to_missing`
+
 ## [3.0.2] - 2017-05-08
 - Fix subtle bug in `symbolize_keys` when parsing error
 
