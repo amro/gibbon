@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [3.1.1] - 2017-09-25
+- Fix MailChimpError initialization
+
 ## [3.1.0] - 2017-07-27
 - Add back support for Export API until MailChimp stops supporting it
 - Implement `responds_to_missing`
