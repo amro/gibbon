@@ -102,7 +102,7 @@ module Gibbon
     def symbolize_keys
       @request_builder.symbolize_keys
     end
-    
+
     # Helpers
 
     def handle_error(error)
@@ -157,7 +157,7 @@ module Gibbon
       client
     end
 
-    def parse_response(response)      
+    def parse_response(response)
       parsed_response = nil
 
       if response.body && !response.body.empty?
@@ -166,9 +166,8 @@ module Gibbon
           body = MultiJson.load(response.body, symbolize_keys: symbolize_keys)
           parsed_response = Response.new(headers: headers, body: body)
         rescue MultiJson::ParseError
-          error = MailChimpError.new("Unparseable response: #{response.body}")
-          error.title = "UNPARSEABLE_RESPONSE"
-          error.status_code = 500
+          error_params = { title: "UNPARSEABLE_RESPONSE", status_code: 500 }
+          error = MailChimpError.new("Unparseable response: #{response.body}", error_params)
           raise error
         end
       end
