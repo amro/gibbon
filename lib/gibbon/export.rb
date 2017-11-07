@@ -41,7 +41,7 @@ module Gibbon
       url = URI.parse(api_url)
       req = Net::HTTP::Post.new(url.path, initheader = {'Content-Type' => 'application/json'})
       req.body = MultiJson.dump(params)
-      Net::HTTP.start(url.host, url.port, read_timeout: @timeout, use_ssl: true) do |http|
+      Net::HTTP.start(url.host, url.port, read_timeout: @timeout, use_ssl: true, ssl_version: :TLSv1_2) do |http|
         # http://stackoverflow.com/questions/29598196/ruby-net-http-read-body-nethttpokread-body-called-twice-ioerror
         http.request req do |response|
           i = -1
