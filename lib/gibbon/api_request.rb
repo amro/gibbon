@@ -146,7 +146,7 @@ module Gibbon
     end
 
     def rest_client
-      client = Faraday.new(self.api_url, proxy: self.proxy) do |faraday|
+      client = Faraday.new(self.api_url, proxy: self.proxy, ssl: { version: "TLSv1_2" }) do |faraday|
         faraday.response :raise_error
         faraday.adapter adapter
         if @request_builder.debug
