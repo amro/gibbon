@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [3.2.0] - 2017-11-08
+- Force TLS version 1.2
+
 ## [3.1.1] - 2017-09-25
 - Fix MailChimpError initialization
 
