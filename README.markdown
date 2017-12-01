@@ -27,7 +27,7 @@ First, create a *one-time use instance* of `Gibbon::Request`:
 gibbon = Gibbon::Request.new(api_key: "your_api_key")
 ```
 
-***Note*** Only reuse instances of Gibbon after terminating a call with a verb, which makes a request. Requests are light weight objects that update an internal path based on your call chain. When you terminate a call chain with a verb, a request instance makes a request an resets the path.
+***Note*** Only reuse instances of Gibbon after terminating a call with a verb, which makes a request. Requests are light weight objects that update an internal path based on your call chain. When you terminate a call chain with a verb, a request instance makes a request and resets the path.
 
 You can set an individual request's `timeout` and `open_timeout` like this:
 
