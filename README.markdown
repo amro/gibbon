@@ -182,20 +182,6 @@ Get a specific member's information (open/click rates etc.) from MailChimp:
 gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).retrieve
 ```
 
-### E-Commerce Orders
-
-Retrieve a transaction
-
-```ruby
-gibbon.ecommerce.stores(store_id).orders(order_number).retrieve
-```
-
-Delete a transaction
-
-```ruby
-gibbon.ecommerce.stores(store_id).orders(order_number).delete
-```
-
 #### Fields
 
 Only retrieve ids and names for fetched lists:
@@ -208,6 +194,20 @@ Only retrieve emails for fetched lists:
 
 ```ruby
 gibbon.lists(list_id).members.retrieve(params: {"fields": "members.email_address"})
+```
+
+### E-Commerce Orders
+
+Retrieve a transaction
+
+```ruby
+gibbon.ecommerce.stores(store_id).orders(order_number).retrieve
+```
+
+Delete a transaction
+
+```ruby
+gibbon.ecommerce.stores(store_id).orders(order_number).delete
 ```
 
 ### Campaigns
