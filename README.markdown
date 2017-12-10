@@ -47,6 +47,9 @@ You can specify `headers`, `params`, and `body` when calling a `CRUD` method. Fo
 
 ```ruby
 gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
+gibbon.lists.create(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"}, body: {"SomeBody": "SomeBodyValue"})
+gibbon.lists(list_id).update(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"}, body: {"SomeBody": "SomeBodyValue"})
+gibbon.lists(list_id).delete(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
 ```
 
 Of course, `body` is only supported on `create`, `update`, and `upsert` calls. Those map to HTTP `POST`, `PATCH`, and `PUT` verbs respectively.
@@ -179,49 +182,21 @@ Get a specific member's information (open/click rates etc.) from MailChimp:
 gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).retrieve
 ```
 
-### Batch Operations
+### E-Commerce Orders
 
-Any API call that can be made directly can also be organized into batch operations. Performing batch operations requires you to generate a hash for each individual API call and pass them as an `Array` to the Batch endpoint.
+Retrieve a transaction
 
 ```ruby
-# Create a new batch job that will create new list members
-gibbon.batches.create(body: {
-  operations: [
-    {
-      method: "POST",
-      path: "lists/#{ list_id }/members",
-      body: "{...}" # The JSON payload for PUT, POST, or PATCH
-    },
-    ...
-  ]
-})
+gibbon.ecommerce.stores(store_id).orders(order_number).retrieve
 ```
 
-This will create a new batch job and return a Batch response. The response will include an `id` attribute which can be used to check the status of a particular batch job.
+Delete a transaction
 
-##### Checking on a Batch Job
 ```ruby
-gibbon.batches(batch_id).retrieve
+gibbon.ecommerce.stores(store_id).orders(order_number).delete
 ```
 
-###### Response Body (i.e. `response.body`)
-```ruby
-{
-  "id"=>"0ca62e43cc",
-  "status"=>"started",
-  "total_operations"=>1,
-  "finished_operations"=>1,
-  "errored_operations"=>0,
-  "submitted_at"=>"2016-04-19T01:16:58+00:00",
-  "completed_at"=>"",
-  "response_body_url"=>""
-}
-```
-
-***Note*** This response truncated for brevity. Reference the MailChimp
-[API documentation for Batch Operations](http://developer.mailchimp.com/documentation/mailchimp/reference/batches/) for more details.
-
-### Fields
+#### Fields
 
 Only retrieve ids and names for fetched lists:
 
@@ -360,6 +335,48 @@ gibbon.lists(list_id).interest_categories("0ace7aa498").interests.retrieve
 ```
 
 That response gives the interest data, including the ID for the interests themselves, which we can use to update a list member's interests or set them when we call the API to subscribe her or him to a list.
+
+### Batch Operations
+
+Any API call that can be made directly can also be organized into batch operations. Performing batch operations requires you to generate a hash for each individual API call and pass them as an `Array` to the Batch endpoint.
+
+```ruby
+# Create a new batch job that will create new list members
+gibbon.batches.create(body: {
+  operations: [
+    {
+      method: "POST",
+      path: "lists/#{ list_id }/members",
+      body: "{...}" # The JSON payload for PUT, POST, or PATCH
+    },
+    ...
+  ]
+})
+```
+
+This will create a new batch job and return a Batch response. The response will include an `id` attribute which can be used to check the status of a particular batch job.
+
+##### Checking on a Batch Job
+```ruby
+gibbon.batches(batch_id).retrieve
+```
+
+###### Response Body (i.e. `response.body`)
+```ruby
+{
+  "id"=>"0ca62e43cc",
+  "status"=>"started",
+  "total_operations"=>1,
+  "finished_operations"=>1,
+  "errored_operations"=>0,
+  "submitted_at"=>"2016-04-19T01:16:58+00:00",
+  "completed_at"=>"",
+  "response_body_url"=>""
+}
+```
+
+***Note*** This response truncated for brevity. Reference the MailChimp
+[API documentation for Batch Operations](http://developer.mailchimp.com/documentation/mailchimp/reference/batches/) for more details.
 
 ### Error handling
 
