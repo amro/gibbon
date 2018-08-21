@@ -73,7 +73,7 @@ describe Gibbon do
       expect(@gibbon.proxy).to be_nil
     end
 
-    it "sets an proxy url key from the 'MAILCHIMP_PROXY_URL' ENV variable" do
+    it "sets a proxy url key from the 'MAILCHIMP_PROXY' ENV variable" do
       ENV['MAILCHIMP_PROXY'] = @proxy
       @gibbon = Gibbon::Request.new
       expect(@gibbon.proxy).to eq(@proxy)
