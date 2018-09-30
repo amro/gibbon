@@ -178,6 +178,21 @@ Get a specific member's information (open/click rates etc.) from MailChimp:
 gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).retrieve
 ```
 
+### Tags
+
+[Tags](https://mailchimp.com/help/getting-started-tags/) are a flexible way to organize (slice and dice) your list: for example, you can send a campaign directly to one or more tags.
+
+Add tags to a subscriber:
+
+```ruby
+gibbon.lists(list_id).members(Digest::MD5.hexdigest(email)).tags.create(
+  body: {
+    tags: [{name:"referred-from-xyz", status:"active"},{name:"pro-plan",status:"active"}]
+  }
+)
+```
+
+
 ### Batch Operations
 
 Any API call that can be made directly can also be organized into batch operations. Performing batch operations requires you to generate a hash for each individual API call and pass them as an `Array` to the Batch endpoint.
@@ -476,7 +491,7 @@ This fetches and returns all of the results at once. Pass a block if you'd like 
 
 ```ruby
 export = Gibbon::Export.new(api_key: "your_api_key", timeout: 1200)
-export.list(id: list_id) do |row| 
+export.list(id: list_id) do |row|
   puts row
 end
 ```
