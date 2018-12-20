@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [3.2.1] - 2017-11-08
+- Set minimum Ruby to 2.1
+
 ## [3.2.0] - 2017-11-08
 - Force TLS version 1.2
 
