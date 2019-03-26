@@ -110,7 +110,7 @@ Gibbon::Request.logger = MyLogger.new
 
 ### Lists
 
-Fetch all lists:
+Fetch first page of lists:
 
 ```ruby
 gibbon.lists.retrieve
@@ -130,7 +130,7 @@ gibbon.lists(list_id).members.retrieve
 
 ### Subscribers
 
-Get all subscribers for a list:
+Get first page of subscribers for a list:
 
 ```ruby
 gibbon.lists(list_id).members.retrieve
@@ -251,7 +251,7 @@ gibbon.lists(list_id).members.retrieve(params: {"fields": "members.email_address
 
 ### Campaigns
 
-Get all campaigns:
+Get first page of campaigns:
 
 ```ruby
 campaigns = gibbon.campaigns.retrieve
