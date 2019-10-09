@@ -1,6 +1,6 @@
 ## [Unreleased][unreleased]
 
-## [3.2.1] - 2019-10-02
+## [3.3.0] - 2019-10-02
 - Fixed compatibility with Faraday 0.16.2+
 - Set minimum Ruby to 2.3.8
 
