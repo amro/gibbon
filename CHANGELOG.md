@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [3.3.1] - 2019-11-08
+- Fix statically setting `faraday_adapter` did not set adapter on new requests
+
 ## [3.3.0] - 2019-10-02
 - Fixed compatibility with Faraday 0.16.2+
 - Set minimum Ruby to 2.3.8

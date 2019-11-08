@@ -13,7 +13,7 @@ module Gibbon
       @timeout = timeout || self.class.timeout || DEFAULT_TIMEOUT
       @open_timeout = open_timeout || self.class.open_timeout || DEFAULT_OPEN_TIMEOUT
       @proxy = proxy || self.class.proxy || ENV['MAILCHIMP_PROXY']
-      @faraday_adapter = faraday_adapter || Faraday.default_adapter
+      @faraday_adapter = faraday_adapter || self.class.faraday_adapter || Faraday.default_adapter
       @symbolize_keys = symbolize_keys || self.class.symbolize_keys || false
       @debug = debug || self.class.debug || false
       @logger = logger || self.class.logger || ::Logger.new(STDOUT)
