@@ -185,7 +185,7 @@ gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).retrieve
 Add tags to a subscriber:
 
 ```ruby
-gibbon.lists(list_id).members(Digest::MD5.hexdigest(email)).tags.create(
+gibbon.lists(list_id).members(Digest::MD5.hexdigest(lower_case_email_address)).tags.create(
   body: {
     tags: [{name:"referred-from-xyz", status:"active"},{name:"pro-plan",status:"active"}]
   }
