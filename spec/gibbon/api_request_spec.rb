@@ -60,12 +60,6 @@ describe Gibbon::APIRequest do
     end
   end
 
-  context 'Faraday::Error::ClientError' do
-    let(:error_class) { Faraday::Error::ClientError }
-
-    include_examples 'client error handling'
-  end
-
   context 'Faraday::ClientError' do
     let(:error_class) { Faraday::ClientError }
 
