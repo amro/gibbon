@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [3.3.2] - 2020-01-19
+- Bumped minimum version of Faraday 0.16.0 due to compatibility issues with legacy versions
+
 ## [3.3.1] - 2019-11-08
 - Fix statically setting `faraday_adapter` did not set adapter on new requests
 
