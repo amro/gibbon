@@ -109,10 +109,7 @@ module Gibbon
       error_params = {}
 
       begin
-        # Faraday::ClientError is used in Faraday 0.16.0+
-        # Faraday::Error::ClientError was used before 0.16.0
-        client_error = error.is_a?(Faraday::ClientError) || error.is_a?(Faraday::Error::ClientError)
-        if client_error && error.response
+        if error.is_a?(Faraday::ClientError) && error.response
           error_params[:status_code] = error.response[:status]
           error_params[:raw_body] = error.response[:body]
 
