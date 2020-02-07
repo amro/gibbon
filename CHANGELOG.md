@@ -1,5 +1,8 @@
 ## [Unreleased][unreleased]
 
+## [3.3.3] - 2020-02-7
+- Removes bit of extra conditional logic that was part of supporting older versions of Faraday
+
 ## [3.3.2] - 2020-01-19
 - Bumped minimum version of Faraday 0.16.0 due to compatibility issues with legacy versions
 
