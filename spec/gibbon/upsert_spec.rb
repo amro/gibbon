@@ -17,8 +17,8 @@ describe Gibbon do
   end
 
   it 'supports upsert request' do
-    stub_request(:put, "https://apikey:1234-us1@us1.api.mailchimp.com/3.0/lists/#{list_id}/members/#{member_id}")
-      .with(body: MultiJson.dump(request_body))
+    stub_request(:put, "https://us1.api.mailchimp.com/3.0/lists/#{list_id}/members/#{member_id}")
+      .with(body: MultiJson.dump(request_body), basic_auth: ['apikey', '1234-us1'])
       .to_return(status: 200)
 
     Gibbon::Request.new(api_key: api_key)

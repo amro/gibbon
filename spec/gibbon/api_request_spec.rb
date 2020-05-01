@@ -6,20 +6,21 @@ describe Gibbon::APIRequest do
 
   before do
     @gibbon = Gibbon::Request.new(api_key: api_key)
-    @api_root = "https://apikey:#{api_key}@us1.api.mailchimp.com/3.0"
+    @api_root = "https://us1.api.mailchimp.com/3.0"
+    @basic_auth_credentials = ['apikey', api_key]
   end
 
   shared_examples_for 'client error handling' do
     it "surfaces client request exceptions as a Gibbon::MailChimpError" do
       exception = error_class.new("the server responded with status 503")
-      stub_request(:get, "#{@api_root}/lists").to_raise(exception)
+      stub_request(:get, "#{@api_root}/lists").with(basic_auth: @basic_auth_credentials).to_raise(exception)
       expect { @gibbon.lists.retrieve }.to raise_error(Gibbon::MailChimpError)
     end
 
     it "surfaces an unparseable client request exception as a Gibbon::MailChimpError" do
       exception = error_class.new(
         "the server responded with status 503")
-      stub_request(:get, "#{@api_root}/lists").to_raise(exception)
+      stub_request(:get, "#{@api_root}/lists").with(basic_auth: @basic_auth_credentials).to_raise(exception)
       expect { @gibbon.lists.retrieve }.to raise_error(Gibbon::MailChimpError)
     end
 
@@ -27,7 +28,7 @@ describe Gibbon::APIRequest do
       response_values = {:status => 503, :headers => {}, :body => '[foo]'}
       exception = error_class.new("the server responded with status 503", response_values)
 
-      stub_request(:get, "#{@api_root}/lists").to_raise(exception)
+      stub_request(:get, "#{@api_root}/lists").with(basic_auth: @basic_auth_credentials).to_raise(exception)
       expect { @gibbon.lists.retrieve }.to raise_error(Gibbon::MailChimpError)
     end
 
