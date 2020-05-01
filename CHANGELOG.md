@@ -1,6 +1,10 @@
 ## [Unreleased][unreleased]
 
-## [3.3.3] - 2020-02-7
+## [3.3.4] - 2020-04-01
+- Added support for setting API key via environment variable for Export API
+- Updated webmock
+
+## [3.3.3] - 2020-02-07
 - Removes bit of extra conditional logic that was part of supporting older versions of Faraday
 
 ## [3.3.2] - 2020-01-19
