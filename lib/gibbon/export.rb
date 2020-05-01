@@ -7,7 +7,7 @@ module Gibbon
     attr_accessor :api_key, :timeout
 
     def initialize(api_key: nil, timeout: nil)
-      @api_key = api_key || self.class.api_key
+      @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
       @timeout = timeout || self.class.timeout || 600
     end
 
