@@ -17,6 +17,13 @@ describe Gibbon::Export do
     expect {@export.list(id: "123456")}.to raise_error(Gibbon::GibbonError)
   end
 
+  it "sets an API key from the 'MAILCHIMP_API_KEY' ENV variable" do
+    ENV['MAILCHIMP_API_KEY'] = 'TESTKEY-us1'
+    @export = Gibbon::Export.new
+    expect(@export.api_key).to eq('TESTKEY-us1')
+    ENV.delete('MAILCHIMP_API_KEY')
+  end
+
   it "sets correct endpoint from api key" do
     @api_key = "TESTKEY-us1"
     @export.api_key = @api_key
