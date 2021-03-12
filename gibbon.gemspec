@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
-  s.required_ruby_version = '>= 2.3.8'
+  s.required_ruby_version = '>= 2.4.0'
 
   s.add_dependency('faraday', '>= 0.16.0')
   s.add_dependency('multi_json', '>= 1.11.0')
