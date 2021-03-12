@@ -1,5 +1,9 @@
 ## [Unreleased][unreleased]
 
+
+## [3.4.0] - 2021-03-12
+- Support for Faraday 1.x.x and higer
+
 ## [3.3.4] - 2020-04-01
 - Added support for setting API key via environment variable for Export API
 - Updated webmock
