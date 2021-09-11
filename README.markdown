@@ -2,7 +2,7 @@
 
 Gibbon is an API wrapper for MailChimp's [API](http://kb.mailchimp.com/api/).
 
-[![Build Status](https://travis-ci.com/amro/gibbon.svg?branch=master)](https://travis-ci.com/amro/gibbon)
+[![Build Status](https://travis-ci.com/amro/gibbon.svg?branch=master)](https://app.travis-ci.com/github/amro/gibbon)
 
 ## Important Notes
 
