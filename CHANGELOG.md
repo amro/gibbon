@@ -1,6 +1,9 @@
 ## [Unreleased][unreleased]
 
 
+## [3.4.1] - 2021-03-12
+- Fix deprecation warning for upcoming versions of Faraday (2.x.x)
+
 ## [3.4.0] - 2021-03-12
 - Support for Faraday 1.x.x and higer
 

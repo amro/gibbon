@@ -38,7 +38,7 @@ gibbon.open_timeout = 30
 You can read about `timeout` and `open_timeout` in the [Net::HTTP](https://ruby-doc.org/stdlib-2.3.3/libdoc/net/http/rdoc/Net/HTTP.html) doc.
 
 Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
-are specified inline and a `CRUD` (`create`, `retrieve`, `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
+are specified inline and a `CRUD` (`create`, `retrieve` (or `get`), `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
 
 ***Note*** `upsert` requires Gibbon version 2.1.0 or newer!
 
@@ -47,6 +47,8 @@ You can specify `headers`, `params`, and `body` when calling a `CRUD` method. Fo
 ```ruby
 gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
 ```
+
+***Note*** `get` can be substituted for `retrieve` as of Gibbon version 3.4.1 or newer!
 
 Of course, `body` is only supported on `create`, `update`, and `upsert` calls. Those map to HTTP `POST`, `PATCH`, and `PUT` verbs respectively.
 
@@ -506,5 +508,5 @@ Thanks to everyone who has [contributed](https://github.com/amro/gibbon/contribu
 
 ## Copyright
 
-* Copyright (c) 2010-2020 Amro Mousa. See LICENSE.txt for details.
-* MailChimp (c) 2001-2020 The Rocket Science Group.
+* Copyright (c) 2010-2021 Amro Mousa. See LICENSE.txt for details.
+* MailChimp (c) 2001-2021 The Rocket Science Group.

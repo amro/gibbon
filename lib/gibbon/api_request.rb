@@ -152,8 +152,9 @@ module Gibbon
         if @request_builder.debug
           faraday.response :logger, @request_builder.logger, bodies: true
         end
+        faraday.request :basic_auth, 'apikey', self.api_key
       end
-      client.basic_auth('apikey', self.api_key)
+      
       client
     end
 
