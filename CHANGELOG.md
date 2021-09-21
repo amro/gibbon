@@ -1,7 +1,10 @@
 ## [Unreleased][unreleased]
 
 
-## [3.4.1] - 2021-03-12
+## [3.4.2] - 2021-09-21
+- Fixing the deprecation warning in version 3.4.2 requires moving to a minimum version of Faraday 1.0.0 (more than 2 years old).
+
+## [3.4.1] - 2021-09-12
 - Fix deprecation warning for upcoming versions of Faraday (2.x.x)
 
 ## [3.4.0] - 2021-03-12
