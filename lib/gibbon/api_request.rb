@@ -152,9 +152,14 @@ module Gibbon
         if @request_builder.debug
           faraday.response :logger, @request_builder.logger, bodies: true
         end
-        faraday.request :basic_auth, 'apikey', self.api_key
+
+        if Faraday::VERSION.to_i >= 2
+          faraday.request :authorization, :basic, 'apikey', self.api_key
+        else
+          faraday.request :basic_auth, 'apikey', self.api_key
+        end
       end
-      
+
       client
     end
 
