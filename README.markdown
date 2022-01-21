@@ -508,5 +508,5 @@ Thanks to everyone who has [contributed](https://github.com/amro/gibbon/contribu
 
 ## Copyright
 
-* Copyright (c) 2010-2021 Amro Mousa. See LICENSE.txt for details.
-* MailChimp (c) 2001-2021 The Rocket Science Group.
+* Copyright (c) 2010-2022 Amro Mousa. See LICENSE.txt for details.
+* MailChimp (c) 2001-2022 The Rocket Science Group.

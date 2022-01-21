@@ -1,6 +1,9 @@
 ## [Unreleased][unreleased]
 
 
+## [3.4.3] - 2022-01-19
+- Support for Faraday 2.0, which requires new syntax for basic auth
+
 ## [3.4.2] - 2021-09-21
 - Fixing the deprecation warning in version 3.4.2 requires moving to a minimum version of Faraday 1.0.0 (more than 2 years old).
 
