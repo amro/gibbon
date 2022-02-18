@@ -166,7 +166,7 @@ describe Gibbon do
     it "raises with a valid SSRF attack" do
       @api_key = "-attacker.net/test/?"
       @gibbon.api_key = @api_key
-      expect {@gibbon.try.retrieve}.not_to raise_error
+      expect {@gibbon.try.retrieve}.to raise_error(Gibbon::MailChimpError, /SSRF attempt/)
     end
   end
 
