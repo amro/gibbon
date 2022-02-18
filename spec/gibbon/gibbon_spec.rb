@@ -162,6 +162,12 @@ describe Gibbon do
       @request = Gibbon::APIRequest.new(builder: @gibbon)
       expect {@request.validate_api_key}.not_to raise_error
     end
+
+    it "raises with a valid SSRF attack" do
+      @api_key = "-attacker.net/test/?"
+      @gibbon.api_key = @api_key
+      expect {@gibbon.try.retrieve}.not_to raise_error
+    end
   end
 
   describe "class variables" do
@@ -213,7 +219,7 @@ describe Gibbon do
     it "set debug on new instances" do
       expect(Gibbon::Request.new.debug).to eq(Gibbon::Request.debug)
     end
-    
+
     it "set faraday_adapter on new instances" do
       expect(Gibbon::Request.new.faraday_adapter).to eq(Gibbon::Request.faraday_adapter)
     end
