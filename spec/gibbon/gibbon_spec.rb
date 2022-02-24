@@ -14,6 +14,7 @@ describe Gibbon do
       @gibbon = Gibbon::Request.new
       expect(@gibbon.api_key).to be_nil
     end
+  
     it "sets an API key in the constructor" do
       @gibbon = Gibbon::Request.new(api_key: @api_key)
       expect(@gibbon.api_key).to eq(@api_key)
@@ -163,10 +164,12 @@ describe Gibbon do
       expect {@request.validate_api_key}.not_to raise_error
     end
 
-    it "raises with a valid SSRF attack" do
-      @api_key = "-attacker.net/test/?"
+    it "removes non-alpha characters from datacenter prefix" do
+      @api_key = "123-attacker.net/test/?"
       @gibbon.api_key = @api_key
-      expect {@gibbon.try.retrieve}.to raise_error(Gibbon::MailChimpError, /SSRF attempt/)
+      @gibbon.try
+      @request = Gibbon::APIRequest.new(builder: @gibbon)
+      expect(@request.api_url).to eq("https://attackernettest.api.mailchimp.com/3.0/try")
     end
   end
 

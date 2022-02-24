@@ -194,8 +194,6 @@ module Gibbon
 
     def base_api_url
       computed_api_endpoint = "https://#{get_data_center_from_api_key(self.api_key)}api.mailchimp.com"
-      raise Gibbon::GibbonError, "SSRF attempt" unless URI(computed_api_endpoint).host.include?("api.mailchimp.com")
-
       "#{self.api_endpoint || computed_api_endpoint}/3.0/"
     end
   end
