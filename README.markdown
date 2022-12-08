@@ -180,6 +180,12 @@ Get a specific member's information (open/click rates etc.) from MailChimp:
 gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).retrieve
 ```
 
+Permanently delete a specific member from a list:
+
+```ruby
+gibbon.lists(list_id).members(lower_case_md5_hashed_email_address).actions.delete_permanent.create
+```
+
 ### Tags
 
 [Tags](https://mailchimp.com/help/getting-started-tags/) are a flexible way to organize (slice and dice) your list: for example, you can send a campaign directly to one or more tags.
