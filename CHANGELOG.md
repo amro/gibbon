@@ -1,4 +1,5 @@
-## [Unreleased][unreleased]
+## [3.5.0, unreleased] - 2022-06-05
+- Remove support for retired Export API
 
 ## [3.4.4] - 2022-02-24
 - Remove non-alpha characters when parsing datacenter from API keys to prevent potential attackers from injecting a domain via the API key. This would only be possible if one were using user-provided API keys (e.g. from a form, etc.).

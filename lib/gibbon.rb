@@ -9,7 +9,6 @@ require 'gibbon/mailchimp_error'
 require 'gibbon/request'
 require 'gibbon/api_request'
 require 'gibbon/response'
-require 'gibbon/export'
 
 module Gibbon
 end

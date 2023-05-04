@@ -480,33 +480,6 @@ Gibbon 2.x+:
 ```ruby
 gibbon.lists(list_id).members.create(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "Bob", LNAME: "Smith"}})
 ```
-## Export API 1.0
-
-Gibbon 3.0.0+ supports MailChimp's [Export API 1.0](https://apidocs.mailchimp.com/export/1.0/). You can choose to handle the API response all at
-once or line by line by passing a block. To access the Export API with Gibbon, you must first create an instance of `Gibbon::Export`:
-
-```ruby
-export = Gibbon::Export.new(api_key: "your_api_key")
-```
-
-Next, call the method corresponding to the API endpoint you'd like to query:
-
-```ruby
-export.list(id: list_id)
-```
-
-This fetches and returns all of the results at once. Pass a block if you'd like to handle the response as individual lines:
-
-```ruby
-export = Gibbon::Export.new(api_key: "your_api_key", timeout: 1200)
-export.list(id: list_id) do |row|
-  puts row
-end
-```
-
-This is useful when handling large sets of data. Setting the `timeout` here is optional, but a high value is recommended given the nature of the Export API. The default timeout is 600 seconds.
-
-Gibbon supports all current Export API endpoints: `/list`, `/ecommOrders`, and `/campaignSubscriberActivity`. They're mapped onto Ruby methods with similar names: `list()`, `ecomm_orders()`, and `campaign_subscriber_activity()` respectively. Please see [MailChimp's API documentation](https://developer.mailchimp.com/documentation/mailchimp/guides/how-to-use-the-export-api/) for supported parameters.
 
 ## Thanks
 
