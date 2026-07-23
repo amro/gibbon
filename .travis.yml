@@ -5,4 +5,14 @@ rvm:
   - 3.2
   - 3.3
   - 3.4
-  - 4.0
+jobs:
+  include:
+    # rvm's stable release does not know Ruby 4.0 yet, so boot on 3.4,
+    # then upgrade rvm to master and install 4.0 from there
+    - name: "4.0 (via rvm master)"
+      rvm: 3.4
+      before_install:
+        - rvm get master
+        - rvm install ruby-4.0
+        - rvm use ruby-4.0
+        - ruby -v
