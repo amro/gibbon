@@ -46,4 +46,22 @@ describe Gibbon::MailChimpError do
   it 'sets the status_code attribute' do
     expect(@gibbon.status_code).to eq(params[:status_code])
   end
+
+  context "without params" do
+    before do
+      @gibbon = Gibbon::MailChimpError.new(message)
+    end
+
+    it "leaves the attributes nil" do
+      expect(@gibbon.title).to be_nil
+      expect(@gibbon.detail).to be_nil
+      expect(@gibbon.body).to be_nil
+      expect(@gibbon.raw_body).to be_nil
+      expect(@gibbon.status_code).to be_nil
+    end
+
+    it "still includes the attributes in the message" do
+      expect(@gibbon.message).to eq "Foo @title=nil, @detail=nil, @body=nil, @raw_body=nil, @status_code=nil"
+    end
+  end
 end
