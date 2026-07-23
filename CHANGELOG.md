@@ -1,4 +1,9 @@
-## [3.5.0, unreleased] - 2022-06-05
+## [4.0.0] - 2026-07-23
+- Require Ruby 3.1+ (drops support for EOL Rubies 2.4 through 3.0)
+- Require TLS 1.2 as a minimum instead of pinning it exactly, allowing TLS 1.3
+- Modernize development setup: loosen rspec pin, remove Rubinius leftovers, update CI matrix to Ruby 3.1 through 4.0
+
+## [3.5.0] - 2023-06-07
 - Remove support for retired Export API
 
 ## [3.4.4] - 2022-02-24
