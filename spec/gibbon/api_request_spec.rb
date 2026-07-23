@@ -66,4 +66,13 @@ describe Gibbon::APIRequest do
 
     include_examples 'client error handling'
   end
+
+  context "rest_client ssl configuration" do
+    it "requires TLS 1.2 as a minimum without capping the TLS version" do
+      api_request = Gibbon::APIRequest.new(builder: @gibbon.lists)
+      client = api_request.send(:rest_client)
+      expect(client.ssl.min_version).to eq :TLS1_2
+      expect(client.ssl.max_version).to be_nil
+    end
+  end
 end
