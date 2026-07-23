@@ -1,12 +1,12 @@
 # gibbon
 
-Gibbon is an API wrapper for MailChimp's [API](http://kb.mailchimp.com/api/).
+Gibbon is an API wrapper for MailChimp's [API](https://mailchimp.com/developer/marketing/api/).
 
-[![Build Status](https://travis-ci.com/amro/gibbon.svg?branch=master)](https://app.travis-ci.com/github/amro/gibbon)
+[![Build Status](https://app.travis-ci.com/amro/gibbon.svg?branch=master)](https://app.travis-ci.com/github/amro/gibbon)
 
 ## Important Notes
 
-Please read MailChimp's [Getting Started Guide](http://kb.mailchimp.com/api/article/api-3-overview).
+Please read MailChimp's [Getting Started Guide](https://mailchimp.com/developer/marketing/guides/quick-start/).
 
 Gibbon 3.0.0+ returns a `Gibbon::Response` instead of the response body directly. `Gibbon::Response` exposes the parsed response `body` and `headers`.
 
@@ -16,7 +16,7 @@ Gibbon 3.0.0+ returns a `Gibbon::Response` instead of the response body directly
 
 ## Requirements
 
-A MailChimp account and API key. You can see your API keys [here](http://admin.mailchimp.com/account/api).
+A MailChimp account and API key. You can see your API keys [here](https://admin.mailchimp.com/account/api).
 
 ## Usage
 
@@ -35,9 +35,9 @@ gibbon.timeout = 30
 gibbon.open_timeout = 30
 ```
 
-You can read about `timeout` and `open_timeout` in the [Net::HTTP](https://ruby-doc.org/stdlib-2.3.3/libdoc/net/http/rdoc/Net/HTTP.html) doc.
+You can read about `timeout` and `open_timeout` in the [Net::HTTP](https://docs.ruby-lang.org/en/master/Net/HTTP.html) doc.
 
-Now you can make requests using the resources defined in [MailChimp's docs](http://kb.mailchimp.com/api/resources). Resource IDs
+Now you can make requests using the resources defined in [MailChimp's docs](https://mailchimp.com/developer/marketing/api/). Resource IDs
 are specified inline and a `CRUD` (`create`, `retrieve` (or `get`), `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
 
 ***Note*** `upsert` requires Gibbon version 2.1.0 or newer!
@@ -84,7 +84,7 @@ Pass `symbolize_keys: true` to use symbols (instead of strings) as hash keys in 
 gibbon = Gibbon::Request.new(api_key: "your_api_key", symbolize_keys: true)
 ```
 
-MailChimp's [resource documentation](http://kb.mailchimp.com/api/resources) is a list of available resources.
+MailChimp's [resource documentation](https://mailchimp.com/developer/marketing/api/) is a list of available resources.
 
 ## Debug Logging
 
@@ -241,7 +241,7 @@ gibbon.batches(batch_id).retrieve
 ```
 
 ***Note*** This response truncated for brevity. Reference the MailChimp
-[API documentation for Batch Operations](http://developer.mailchimp.com/documentation/mailchimp/reference/batches/) for more details.
+[API documentation for Batch Operations](https://mailchimp.com/developer/marketing/api/batches/) for more details.
 
 ### Fields
 
@@ -363,7 +363,7 @@ The response body (i.e. `response.body`) looks someting like this (unrelated thi
 {"id"=>"...", "email_address"=>"...", ..., "interests"=>{"3def637141"=>true, "f7cc4ee841"=>false, "fcdc951b9f"=>false, "3daf3cf27d"=>true, "293a3703ed"=>false, "72370e0d1f"=>false, "d434d21a1c"=>false, "bdb1ff199f"=>false, "a54e78f203"=>false, "c4527fd018"=>false} ...}
 ```
 
-The API returns a map of interest ID to boolean value. Now we to get interest details so we know what these interest IDs map to. Looking at [this doc page](http://kb.mailchimp.com/api/resources/lists/interest-categories/interests/lists-interests-collection), we need to do this:
+The API returns a map of interest ID to boolean value. Now we to get interest details so we know what these interest IDs map to. Looking at [this doc page](https://mailchimp.com/developer/marketing/api/interests/), we need to do this:
 
 ```ruby
 gibbon.lists(list_id).interest_categories.retrieve
@@ -400,7 +400,7 @@ end
 
 ### Other
 
-Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](http://apidocs.mailchimp.com/oauth2/)):
+Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](https://mailchimp.com/developer/marketing/guides/access-user-data-oauth-2/)):
 
 ```ruby
 Gibbon::Request.api_endpoint = "https://us1.api.mailchimp.com"
