@@ -106,6 +106,10 @@ module Gibbon
     # Helpers
 
     def handle_error(error)
+      # Errors we raised ourselves (e.g. unparseable response bodies) already
+      # carry their details; re-wrapping them here would strip those attributes
+      raise error if error.is_a?(MailChimpError)
+
       error_params = {}
 
       begin

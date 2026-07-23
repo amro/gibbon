@@ -135,6 +135,20 @@ describe Gibbon::APIRequest do
 
       expect(@gibbon.lists.retrieve).to be_nil
     end
+
+    it "raises a MailChimpError with details intact for an unparseable success response" do
+      stub_request(:get, "#{@api_root}/lists")
+        .with(basic_auth: @basic_auth_credentials)
+        .to_return(status: 200, body: "not json")
+
+      begin
+        @gibbon.lists.retrieve
+        fail "expected a Gibbon::MailChimpError"
+      rescue Gibbon::MailChimpError => e
+        expect(e.title).to eq "UNPARSEABLE_RESPONSE"
+        expect(e.status_code).to eq 500
+      end
+    end
   end
 
   context "configure_request" do
