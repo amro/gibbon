@@ -16,3 +16,8 @@ jobs:
         - rvm install ruby-4.0
         - rvm use ruby-4.0
         - ruby -v
+      # Bundler 4 (shipped with Ruby 4.0) removed the --path flag that
+      # Travis's default install step still passes
+      install:
+        - bundle config set --local path vendor/bundle
+        - bundle install --jobs=3 --retry=3
