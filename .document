@@ -1,5 +1,5 @@
 lib/**/*.rb
-bin/*
-- 
-features/**/*.feature
+-
+README.markdown
+CHANGELOG.md
 LICENSE.txt
