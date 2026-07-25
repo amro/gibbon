@@ -10,8 +10,15 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/amro/gibbon"
 
   s.summary     = %q{A wrapper for MailChimp API 3.0}
-  s.description = %q{A wrapper for MailChimp API 3.0}
+  s.description = %q{Gibbon is a Ruby wrapper for MailChimp's Marketing API (version 3.0). Ruby method chains map onto API resource paths, so every documented resource is reachable without waiting on a gem update.}
   s.license     = "MIT"
+
+  s.metadata = {
+    "source_code_uri"   => "https://github.com/amro/gibbon",
+    "changelog_uri"     => "https://github.com/amro/gibbon/blob/master/CHANGELOG.md",
+    "bug_tracker_uri"   => "https://github.com/amro/gibbon/issues",
+    "documentation_uri" => "https://rubydoc.info/gems/gibbon"
+  }
 
   s.files         = `git ls-files`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
