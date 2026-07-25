@@ -529,20 +529,6 @@ gibbon.lists.retrieve.body["lists"]
 
 In exchange you also get `.headers`, which carries MailChimp's rate limit and content metadata. See [Responses](#responses).
 
-### Upgrading from 1.x
-
-Gibbon 1.x targeted MailChimp API 2.0, which MailChimp retired. Upgrading means rewriting calls against [API 3.0](https://mailchimp.com/developer/marketing/api/): the primary class is `Gibbon::Request` rather than `Gibbon::API`, the API key is passed as a keyword argument, resource IDs are given inline, and every call chain terminates in a CRUD verb.
-
-```ruby
-# Gibbon 1.x
-gibbon = Gibbon::API.new("your_api_key")
-gibbon.lists.members({:id => list_id})
-
-# Gibbon 4.x
-gibbon = Gibbon::Request.new(api_key: "your_api_key")
-gibbon.lists(list_id).members.retrieve.body
-```
-
 ## Thanks
 
 Thanks to everyone who has [contributed](https://github.com/amro/gibbon/contributors) to Gibbon's development.
