@@ -10,5 +10,6 @@ require 'gibbon/request'
 require 'gibbon/api_request'
 require 'gibbon/response'
 
+# A Ruby wrapper for MailChimp's Marketing API. See {Gibbon::Request}.
 module Gibbon
 end

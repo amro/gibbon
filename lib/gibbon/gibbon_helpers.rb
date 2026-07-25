@@ -1,5 +1,12 @@
 module Gibbon
+  # Shared helpers mixed into {APIRequest}.
   module Helpers
+    # Extracts the data center prefix from an API key, e.g. `"us1."` from
+    # `"TESTKEY-us1"`.
+    #
+    # @param api_key [String, nil] the API key
+    # @return [String] the prefix including its trailing dot, or an empty string
+    #   when the key carries no data center suffix
     def get_data_center_from_api_key(api_key)
       # Return an empty string for invalid API keys so Gibbon hits the main endpoint
       data_center = ""

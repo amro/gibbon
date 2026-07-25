@@ -1,11 +1,23 @@
 module Gibbon
+  # Carries out the HTTP request described by a {Request}.
+  #
+  # This is an implementation detail of {Request}, which constructs one per
+  # call and reads its own configuration back out of it. Use {Request}'s CRUD
+  # verbs rather than instantiating this directly.
   class APIRequest
     include Helpers
 
+    # @param builder [Request] the request whose path and configuration to use
     def initialize(builder: nil)
       @request_builder = builder
     end
 
+    # @param params [Hash, nil] query string parameters
+    # @param headers [Hash, nil] additional request headers
+    # @param body [Hash, nil] request body, serialized to JSON
+    # @return [Response, nil] the response, or nil when the body is empty
+    # @raise [GibbonError] if no usable API key is configured
+    # @raise [MailChimpError] if the request fails or the response cannot be parsed
     def post(params: nil, headers: nil, body: nil)
       validate_api_key
 
@@ -19,6 +31,9 @@ module Gibbon
       end
     end
 
+    # @param (see #post)
+    # @return (see #post)
+    # @raise (see #post)
     def patch(params: nil, headers: nil, body: nil)
       validate_api_key
 
@@ -32,6 +47,9 @@ module Gibbon
       end
     end
 
+    # @param (see #post)
+    # @return (see #post)
+    # @raise (see #post)
     def put(params: nil, headers: nil, body: nil)
       validate_api_key
 
@@ -45,6 +63,10 @@ module Gibbon
       end
     end
 
+    # @param params [Hash, nil] query string parameters
+    # @param headers [Hash, nil] additional request headers
+    # @return (see #post)
+    # @raise (see #post)
     def get(params: nil, headers: nil)
       validate_api_key
 
@@ -58,6 +80,9 @@ module Gibbon
       end
     end
 
+    # @param (see #get)
+    # @return (see #post)
+    # @raise (see #post)
     def delete(params: nil, headers: nil)
       validate_api_key
 
