@@ -37,7 +37,7 @@ First, create a *one-time use instance* of `Gibbon::Request`:
 gibbon = Gibbon::Request.new(api_key: "your_api_key")
 ```
 
-***Note*** Only reuse instances of Gibbon after terminating a call with a verb, which makes a request. Requests are light weight objects that update an internal path based on your call chain. When you terminate a call chain with a verb, a request instance makes a request and resets the path.
+***Note*** Only reuse instances of Gibbon after terminating a call with a verb, which makes a request. Requests are light weight objects that update an internal path based on your call chain. When you terminate a call chain with a verb, a request instance makes a request and resets the path. See [How call chains build paths](#how-call-chains-build-paths).
 
 You can set an individual request's `timeout` and `open_timeout` like this:
 
@@ -93,8 +93,6 @@ You can also set the environment variable `MAILCHIMP_API_KEY` and Gibbon will us
 gibbon = Gibbon::Request.new
 ```
 
-***Note*** Substitute an underscore if a resource name contains a hyphen.
-
 Pass `symbolize_keys: true` to use symbols (instead of strings) as hash keys in API responses.
 
 ```ruby
@@ -102,6 +100,39 @@ gibbon = Gibbon::Request.new(api_key: "your_api_key", symbolize_keys: true)
 ```
 
 MailChimp's [resource documentation](https://mailchimp.com/developer/marketing/api/) is a list of available resources.
+
+## How call chains build paths
+
+`Gibbon::Request` defines no methods for MailChimp's resources. Any unknown method appends a segment to an internal path and returns the same object; a CRUD verb turns the accumulated path into a request. So `gibbon.lists(list_id).members.retrieve` builds `lists/<list_id>/members` and issues a `GET`.
+
+Three consequences are worth knowing.
+
+**Underscores become hyphens.** Segments containing a hyphen aren't valid Ruby method names, so write them with underscores and Gibbon converts:
+
+```ruby
+gibbon.lists(list_id).members(subscriber_hash).actions.delete_permanent.create
+# POST lists/<list_id>/members/<subscriber_hash>/actions/delete-permanent
+```
+
+**`send` is special cased.** `Object#send` would otherwise shadow the path segment, so `Gibbon::Request#send` falls through to path building when called with no arguments. That's what makes sending a campaign work:
+
+```ruby
+gibbon.campaigns(campaign_id).actions.send.create
+# POST campaigns/<campaign_id>/actions/send
+```
+
+Called *with* arguments, `send` keeps its usual Ruby meaning and invokes the named method.
+
+**An instance is reusable only after a verb.** The path resets when a verb runs, not when a chain goes out of scope. Abandoning a chain leaves its segments in place and corrupts the next call:
+
+```ruby
+gibbon = Gibbon::Request.new(api_key: "your_api_key")
+
+gibbon.lists               # no verb, so nothing is sent and nothing is reset
+gibbon.campaigns.retrieve  # GET lists/campaigns -- not what you wanted
+```
+
+Use a fresh instance per chain unless you know the previous one ended in a verb.
 
 ## Responses
 
