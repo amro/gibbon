@@ -8,15 +8,26 @@ Gibbon is an API wrapper for MailChimp's [API](https://mailchimp.com/developer/m
 
 Please read MailChimp's [Getting Started Guide](https://mailchimp.com/developer/marketing/guides/quick-start/).
 
-Gibbon 3.0.0+ returns a `Gibbon::Response` instead of the response body directly. `Gibbon::Response` exposes the parsed response `body` and `headers`.
+Gibbon returns a `Gibbon::Response`, which exposes the parsed response `body` and the response `headers`. See [Responses](#responses) below.
+
+See the [CHANGELOG](CHANGELOG.md) for release history and [Upgrading](#upgrading) for breaking changes.
 
 ## Installation
 
     $ gem install gibbon
 
+Or add it to your `Gemfile`:
+
+```ruby
+gem "gibbon"
+```
+
 ## Requirements
 
-A MailChimp account and API key. You can see your API keys [here](https://admin.mailchimp.com/account/api).
+* **Ruby 3.1 or newer.** Gibbon 4.0 dropped support for Ruby 2.4 through 3.0.
+* A MailChimp account and API key. You can see your API keys [here](https://admin.mailchimp.com/account/api).
+
+Gibbon depends on [Faraday](https://github.com/lostisland/faraday) (both 1.x and 2.x are supported) and [MultiJson](https://github.com/intridea/multi_json). Connections to MailChimp negotiate TLS 1.2 or newer.
 
 ## Usage
 
@@ -487,5 +498,5 @@ Thanks to everyone who has [contributed](https://github.com/amro/gibbon/contribu
 
 ## Copyright
 
-* Copyright (c) 2010-2022 Amro Mousa. See LICENSE.txt for details.
-* MailChimp (c) 2001-2022 The Rocket Science Group.
+* Copyright (c) 2010-2026 Amro Mousa. See LICENSE.txt for details.
+* MailChimp (c) 2001-2026 The Rocket Science Group.
