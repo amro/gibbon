@@ -162,7 +162,7 @@ gibbon = Gibbon::Request.new(api_key: "your_api_key", debug: true)
 
 ### Custom logger
 
-Ruby `Logger.new` is used by default, but it can be overrided using:
+Ruby `Logger.new` is used by default, but it can be overridden using:
 
 ```ruby
 gibbon = Gibbon::Request.new(api_key: "your_api_key", debug: true, logger: MyLogger.new)
@@ -403,7 +403,7 @@ gibbon.campaigns(campaign_id).actions.schedule.create(body: body)
 
 ### Interests
 
-Interests are a little more complicated than other parts of the API, so here's an example of how you would set interests during at subscription time or update them later. The ID of the interests you want to opt in or out of must be known ahead of time so an example of how to find interest IDs is also included.
+Interests are a little more complicated than other parts of the API, so here's an example of how you would set interests at subscription time or update them later. The ID of the interests you want to opt in or out of must be known ahead of time so an example of how to find interest IDs is also included.
 
 Subscribing a member to a list with specific interests up front:
 
@@ -423,13 +423,13 @@ So how do we get the interest IDs? When you query the API for a specific list me
 gibbon.lists(list_id).members(member_id).retrieve
 ```
 
-The response body (i.e. `response.body`) looks someting like this (unrelated things removed):
+The response body (i.e. `response.body`) looks something like this (unrelated things removed):
 
 ```ruby
 {"id"=>"...", "email_address"=>"...", ..., "interests"=>{"3def637141"=>true, "f7cc4ee841"=>false, "fcdc951b9f"=>false, "3daf3cf27d"=>true, "293a3703ed"=>false, "72370e0d1f"=>false, "d434d21a1c"=>false, "bdb1ff199f"=>false, "a54e78f203"=>false, "c4527fd018"=>false} ...}
 ```
 
-The API returns a map of interest ID to boolean value. Now we to get interest details so we know what these interest IDs map to. Looking at [this doc page](https://mailchimp.com/developer/marketing/api/interests/), we need to do this:
+The API returns a map of interest ID to boolean value. Now we need to get interest details so we know what these interest IDs map to. Looking at [this doc page](https://mailchimp.com/developer/marketing/api/interests/), we need to do this:
 
 ```ruby
 gibbon.lists(list_id).interest_categories.retrieve
