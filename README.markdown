@@ -268,7 +268,7 @@ campaigns = gibbon.campaigns.retrieve
 Fetch the number of opens for a campaign
 
 ```ruby
-email_stats = gibbon.reports(campaign_id).retrieve["opens"]
+email_stats = gibbon.reports(campaign_id).retrieve.body["opens"]
 ```
 
 Create a new campaign:
