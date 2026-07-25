@@ -103,6 +103,24 @@ gibbon = Gibbon::Request.new(api_key: "your_api_key", symbolize_keys: true)
 
 MailChimp's [resource documentation](https://mailchimp.com/developer/marketing/api/) is a list of available resources.
 
+## Responses
+
+Every CRUD verb returns a `Gibbon::Response` with two attributes:
+
+* `body` — the parsed JSON response, as a `Hash` (or `Array`, depending on the endpoint)
+* `headers` — the response headers, keyed by lower case string
+
+```ruby
+response = gibbon.lists.retrieve
+
+response.body["lists"]           # => [{"id" => "...", "name" => "...", ...}, ...]
+response.headers["content-type"] # => "application/json; charset=utf-8"
+```
+
+`body` respects `symbolize_keys`; `headers` keys are always strings.
+
+A response with an empty body — as with a successful `delete`, which MailChimp answers with `204 No Content` — returns `nil` rather than a `Gibbon::Response`.
+
 ## Debug Logging
 
 Pass `debug: true` to enable debug logging to STDOUT.
@@ -400,21 +418,6 @@ gibbon.lists(list_id).interest_categories("0ace7aa498").interests.retrieve
 
 That response gives the interest data, including the ID for the interests themselves, which we can use to update a list member's interests or set them when we call the API to subscribe her or him to a list.
 
-### Error handling
-
-Gibbon raises an error when the API returns an error.
-
-`Gibbon::MailChimpError` has the following attributes: `title`, `detail`, `body`, `raw_body`, `status_code`. Some or all of these may not be
-available depending on the nature of the error. For example:
-
-```ruby
-begin
-  gibbon.lists(list_id).members.create(body: body)
-rescue Gibbon::MailChimpError => e
-  puts "Houston, we have a problem: #{e.message} - #{e.raw_body}"
-end
-```
-
 ### Other
 
 Overriding Gibbon's API endpoint (i.e. if using an access token from OAuth and have the `api_endpoint` from the [metadata](https://mailchimp.com/developer/marketing/guides/access-user-data-oauth-2/)):
@@ -435,6 +438,40 @@ You can set a different [Faraday adapter](https://github.com/lostisland/faraday)
 ```ruby
 gibbon = Gibbon::Request.new(api_key: "your_api_key", faraday_adapter: :net_http)
 ```
+
+## Error handling
+
+Gibbon raises two error types, both subclasses of `StandardError`.
+
+### Gibbon::GibbonError
+
+Raised *before* a request goes out, when Gibbon can't tell where to send it. In practice that means the API key is missing, or it carries no data center suffix and no `api_endpoint` was set:
+
+```ruby
+Gibbon::Request.new.lists.retrieve
+# => Gibbon::GibbonError: You must set an api_key prior to making a call
+
+Gibbon::Request.new(api_key: "your_api_key").lists.retrieve
+# => Gibbon::GibbonError: You must set an api_key prior to making a call
+```
+
+A key like `your_api_key-us1` carries its data center (`us1`) and works on its own. Access tokens obtained through OAuth do not, so pass `api_endpoint` alongside them — see [Other](#other) above.
+
+### Gibbon::MailChimpError
+
+Raised when a request fails. It exposes `title`, `detail`, `body`, `raw_body`, and `status_code`:
+
+```ruby
+begin
+  gibbon.lists(list_id).members.create(body: body)
+rescue Gibbon::MailChimpError => e
+  puts "Houston, we have a problem: #{e.message} - #{e.raw_body}"
+end
+```
+
+Some or all of those attributes may be `nil` depending on the nature of the failure. MailChimp returning a `4xx` or `5xx` populates all of them from the error document. A transport level failure — a timeout, a refused connection — has no response to read, so only `message` is set.
+
+Gibbon also raises `Gibbon::MailChimpError` when a *successful* response body isn't valid JSON. That error has a `title` of `"UNPARSEABLE_RESPONSE"` and a `status_code` of `500`, and its message includes the raw body.
 
 ## Upgrading
 
