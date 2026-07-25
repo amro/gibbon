@@ -51,15 +51,21 @@ You can read about `timeout` and `open_timeout` in the [Net::HTTP](https://docs.
 Now you can make requests using the resources defined in [MailChimp's docs](https://mailchimp.com/developer/marketing/api/). Resource IDs
 are specified inline and a `CRUD` (`create`, `retrieve` (or `get`), `update`, `upsert`, or `delete`) verb initiates the request. `upsert` lets you update a record, if it exists, or insert it otherwise where supported by MailChimp's API.
 
-***Note*** `upsert` requires Gibbon version 2.1.0 or newer!
+Each verb maps to an HTTP method:
+
+| Gibbon verb           | HTTP method | Accepts `body` |
+| --------------------- | ----------- | -------------- |
+| `create`              | `POST`      | yes            |
+| `retrieve` (or `get`) | `GET`       | no             |
+| `update`              | `PATCH`     | yes            |
+| `upsert`              | `PUT`       | yes            |
+| `delete`              | `DELETE`    | no             |
 
 You can specify `headers`, `params`, and `body` when calling a `CRUD` method. For example:
 
 ```ruby
 gibbon.lists.retrieve(headers: {"SomeHeader": "SomeHeaderValue"}, params: {"query_param": "query_param_value"})
 ```
-
-***Note*** `get` can be substituted for `retrieve` as of Gibbon version 3.4.1 or newer!
 
 Of course, `body` is only supported on `create`, `update`, and `upsert` calls. Those map to HTTP `POST`, `PATCH`, and `PUT` verbs respectively.
 
@@ -430,66 +436,43 @@ You can set a different [Faraday adapter](https://github.com/lostisland/faraday)
 gibbon = Gibbon::Request.new(api_key: "your_api_key", faraday_adapter: :net_http)
 ```
 
-### Migrating from Gibbon 1.x
+## Upgrading
 
-Gibbon 2.x+ exposes a different API from version 1.x. This is because Gibbon maps to MailChimp's API and because version 3 of the API is quite different from version 2. First, the name of the primary class has changed from `API` to `Request`. And the way you pass an API key during initialization is different. A few examples below.
+Full release history lives in the [CHANGELOG](CHANGELOG.md). The breaking changes are summarized here.
 
-#### Initialization
+### Upgrading to 4.0
 
-Gibbon 1.x:
+Gibbon 4.0 contains no API changes. It changes what it runs on:
+
+* **Ruby 3.1 or newer is required.** Rubies 2.4 through 3.0 are EOL and are no longer supported. If you are on an older Ruby, stay on Gibbon 3.5.0.
+* **TLS 1.2 is now a minimum rather than an exact pin.** Connections previously negotiated exactly TLS 1.2; they now accept TLS 1.3 as well. No code change is needed, but if you inspect the negotiated protocol in tests or middleware, expect 1.3.
+
+### Upgrading to 3.0
+
+`create`, `retrieve`/`get`, `update`, `upsert`, and `delete` return a `Gibbon::Response` rather than the parsed body. Add `.body`:
 
 ```ruby
+# Gibbon 2.x
+gibbon.lists.retrieve["lists"]
+
+# Gibbon 3.x and newer
+gibbon.lists.retrieve.body["lists"]
+```
+
+In exchange you also get `.headers`, which carries MailChimp's rate limit and content metadata. See [Responses](#responses).
+
+### Upgrading from 1.x
+
+Gibbon 1.x targeted MailChimp API 2.0, which MailChimp retired. Upgrading means rewriting calls against [API 3.0](https://mailchimp.com/developer/marketing/api/): the primary class is `Gibbon::Request` rather than `Gibbon::API`, the API key is passed as a keyword argument, resource IDs are given inline, and every call chain terminates in a CRUD verb.
+
+```ruby
+# Gibbon 1.x
 gibbon = Gibbon::API.new("your_api_key")
-```
-
-Gibbon 2.x+:
-
-```ruby
-gibbon = Gibbon::Request.new(api_key: "your_api_key")
-```
-
-MailChimp API 3 is a RESTful API, so Gibbon's syntax now requires a trailing call to a verb, as described above.
-
-#### Fetching Lists
-
-Gibbon 1.x:
-
-```ruby
-gibbon.lists.list
-```
-
-Gibbon 2.x+:
-
-```ruby
-gibbon.lists.retrieve
-```
-
-#### Fetching List Members
-
-Gibbon 1.x:
-
-```ruby
 gibbon.lists.members({:id => list_id})
-```
 
-Gibbon 2.x+:
-
-```ruby
-gibbon.lists(list_id).members.retrieve
-```
-
-#### Subscribing a Member to a List
-
-Gibbon 1.x:
-
-```ruby
-gibbon.lists.subscribe({:id => list_id, :email => {:email => "foo@bar.com"}, :merge_vars => {:FNAME => "Bob", :LNAME => "Smith"}})
-```
-
-Gibbon 2.x+:
-
-```ruby
-gibbon.lists(list_id).members.create(body: {email_address: "foo@bar.com", status: "subscribed", merge_fields: {FNAME: "Bob", LNAME: "Smith"}})
+# Gibbon 4.x
+gibbon = Gibbon::Request.new(api_key: "your_api_key")
+gibbon.lists(list_id).members.retrieve.body
 ```
 
 ## Thanks
