@@ -219,8 +219,24 @@ describe Gibbon do
       expect(Gibbon::Request.new.symbolize_keys).to eq(Gibbon::Request.symbolize_keys)
     end
 
+    it "allows instance symbolize_keys false to override the class setting" do
+      expect(Gibbon::Request.new(symbolize_keys: false).symbolize_keys).to be false
+    end
+
+    it "inherits the class symbolize_keys setting when explicitly passed nil" do
+      expect(Gibbon::Request.new(symbolize_keys: nil).symbolize_keys).to be true
+    end
+
     it "set debug on new instances" do
       expect(Gibbon::Request.new.debug).to eq(Gibbon::Request.debug)
+    end
+
+    it "allows instance debug false to override the class setting" do
+      expect(Gibbon::Request.new(debug: false).debug).to be false
+    end
+
+    it "inherits the class debug setting when explicitly passed nil" do
+      expect(Gibbon::Request.new(debug: nil).debug).to be true
     end
 
     it "set faraday_adapter on new instances" do
