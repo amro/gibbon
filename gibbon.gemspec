@@ -27,6 +27,9 @@ Gem::Specification.new do |s|
 
   s.add_dependency('faraday', '>= 1.0')
   s.add_dependency('multi_json', '>= 1.11.0')
+  # Ruby 3.1 uses multi_json <= 1.19.1, whose JSON adapter passes options
+  # positionally. JSON 3 requires keyword arguments.
+  s.add_dependency('json', '< 3.0')
 
   s.add_development_dependency 'rake'
   s.add_development_dependency "rspec", "~> 3.13"
