@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'webmock/rspec'
+require 'stringio'
 
 describe Gibbon::APIRequest do
   let(:api_key) { "1234-us1" }
@@ -148,6 +149,49 @@ describe Gibbon::APIRequest do
         expect(e.title).to eq "UNPARSEABLE_RESPONSE"
         expect(e.status_code).to eq 500
       end
+    end
+  end
+
+  context "instance overrides of class defaults" do
+    before do
+      allow(Gibbon::Request).to receive(:symbolize_keys).and_return(true)
+      allow(Gibbon::Request).to receive(:debug).and_return(true)
+    end
+
+    let(:log_output) { StringIO.new }
+    let(:gibbon) do
+      Gibbon::Request.new(api_key: api_key, symbolize_keys: false, debug: false, logger: Logger.new(log_output))
+    end
+
+    it "returns string keys, including nested keys, when symbolization is disabled" do
+      stub_request(:get, "#{@api_root}/lists")
+        .to_return(body: '{"lists": [{"id": "abc123"}]}')
+
+      expect(gibbon.lists.retrieve.body).to eq({ "lists" => [{ "id" => "abc123" }] })
+      expect(Gibbon::Request.symbolize_keys).to be true
+    end
+
+    it "preserves error details with string keys when symbolization is disabled" do
+      error_body = '{"title": "Invalid Resource", "detail": "Invalid email address"}'
+      stub_request(:get, "#{@api_root}/lists").to_return(status: 422, body: error_body)
+
+      expect { gibbon.lists.retrieve }.to raise_error(Gibbon::MailChimpError) { |error|
+        expect(error.status_code).to eq 422
+        expect(error.title).to eq "Invalid Resource"
+        expect(error.detail).to eq "Invalid email address"
+        expect(error.body).to eq({ "title" => "Invalid Resource", "detail" => "Invalid email address" })
+        expect(error.raw_body).to eq error_body
+      }
+    end
+
+    it "does not log requests or responses when debug is disabled" do
+      stub_request(:get, "#{@api_root}/lists")
+        .to_return(body: '{"email_address": "private@example.com"}')
+
+      gibbon.lists.retrieve
+
+      expect(log_output.string).to be_empty
+      expect(Gibbon::Request.debug).to be true
     end
   end
 
