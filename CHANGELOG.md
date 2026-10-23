@@ -1,3 +1,8 @@
+## [4.0.1] - 2026-10-23
+- Honor explicit `false` instance overrides for `symbolize_keys` and `debug`, while preserving class defaults for omitted options and `nil`.
+- Constrain `json` to versions below 3.0 to preserve compatibility with the `multi_json` adapter available on Ruby 3.1.
+- Expand API documentation, update usage examples, and add gem metadata links.
+
 ## [4.0.0] - 2026-07-23
 - Require Ruby 3.1+ (drops support for EOL Rubies 2.4 through 3.0)
 - Require TLS 1.2 as a minimum instead of pinning it exactly, allowing TLS 1.3
