@@ -36,7 +36,7 @@ module Gibbon
     # @param symbolize_keys [Boolean] Whether parsed response bodies use symbol keys.
     # @param debug [Boolean] Whether to log requests and responses.
     # @param logger [Logger, nil] Logger used when `debug` is true. Defaults to `Logger.new(STDOUT)`.
-    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, open_timeout: nil, proxy: nil, faraday_adapter: nil, symbolize_keys: false, debug: false, logger: nil)
+    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, open_timeout: nil, proxy: nil, faraday_adapter: nil, symbolize_keys: nil, debug: nil, logger: nil)
       @path_parts = []
       @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
       @api_key = @api_key.strip if @api_key
@@ -45,8 +45,8 @@ module Gibbon
       @open_timeout = open_timeout || self.class.open_timeout || DEFAULT_OPEN_TIMEOUT
       @proxy = proxy || self.class.proxy || ENV['MAILCHIMP_PROXY']
       @faraday_adapter = faraday_adapter || self.class.faraday_adapter || Faraday.default_adapter
-      @symbolize_keys = symbolize_keys || self.class.symbolize_keys || false
-      @debug = debug || self.class.debug || false
+      @symbolize_keys = symbolize_keys.nil? ? (self.class.symbolize_keys || false) : symbolize_keys
+      @debug = debug.nil? ? (self.class.debug || false) : debug
       @logger = logger || self.class.logger || ::Logger.new(STDOUT)
     end
 
