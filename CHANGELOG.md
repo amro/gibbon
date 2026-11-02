@@ -1,3 +1,8 @@
+## [4.1.0] - 2026-11-02
+- Require Ruby 3.2+ (drops support for EOL Ruby 3.1)
+- Require `multi_json` 1.21.2+, whose JSON adapter supports `json` 3.x, and remove the `json < 3.0` constraint added in 4.0.1
+- Update CI matrix to Ruby 3.2 through 4.0
+
 ## [4.0.1] - 2026-10-23
 - Honor explicit `false` instance overrides for `symbolize_keys` and `debug`, while preserving class defaults for omitted options and `nil`.
 - Constrain `json` to versions below 3.0 to preserve compatibility with the `multi_json` adapter available on Ruby 3.1.

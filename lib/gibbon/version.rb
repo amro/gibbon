@@ -1,4 +1,4 @@
 module Gibbon
   # The released version of the gem.
-  VERSION = "4.0.1"
+  VERSION = "4.1.0"
 end

@@ -24,7 +24,7 @@ gem "gibbon"
 
 ## Requirements
 
-* **Ruby 3.1 or newer.** Gibbon 4.0 dropped support for Ruby 2.4 through 3.0.
+* **Ruby 3.2 or newer.** Gibbon 4.1 dropped support for Ruby 3.1; Gibbon 4.0 dropped support for Ruby 2.4 through 3.0.
 * A MailChimp account and API key. You can see your API keys [here](https://admin.mailchimp.com/account/api).
 
 Gibbon depends on [Faraday](https://github.com/lostisland/faraday) (both 1.x and 2.x are supported) and [MultiJson](https://github.com/intridea/multi_json). Connections to MailChimp negotiate TLS 1.2 or newer.
@@ -507,6 +507,13 @@ Gibbon also raises `Gibbon::MailChimpError` when a *successful* response body is
 ## Upgrading
 
 Full release history lives in the [CHANGELOG](CHANGELOG.md). The breaking changes are summarized here.
+
+### Upgrading to 4.1
+
+Gibbon 4.1 contains no API changes. It changes what it runs on:
+
+* **Ruby 3.2 or newer is required.** Ruby 3.1 is EOL and is no longer supported. If you are on Ruby 3.1, stay on Gibbon 4.0.1.
+* **MultiJson 1.21.2 or newer is required**, and Gibbon no longer constrains the `json` gem. This lets you use `json` 3.x.
 
 ### Upgrading to 4.0
 
