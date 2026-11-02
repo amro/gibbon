@@ -23,13 +23,11 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
-  s.required_ruby_version = '>= 3.1.0'
+  s.required_ruby_version = '>= 3.2.0'
 
   s.add_dependency('faraday', '>= 1.0')
-  s.add_dependency('multi_json', '>= 1.11.0')
-  # Ruby 3.1 uses multi_json <= 1.19.1, whose JSON adapter passes options
-  # positionally. JSON 3 requires keyword arguments.
-  s.add_dependency('json', '< 3.0')
+  # 1.21.2 is the first release whose JSON adapter supports json 3.x.
+  s.add_dependency('multi_json', '>= 1.21.2')
 
   s.add_development_dependency 'rake'
   s.add_development_dependency "rspec", "~> 3.13"
